@@ -1,0 +1,273 @@
+:root { --red: #c00; }
+
+/* Match section and container spacing to services and fees */
+.contact.section { padding: 48px 0 64px; }
+.contact .container { max-width: 1200px; margin: 0 auto; padding: 0 14px; }
+
+/* Headings consistent with your theme */
+.contact .section-header { margin-bottom: 18px; }
+.contact .section-title {
+  color: var(--red);
+  font-weight: 700;
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1.15;
+  margin: 24px 0 8px;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 8px;
+}
+.contact .section-title::after {
+  content: "";
+  display: block;
+  width: 120px;
+  height: 4px;
+  background: #111;
+  border-radius: 2px;
+  margin-top: 8px;
+}
+.contact .section-subtitle {
+  color: #666;
+  margin: 0 0 30px;
+  font-size: 1.12rem;
+  line-height: 1.6;
+}
+
+/* Layout */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap: 32px;
+}
+@media (max-width: 900px) {
+  .contact-grid { grid-template-columns: 1fr; }
+}
+
+/* Form */
+.contact-form {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.08);
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+@media (max-width: 600px) {
+  .form-row { grid-template-columns: 1fr; }
+}
+.form-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+.form-field label {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.form-field input,
+.form-field select,
+.form-field textarea {
+  font: inherit;
+  border: 2px solid #e1e1e1;
+  border-radius: 8px;
+  padding: 12px 14px;
+  background: #fff;
+  color: #222;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  outline: none;
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(204,0,0,.15);
+}
+.muted { color: #666; font-weight: 400; }
+
+/* Buttons, unified */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: 44px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  line-height: 1;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+.btn-primary {
+  background: var(--red);
+  color: #fff;
+  border-color: var(--red);
+  box-shadow: 0 8px 20px rgba(204,0,0,.25);
+}
+.btn-primary:hover {
+  background: #a00;
+  border-color: #a00;
+  transform: translateY(-1px);
+}
+.btn-secondary {
+  background: #fff;
+  color: #444;
+  border-color: #d3d3d3;
+}
+.btn-secondary:hover {
+  background: #f7f7f7;
+  border-color: #c7c7c7;
+  color: #222;
+}
+
+/* Only the form submit needs spacing */
+.contact-form .btn-primary {
+  margin-top: 16px;
+  display: inline-flex;
+}
+
+/* Find us */
+.find-us .group-title {
+  color: var(--red);
+  font-weight: 700;
+  font-size: clamp(20px, 2vw, 26px);
+  line-height: 1.2;
+  margin: 0 0 12px;
+  display: inline-block;
+  position: relative;
+  padding-bottom: 6px;
+}
+.find-us .group-title::after {
+  content: "";
+  display: block;
+  width: 120px;
+  height: 3px;
+  background: #111;
+  border-radius: 2px;
+  margin-top: 6px;
+}
+.map-wrap {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,.08);
+  margin-bottom: 10px;
+}
+.map-wrap iframe { width: 100%; height: 340px; display: block; }
+
+/* Modal, correct layering and centering */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 9999;
+}
+.modal.is-open { display: block; }
+
+/* backdrop below, with blur */
+.modal__backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(2px);
+}
+
+/* dialog above, merged into one block */
+.modal__dialog {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(92vw, 640px);
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 28px rgba(0,0,0,.25);
+  padding: 32px;
+}
+.modal__dialog h3 { margin: 0 0 8px; font-weight: 700; }
+
+.modal__heading {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--red);
+  margin: 0 0 16px;
+  line-height: 1.3;
+}
+
+.modal__text {
+  color: #444;
+  line-height: 1.55;
+  font-size: 0.95rem;
+  margin-bottom: 18px;
+}
+.modal__text li {
+  margin: 8px 0;
+  padding-left: 4px;
+}
+
+.modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.modal__close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+@media (max-width: 600px) {
+  .modal__dialog { padding: 16px; }
+}
+
+/* Toasts */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  z-index: 10000;
+  min-width: 240px;
+  max-width: 90vw;
+  padding: 12px 16px;
+  border-radius: 10px;
+  color: #fff;
+  background: #333;
+  box-shadow: 0 8px 20px rgba(0,0,0,.25);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease, transform .2s ease;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-4px);
+  pointer-events: auto;
+}
+.toast.success { background: var(--red); }
+.toast.error   { background: #444; }
+
+/* Automatically mark required fields */
+.form-field label:has(+ input[required]),
+.form-field label:has(+ select[required]),
+.form-field label:has(+ textarea[required]) {
+  position: relative;
+}
+.form-field label:has(+ input[required])::after,
+.form-field label:has(+ select[required])::after,
+.form-field label:has(+ textarea[required])::after {
+  content: " *";
+  color: var(--red);
+  font-weight: 700;
+}

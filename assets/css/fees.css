@@ -1,0 +1,229 @@
+/* === FEES PAGE STYLES === */
+:root { --red: #c00; }
+
+/* Section spacing */
+.fees.section {
+  padding: 48px 0 64px;
+}
+
+/* Container width, left and right spacing, same as other service pages */
+.fees .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 14px;
+}
+
+/* Header, identical look to service pages */
+.fees .section-header { margin-bottom: 18px; }
+
+.fees .section-title {
+  color: var(--red);
+  font-weight: 700;
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1.15;
+   margin: 25px 0 8px;   /* match services */
+  position: relative;
+  display: inline-block;
+  padding-bottom: 8px;
+}
+.fees .section-title::after {
+  content: "";
+  display: block;
+  width: 120px;
+  height: 4px;
+  background: #111;
+  border-radius: 2px;
+  margin-top: 8px;
+}
+
+.fees .section-subtitle {
+  color: #666;
+  margin: 0 0 30px;
+  font-size: 1.12rem;
+  line-height: 1.6;
+}
+
+/* Jump chips for the three groups */
+.fees-jump {
+  margin: 8px 0 16px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.fees-jump a {
+  text-decoration: none;
+  padding: 8px 14px;
+  border: 1px solid #e1e1e1;
+  border-radius: 999px;
+  color: #222;
+  background: #fff;
+  transition: border-color .2s ease, background .2s ease;
+}
+.fees-jump a:hover {
+  border-color: #bbb;
+  background: #f9f9f9;
+}
+
+/* Group sections */
+.fee-group { margin-top: 40px; }
+.fee-group:first-of-type { margin-top: 12px; }
+
+.group-title {
+  color: var(--red);
+  font-weight: 700;
+  font-size: clamp(20px, 2vw, 26px);
+  line-height: 1.2;
+  margin: 18px 0 8px;
+  display: inline-block;
+  position: relative;
+  padding-bottom: 6px;
+}
+.group-title::after {
+  content: "";
+  display: block;
+  width: 120px;
+  height: 3px;
+  background: #111;
+  border-radius: 2px;
+  margin-top: 6px;
+}
+
+/* Grid of fee cards, clean rows */
+.fees-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  align-items: stretch;
+  margin-bottom: 2rem;
+}
+
+/* Card */
+.fee-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: transform .2s ease, box-shadow .2s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.fee-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+.fee-card h2,
+.fee-card h3 {
+  margin: 0 0 8px;
+  font-size: 1.25rem;
+  color: var(--red);
+}
+.fee-card p {
+  margin: 0 0 8px;
+  color: #444;
+  line-height: 1.6;
+}
+.fee-card .fee-amount {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #000;
+  margin: 4px 0 10px;
+}
+
+/* Lists inside cards */
+.fee-card ul { margin: 6px 0 0 1.2rem; }
+.fee-card ul.compact { margin: .25rem 0 .25rem 1rem; }
+.fee-card ul.compact li { margin: .2rem 0; }
+.fee-card .small { font-size: .92rem; color: #666; margin-top: .25rem; }
+
+/* Notes block */
+.fees-note {
+  margin-top: 2rem;
+  color: #555;
+  line-height: 1.7;
+}
+
+/* CTA */
+.fees .cta {
+  display: inline-block;
+  margin-top: 2rem;
+  background: var(--red);
+  color: #fff;
+  text-decoration: none;
+  padding: 12px 18px;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(204,0,0,.25);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.fees .cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(204,0,0,.3);
+}
+.fees .cta:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 8px rgba(204,0,0,.2) inset;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .fees-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .fees .section-title { margin: 60px 0 8px; }
+  .fees-grid { grid-template-columns: 1fr; gap: 1.25rem; }
+}
+
+
+/* =========================
+   Legal Aid card additions
+   ========================= */
+
+.fee-card__sub {
+  margin: 0 0 8px;
+  color: #444;
+  line-height: 1.6;
+}
+
+.fee-card__note {
+  margin: 0 0 12px;
+  color: #777;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.fee-card__actions {
+  margin-top: 6px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.fee-card__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  background: var(--red);
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(204,0,0,.18);
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+
+.fee-card__button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(204,0,0,.22);
+}
+
+.fee-card__button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 8px rgba(204,0,0,.18) inset;
+}
+
+@media (max-width: 600px) {
+  .fee-card__button {
+    width: 100%;
+  }
+}
