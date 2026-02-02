@@ -317,3 +317,70 @@
 }
 
 .he-details__body p { margin: 0; }
+
+/* =========================
+   Tablet + landscape fix
+   Prevent cards/tables from forcing overflow
+   ========================= */
+
+/* Let grid children actually shrink (critical for CSS grid) */
+.eligibility-grid,
+.eligibility-card,
+.table-wrap,
+.eligibility-table {
+  min-width: 0;
+}
+
+/* On tablet and phone landscape, keep 2 columns but tighten + allow wrapping */
+@media (max-width: 1100px) {
+  .eligibility-card { padding: 14px; }
+
+  /* Force the table to fit the card width */
+  .eligibility-table {
+    width: 100%;
+    table-layout: fixed;   /* key: columns must fit available width */
+  }
+
+  /* Allow header + cells to wrap instead of creating a minimum width */
+  .eligibility-table thead th,
+  .eligibility-table tbody td {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  /* Amount column should stay tidy, but not force overflow */
+  .eligibility-table .amount {
+    white-space: nowrap;   /* keep $ values neat */
+  }
+
+  /* Make the long header less likely to blow out */
+  .eligibility-table thead th {
+    font-size: 0.92rem;
+    line-height: 1.2;
+  }
+}
+
+@media (max-width: 980px) {
+  .eligibility-grid { grid-template-columns: 1fr; }
+}
+
+/* =========================
+   Truncate right header with …
+   ========================= */
+
+@media (max-width: 1100px) {
+
+  /* Only target the amount/header column */
+  .eligibility-table thead th.amount {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* keep the column constrained so ellipsis can happen */
+  .eligibility-table th.amount,
+  .eligibility-table td.amount {
+    max-width: 40%;
+  }
+}
