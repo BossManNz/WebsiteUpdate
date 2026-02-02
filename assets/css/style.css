@@ -194,7 +194,7 @@
   position: relative;
   height: 80vh;
   color: #fff;
-  background: url('../../images/hero-bg.jpeg') no-repeat center center/cover;
+  background: url('../../images/hero-bg.webp') no-repeat center center/cover;
   overflow: hidden;
 }
 .hero-bg::before {
@@ -830,7 +830,7 @@
   position: relative;
   width: 100%;
   min-height: 360px !important;
-  background: url('../../images/meet-the-team-bg.jpeg') center top / cover no-repeat;
+  background: url('../../images/meet-the-team-bg.webp') center top / cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;

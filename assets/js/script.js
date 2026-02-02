@@ -60,11 +60,30 @@ document.querySelectorAll('.team-filters button').forEach(btn=>{
     });
   }
 
-  // Active link highlight by filename, handle / and /index.html
-  const current = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
+  // Active link highlight by *path*, so clean URLs like /services/ work
+  function normalizePath(p){
+    if(!p) return '/';
+    // strip query/hash
+    p = p.split('#')[0].split('?')[0];
+    // ensure leading slash
+    if(p[0] !== '/') p = '/' + p;
+    // collapse multiple slashes
+    p = p.replace(/\/+/g,'/');
+    // treat /index.html as /
+    if(p.toLowerCase().endsWith('/index.html')) p = p.slice(0, -'/index.html'.length) + '/';
+    // ensure trailing slash for non-file paths
+    const looksLikeFile = /\.[a-z0-9]+$/i.test(p);
+    if(!looksLikeFile && !p.endsWith('/')) p += '/';
+    return p.toLowerCase();
+  }
+
+  const currentPath = normalizePath(window.location.pathname || '/');
   nav.querySelectorAll('ul li a').forEach(a=>{
-    const target = (a.getAttribute('href') || '').split('/').pop().toLowerCase();
-    if((!target && current==='index.html') || target===current){
+    const href = a.getAttribute('href') || '';
+    // Ignore placeholder links (eg Shielded modal trigger)
+    if(href === '#') return;
+    const targetPath = normalizePath(href);
+    if(targetPath === currentPath){
       a.classList.add('active');
     }
   });
