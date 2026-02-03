@@ -400,36 +400,11 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 })();
 
-/* Team image blur->sharp on load (nav-safe) */
-document.addEventListener("DOMContentLoaded", function () {
-  if (!document.body.classList.contains("page-team")) return;
-
-  var imgs = document.querySelectorAll(".people-grid .person-photo img");
-  imgs.forEach(function (img) {
-    function markLoaded() {
-      img.classList.add("is-loaded");
-    }
-
-    if (img.complete && img.naturalWidth > 0) {
-      markLoaded();
-      return;
-    }
-
-    img.addEventListener("load", markLoaded, { once: true });
-    img.addEventListener("error", markLoaded, { once: true });
+img.addEventListener("error", markLoaded, { once: true });
   });
 });
 
-/* =====================================================
-   TEAM PAGE — blur → sharp image reveal (nav-safe)
-   Only runs on <body class="page-team">
-   ===================================================== */
-document.addEventListener("DOMContentLoaded", function () {
-  if (!document.body.classList.contains("page-team")) return;
-
-  var imgs = document.querySelectorAll(".people-grid .person-photo img");
-
-  imgs.forEach(function (img) {
+imgs.forEach(function (img) {
 
     function markLoaded() {
       img.classList.add("is-loaded");
@@ -440,6 +415,39 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       img.addEventListener("load", markLoaded, { once: true });
       img.addEventListener("error", markLoaded, { once: true });
+    }
+
+  });
+});
+
+/* =====================================================
+   TEAM PAGE — blur → sharp (always animates, navbar-safe)
+   - Only runs on <body class="page-team">
+   - Targets ONLY the normal photo (first-child) so fun hover swap stays intact
+   - Forces a paint in the blurred state, even when images are cached
+   ===================================================== */
+document.addEventListener("DOMContentLoaded", function () {
+  if (!document.body.classList.contains("page-team")) return;
+
+  var imgs = document.querySelectorAll(".people-grid .person-photo img:first-child");
+
+  imgs.forEach(function (img) {
+
+    // Ensure we start from the blurred state
+    img.classList.remove("is-loaded");
+
+    function reveal() {
+      // Force the browser to paint once before we toggle loaded (so transition always runs)
+      requestAnimationFrame(function () {
+        img.classList.add("is-loaded");
+      });
+    }
+
+    if (img.complete && img.naturalWidth > 0) {
+      reveal();
+    } else {
+      img.addEventListener("load", reveal, { once: true });
+      img.addEventListener("error", reveal, { once: true });
     }
 
   });
