@@ -374,3 +374,92 @@ document.addEventListener('DOMContentLoaded', function () {
     Promise.all(imgs.map(waitForImage)).then(function(){ markReady(idx); });
   });
 });
+
+/* =====================================================
+   Team page reveal by layout rows (no loader)
+   - Cards start at opacity 0 but still occupy layout
+   - We group cards by their offsetTop (actual row)
+   - Reveal the first row only when all images in that row are ready, then next row, etc
+   - Fail-safe: reveal everything after MAX_WAIT
+   ===================================================== */
+document.addEventListener('DOMContentLoaded', function () {
+  if (!document.body.classList.contains('page-team')) return;
+
+  const grid = document.querySelector('.people-grid');
+  if (!grid) return;
+
+  const cards = Array.from(grid.querySelectorAll('.profile-card, .person-card'));
+  if (!cards.length) return;
+
+  // Build rows from current layout
+  const rows = [];
+  const rowMap = new Map(); // key -> array of card indexes
+
+  cards.forEach((card, idx) => {
+    const top = Math.round(card.getBoundingClientRect().top); // stable enough for grouping
+    // Find an existing row key within small tolerance (layout rounding)
+    let key = null;
+    for (const k of rowMap.keys()) {
+      if (Math.abs(k - top) <= 4) { key = k; break; }
+    }
+    if (key === null) key = top;
+    if (!rowMap.has(key)) rowMap.set(key, []);
+    rowMap.get(key).push(idx);
+  });
+
+  // Sort rows by top position
+  const sortedKeys = Array.from(rowMap.keys()).sort((a,b)=>a-b);
+  sortedKeys.forEach(k => rows.push(rowMap.get(k)));
+
+  const ready = new Array(cards.length).fill(false);
+  let nextRow = 0;
+
+  const MAX_WAIT = 2500;
+  const failSafe = setTimeout(function(){
+    cards.forEach(c => c.classList.add('is-visible'));
+  }, MAX_WAIT);
+
+  function waitForImage(img){
+    return new Promise(function(resolve){
+      if (!img) return resolve();
+      if (img.complete && img.naturalWidth > 0) {
+        if (img.decode) img.decode().then(resolve).catch(resolve);
+        else resolve();
+        return;
+      }
+      img.addEventListener('load', function(){
+        if (img.decode) img.decode().then(resolve).catch(resolve);
+        else resolve();
+      }, { once: true });
+      img.addEventListener('error', function(){ resolve(); }, { once: true });
+    });
+  }
+
+  function tryReveal(){
+    if (nextRow >= rows.length) {
+      clearTimeout(failSafe);
+      return;
+    }
+    const idxs = rows[nextRow];
+    for (let i=0;i<idxs.length;i++){
+      if (!ready[idxs[i]]) return;
+    }
+    // reveal this row together
+    idxs.forEach(i => cards[i].classList.add('is-visible'));
+    nextRow++;
+    // small beat between rows for intentional feel
+    setTimeout(tryReveal, 120);
+  }
+
+  function markReady(i){
+    if (ready[i]) return;
+    ready[i]=true;
+    tryReveal();
+  }
+
+  cards.forEach(function(card, idx){
+    const imgs = Array.from(card.querySelectorAll('img'));
+    if (!imgs.length) { markReady(idx); return; }
+    Promise.all(imgs.map(waitForImage)).then(function(){ markReady(idx); });
+  });
+});
