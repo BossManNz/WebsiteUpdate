@@ -329,3 +329,20 @@ input[type="text"]:focus{
 .person-photo img:last-child {
   padding: 8px; /* match whatever your .person-photo padding is */
 }
+
+/* =====================================================
+   Team page staged reveal (batch)
+   ===================================================== */
+
+.page-team .people-grid .person {
+  opacity: 0;
+  transform: translateY(8px);
+  filter: blur(12px);
+  transition: opacity 280ms ease, transform 280ms ease, filter 380ms ease;
+}
+
+.page-team .people-grid .person.is-visible {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}

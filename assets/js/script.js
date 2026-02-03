@@ -339,3 +339,70 @@ document.addEventListener('DOMContentLoaded', function () {
     im.src = url;
   });
 });
+
+/* =====================================================
+   Team page staged batch reveal (wait for both portraits)
+   ===================================================== */
+
+document.addEventListener('DOMContentLoaded', function () {
+  if (!document.body.classList.contains('page-team')) return;
+
+  var grid = document.querySelector('.people-grid');
+  if (!grid) return;
+
+  var cards = Array.prototype.slice.call(grid.querySelectorAll('.person'));
+  if (!cards.length) return;
+
+  var queue = [];
+  var BATCH_SIZE = 3;   // how many cards appear at once
+  var BATCH_DELAY = 120; // ms between waves
+
+  function flush() {
+    if (!queue.length) return;
+    queue.splice(0, BATCH_SIZE).forEach(function(card){
+      card.classList.add('is-visible');
+    });
+    if (queue.length) {
+      setTimeout(flush, BATCH_DELAY);
+    }
+  }
+
+  function enqueue(card) {
+    if (card.classList.contains('is-visible')) return;
+    queue.push(card);
+    if (queue.length === 1) flush();
+  }
+
+  // For each card, wait until ALL images inside that card are loaded/decoded
+  cards.forEach(function(card){
+    var imgs = Array.prototype.slice.call(card.querySelectorAll('img'));
+    if (!imgs.length) {
+      enqueue(card);
+      return;
+    }
+
+    var remaining = imgs.length;
+
+    function oneDone(){
+      remaining -= 1;
+      if (remaining <= 0) enqueue(card);
+    }
+
+    imgs.forEach(function(img){
+      function ready(){
+        if (img.decode) {
+          img.decode().then(oneDone).catch(oneDone);
+        } else {
+          oneDone();
+        }
+      }
+
+      if (img.complete && img.naturalWidth > 0) {
+        ready();
+      } else {
+        img.addEventListener('load', ready, { once: true });
+        img.addEventListener('error', ready, { once: true });
+      }
+    });
+  });
+});
