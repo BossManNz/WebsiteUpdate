@@ -12,21 +12,6 @@ document.querySelectorAll('.team-filters button').forEach(btn=>{
 (function(){
   const btn  = document.querySelector('.menu-toggle');
   const nav  = document.querySelector('.nav');
-
-  // Rewrite root-absolute internal nav links ("/team/") to include GitHub Pages repo base ("/REPO/team/")
-  (function(){
-    var base = getSiteBase(); // "/" or "/WebsiteUpdate/"
-    var navLinks = document.querySelectorAll('nav a[href^="/"]');
-    navLinks.forEach(function(a){
-      var href = a.getAttribute('href') || '';
-      // keep external protocol links
-      if (/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(href)) return;
-      // keep "/" as base root
-      if (href === '/') { a.setAttribute('href', base); return; }
-      a.setAttribute('href', base + href.replace(/^\//,''));
-    });
-  })();
-
   const xBtn = document.querySelector('.nav-close');
   const logo = document.querySelector('.nav-logo-link');
 
@@ -99,45 +84,3 @@ document.addEventListener('DOMContentLoaded', function(){
     shield.init();
   });
 })();
-
-  function getSiteBase(){
-    // Default: site served at domain root
-    var base = '/';
-    try{
-      var host = (window.location.hostname || '').toLowerCase();
-      var path = window.location.pathname || '/';
-      // GitHub Pages project site: https://user.github.io/repo/...
-      if (host.endsWith('github.io')) {
-        var seg = path.split('/').filter(Boolean);
-        if (seg.length > 0) base = '/' + seg[0] + '/';
-      }
-    } catch(e){}
-    return base;
-  }
-
-
-  // Active link highlight (base-aware for GitHub Pages)
-  (function(){
-    var base = getSiteBase(); // "/" or "/REPO/"
-    function norm(p){
-      if(!p) return '/';
-      p = p.split('?')[0].split('#')[0];
-      p = p.replace(/\/+/g,'/');
-      p = p.replace(/\/index\.html$/i,'/');
-      if(!p.startsWith('/')) p = '/' + p;
-      if(!/\.[a-z0-9]+$/i.test(p) && !p.endsWith('/')) p += '/';
-      return p;
-    }
-    var current = norm(window.location.pathname);
-    // If current starts with base, compare the remainder so "/REPO/team/" matches "/team/"
-    if (base !== '/' && current.startsWith(base)) current = '/' + current.slice(base.length);
-    document.querySelectorAll('nav a').forEach(function(a){
-      var href = a.getAttribute('href') || '';
-      if (/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(href) || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#')) return;
-      var hp = norm(href);
-      // strip base from link path too
-      if (base !== '/' && hp.startsWith(base)) hp = '/' + hp.slice(base.length);
-      if (hp === current) a.classList.add('active');
-      else a.classList.remove('active');
-    });
-  })();
