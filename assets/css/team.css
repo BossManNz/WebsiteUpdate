@@ -331,66 +331,49 @@ input[type="text"]:focus{
 }
 
 /* =====================================================
-   Team cards: white placeholder until loaded (final v2)
-   - Whole card is white until .is-loaded is added to the card
-   - Keeps layout visible (no jumps)
-   - Does not break hover fun photos, it only hides the inner content until reveal
+   Team cards: white photo placeholder -> fade-in portrait (v3)
+   - Keeps card layout visible
+   - Photo area is white until the portrait is ready
+   - Portrait fades in + unblurs (greyscale preserved)
+   - Does not interfere with hover fun photos
    ===================================================== */
 
-/* Card container must be positioning context */
-.page-team .people-grid .profile-card,
-.page-team .people-grid .person-card{
+.page-team .people-grid .person-photo{
   position: relative;
   overflow: hidden;
-}
-
-/* White placeholder overlay on the whole card */
-.page-team .people-grid .profile-card::before,
-.page-team .people-grid .person-card::before{
-  content: "";
-  position: absolute;
-  inset: 0;
   background: #fff;
-  opacity: 1;
-  transition: opacity 0.45s ease;
-  z-index: 5;
-  pointer-events: none;
 }
 
-/* Hide card content until loaded (so you see a clean white card) */
-.page-team .people-grid .profile-card:not(.is-loaded) > *,
-.page-team .people-grid .person-card:not(.is-loaded) > *{
-  opacity: 0;
-  transition: opacity 0.2s ease;
+.page-team .people-grid .person-photo::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:#fff;
+  opacity:1;
+  transition: opacity .45s ease;
+  z-index:4;
+  pointer-events:none;
 }
 
-/* When loaded: fade overlay away and reveal content */
-.page-team .people-grid .profile-card.is-loaded::before,
-.page-team .people-grid .person-card.is-loaded::before{
-  opacity: 0;
-}
-
-.page-team .people-grid .profile-card.is-loaded > *,
-.page-team .people-grid .person-card.is-loaded > *{
-  opacity: 1;
-  transition: opacity 0.35s ease;
-}
-
-/* Keep your normal-photo greyscale, and start slightly blurred until the card reveals */
 .page-team .people-grid .person-photo img:first-child{
-  filter: grayscale(100%);
-}
-
-/* Optional: add a tiny "resolve" feel on the normal image */
-.page-team .people-grid .profile-card:not(.is-loaded) .person-photo img:first-child,
-.page-team .people-grid .person-card:not(.is-loaded) .person-photo img:first-child{
+  opacity: 0;
   filter: blur(14px) grayscale(100%);
   transform: scale(1.03);
-  transition: filter 0.7s ease, transform 0.7s ease;
+  transition: opacity .45s ease, filter .7s ease, transform .7s ease;
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit: cover;
+}
+
+.page-team .people-grid .profile-card.is-loaded .person-photo::before,
+.page-team .people-grid .person-card.is-loaded .person-photo::before{
+  opacity:0;
 }
 
 .page-team .people-grid .profile-card.is-loaded .person-photo img:first-child,
 .page-team .people-grid .person-card.is-loaded .person-photo img:first-child{
+  opacity: 1;
   filter: blur(0) grayscale(100%);
   transform: none;
 }
