@@ -419,3 +419,28 @@ document.addEventListener("DOMContentLoaded", function () {
     img.addEventListener("error", markLoaded, { once: true });
   });
 });
+
+/* =====================================================
+   TEAM PAGE — blur → sharp image reveal (nav-safe)
+   Only runs on <body class="page-team">
+   ===================================================== */
+document.addEventListener("DOMContentLoaded", function () {
+  if (!document.body.classList.contains("page-team")) return;
+
+  var imgs = document.querySelectorAll(".people-grid .person-photo img");
+
+  imgs.forEach(function (img) {
+
+    function markLoaded() {
+      img.classList.add("is-loaded");
+    }
+
+    if (img.complete && img.naturalWidth > 0) {
+      markLoaded();
+    } else {
+      img.addEventListener("load", markLoaded, { once: true });
+      img.addEventListener("error", markLoaded, { once: true });
+    }
+
+  });
+});
