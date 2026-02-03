@@ -66,7 +66,22 @@ document.querySelectorAll('.team-filters button').forEach(btn=>{
 // Page fade-in on load
 document.addEventListener('DOMContentLoaded', function(){
 
-  // Active link highlight (resolve hrefs to absolute paths, works for GitHub Pages + clean URLs)
+  // GitHub Pages base-aware nav fixing (prevents /index 404 and fixes active state everywhere)
+  function getSiteBase(){
+    // Default: domain root
+    var base = '/';
+    try{
+      var host = (window.location.hostname || '').toLowerCase();
+      var path = window.location.pathname || '/';
+      // GitHub Pages project site: https://user.github.io/repo/...
+      if (host.endsWith('github.io')) {
+        var seg = path.split('/').filter(Boolean);
+        if (seg.length > 0) base = '/' + seg[0] + '/';
+      }
+    } catch(e){}
+    return base;
+  }
+
   function normPath(p){
     if(!p) return '/';
     p = p.split('?')[0].split('#')[0];
@@ -75,6 +90,63 @@ document.addEventListener('DOMContentLoaded', function(){
     if(!p.startsWith('/')) p = '/' + p;
     if(!/\.[a-z0-9]+$/i.test(p) && !p.endsWith('/')) p += '/';
     return p;
+  }
+
+  (function(){
+    var base = getSiteBase();           // "/" or "/WebsiteUpdate/"
+    var current = normPath(window.location.pathname);
+    // Strip base for comparisons
+    var currentLocal = current;
+    if (base !== '/' && currentLocal.startsWith(base)) currentLocal = '/' + currentLocal.slice(base.length);
+
+    // Rewrite nav links to absolute-with-base routes so they never nest like /services/team/
+    document.querySelectorAll('nav a[href]').forEach(function(a){
+      var href = (a.getAttribute('href') || '').trim();
+      if (!href) return;
+      // external
+      if (/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(href) || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#')) return;
+
+      // Decide route from existing href
+      // Home candidates
+      if (href === './' || href === '../' || href === '../../' || href === '/' || href === 'index' || href === 'index/' || href === 'index.html' || href === '/index' || href === '/index/' || href === '/index.html') {
+        a.setAttribute('href', base);
+        href = base;
+      } else {
+        // Convert to path, take last segment as route when it looks like a folder route
+        var path;
+        try { path = new URL(href, window.location.href).pathname; }
+        catch(e){ path = href; }
+        path = normPath(path);
+        // Strip base if present
+        if (base !== '/' && path.startsWith(base)) path = '/' + path.slice(base.length);
+        var seg = path.split('/').filter(Boolean);
+        if (seg.length > 0) {
+          // If link is to a route root like "/team/", keep only that first segment
+          var route = seg[0];
+          a.setAttribute('href', base + route + '/');
+          href = base + route + '/';
+        }
+      }
+    });
+
+    // Now apply active class (base-aware)
+    document.querySelectorAll('nav a[href]').forEach(function(a){
+      var href = (a.getAttribute('href') || '').trim();
+      if (!href) return;
+      if (/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(href) || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#')) return;
+
+      var path;
+      try { path = new URL(href, window.location.href).pathname; }
+      catch(e){ path = href; }
+      path = normPath(path);
+      var local = path;
+      if (base !== '/' && local.startsWith(base)) local = '/' + local.slice(base.length);
+
+      if (local === currentLocal) a.classList.add('active');
+      else a.classList.remove('active');
+    });
+  })();
+
   }
   const current = normPath(window.location.pathname);
 
