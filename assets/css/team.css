@@ -331,31 +331,19 @@ input[type="text"]:focus{
 }
 
 /* =====================================================
-   Team page staged reveal (batch)
+   Team page batch reveal (row-synced, fail-safe, no loader text)
+   - Cards are hidden only while JS is active (body has team-reveal-pending)
+   - If JS fails, cards remain visible (no "forever blank" page)
    ===================================================== */
 
-.page-team .people-grid .person {
-  opacity: 0;
-  transform: translateY(8px);
-  filter: blur(12px);
-  transition: opacity 280ms ease, transform 280ms ease, filter 380ms ease;
-}
-
-.page-team .people-grid .person.is-visible {
-  opacity: 1;
-  transform: none;
-  filter: blur(0);
-}
-
-
-/* Team batch reveal (row-synced) */
-.page-team .people-grid .profile-card,
-.page-team .people-grid .person-card{
+.page-team.team-reveal-pending .people-grid .profile-card,
+.page-team.team-reveal-pending .people-grid .person-card{
   opacity:0;
   transform:translateY(8px);
   filter:blur(12px);
   transition:opacity 280ms ease, transform 280ms ease, filter 380ms ease;
 }
+
 .page-team .people-grid .profile-card.is-visible,
 .page-team .people-grid .person-card.is-visible{
   opacity:1;

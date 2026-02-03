@@ -295,102 +295,9 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-
-// Team page: preload all portraits before showing grid
-document.addEventListener('DOMContentLoaded', function () {
-  // Only run on the Team page
-  if (!document.body.classList.contains('page-team')) return;
-
-  var grid = document.querySelector('.people-grid');
-  if (!grid) return;
-
-  // Mark loading state immediately
-  document.body.classList.remove('team-ready');
-
-  // Collect all portrait image URLs (normal + fun)
-  var imgs = Array.prototype.slice.call(grid.querySelectorAll('img[src]'));
-  var urls = imgs.map(function(img){ return img.getAttribute('src'); }).filter(Boolean);
-
-  // Force eager loading so "loading=lazy" does not prevent completion
-  imgs.forEach(function(img){
-    try { img.loading = 'eager'; } catch(e){}
-    img.removeAttribute('loading');
-  });
-
-  // Preload all URLs
-  var remaining = urls.length;
-  if (remaining === 0){
-    document.body.classList.add('team-ready');
-    return;
-  }
-
-  function done(){
-    remaining--;
-    if (remaining <= 0){
-      document.body.classList.add('team-ready');
-    }
-  }
-
-  urls.forEach(function(url){
-    var im = new Image();
-    im.onload = done;
-    im.onerror = done;
-    // Preserve relative paths
-    im.src = url;
-  });
-});
-
-if (queue.length) {
-      setTimeout(flush, BATCH_DELAY);
-    }
-  }
-
-  function enqueue(card) {
-    if (card.classList.contains('is-visible')) return;
-    queue.push(card);
-    if (queue.length === 1) flush();
-  }
-
-  // For each card, wait until ALL images inside that card are loaded/decoded
-  cards.forEach(function(card){
-    var imgs = Array.prototype.slice.call(card.querySelectorAll('img'));
-    if (!imgs.length) {
-      enqueue(card);
-      return;
-    }
-
-    var remaining = imgs.length;
-
-    function oneDone(){
-      remaining -= 1;
-      if (remaining <= 0) enqueue(card);
-    }
-
-    imgs.forEach(function(img){
-      function ready(){
-        if (img.decode) {
-          img.decode().then(oneDone).catch(oneDone);
-        } else {
-          oneDone();
-        }
-      }
-
-      if (img.complete && img.naturalWidth > 0) {
-        ready();
-      } else {
-        img.addEventListener('load', ready, { once: true });
-        img.addEventListener('error', ready, { once: true });
-      }
-    });
-  });
-});
-
 /* =====================================================
-   Team page staged batch reveal (row-synced, no spinner)
-   - Each card is revealed only after BOTH portraits (normal + fun) are ready
-   - Reveals in DOM order, in waves of 3 at a time (so rows pop in together)
+   Team page row-synced batch reveal (no loader)
    ===================================================== */
-
 document.addEventListener('DOMContentLoaded', function () {
   if (!document.body.classList.contains('page-team')) return;
 
@@ -400,61 +307,19 @@ document.addEventListener('DOMContentLoaded', function () {
   const cards = Array.from(grid.querySelectorAll('.profile-card, .person-card'));
   if (!cards.length) return;
 
+  // Hide while we orchestrate reveals
+  document.body.classList.add('team-reveal-pending');
+
   const ready = new Array(cards.length).fill(false);
+  const BATCH_SIZE = 3;      // wave size
+  const MAX_WAIT = 2000;     // fail-safe: do not keep hidden forever
 
-  const BATCH_SIZE = 3;
-  const MAX_BATCH_WAIT = 1200;
-
-  let nextIndexToReveal = 0;
-  let batchTimer = null;
-
-  function clearBatchTimer(){
-    if (batchTimer) {
-      clearTimeout(batchTimer);
-      batchTimer = null;
-    }
-  }
-
-  function startBatchTimer(){
-    clearBatchTimer();
-    batchTimer = setTimeout(function(){
-      const end = Math.min(nextIndexToReveal + BATCH_SIZE, cards.length);
-      for (let i = nextIndexToReveal; i < end; i++) {
-        cards[i].classList.add('is-visible');
-      }
-      nextIndexToReveal = end;
-      clearBatchTimer();
-      tryReveal();
-    }, MAX_BATCH_WAIT);
-  }
-
-  function tryReveal(){
-    if (nextIndexToReveal >= cards.length) {
-      clearBatchTimer();
-      return;
-    }
-    const end = Math.min(nextIndexToReveal + BATCH_SIZE, cards.length);
-
-    for (let i = nextIndexToReveal; i < end; i++) {
-      if (!ready[i]) {
-        if (!batchTimer) startBatchTimer();
-        return;
-      }
-    }
-
-    for (let i = nextIndexToReveal; i < end; i++) {
-      cards[i].classList.add('is-visible');
-    }
-    nextIndexToReveal = end;
-    clearBatchTimer();
-    tryReveal();
-  }
-
-  function markReady(idx){
-    if (ready[idx]) return;
-    ready[idx] = true;
-    tryReveal();
-  }
+  let next = 0;
+  let failSafe = setTimeout(function(){
+    // reveal everything if something goes wrong
+    cards.forEach(c => c.classList.add('is-visible'));
+    document.body.classList.remove('team-reveal-pending');
+  }, MAX_WAIT);
 
   function waitForImage(img){
     return new Promise(function(resolve){
@@ -472,14 +337,40 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  cards.forEach(function(card, idx){
-    const imgs = Array.from(card.querySelectorAll('img'));
-    if (!imgs.length) {
-      markReady(idx);
+  function markReady(i){
+    if (ready[i]) return;
+    ready[i] = true;
+    tryReveal();
+  }
+
+  function tryReveal(){
+    if (next >= cards.length) {
+      clearTimeout(failSafe);
+      document.body.classList.remove('team-reveal-pending');
       return;
     }
-    Promise.all(imgs.map(waitForImage)).then(function(){
-      markReady(idx);
-    });
+    const end = Math.min(next + BATCH_SIZE, cards.length);
+    for (let i = next; i < end; i++){
+      if (!ready[i]) return;
+    }
+    // reveal batch together
+    for (let i = next; i < end; i++){
+      cards[i].classList.add('is-visible');
+    }
+    next = end;
+
+    // Once first batch is visible, allow rest of page to behave normally
+    if (next > 0) {
+      document.body.classList.remove('team-reveal-pending');
+    }
+
+    // cascade to next batch
+    tryReveal();
+  }
+
+  cards.forEach(function(card, idx){
+    const imgs = Array.from(card.querySelectorAll('img'));
+    if (!imgs.length) { markReady(idx); return; }
+    Promise.all(imgs.map(waitForImage)).then(function(){ markReady(idx); });
   });
 });
