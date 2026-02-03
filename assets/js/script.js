@@ -12,6 +12,26 @@ document.querySelectorAll('.team-filters button').forEach(btn=>{
 (function(){
   const btn  = document.querySelector('.menu-toggle');
   const nav  = document.querySelector('.nav');
+
+  // Active link highlight (path-based, works for clean URLs + GitHub Pages subpaths)
+  function normPath(p){
+    if(!p) return '/';
+    p = p.split('?')[0].split('#')[0];
+    p = p.replace(/\/+/g,'/');
+    p = p.replace(/\/index\.html$/i,'/');
+    if(!p.startsWith('/')) p = '/' + p;
+    if(!/\.[a-z0-9]+$/i.test(p) && !p.endsWith('/')) p += '/';
+    return p;
+  }
+  const currentPath = normPath(window.location.pathname);
+
+  nav.querySelectorAll('a').forEach(a => {
+    const href = a.getAttribute('href') || '';
+    if (/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(href) || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+    const linkPath = normPath(href);
+    if (linkPath === currentPath) a.classList.add('active');
+  });
+
   const xBtn = document.querySelector('.nav-close');
   const logo = document.querySelector('.nav-logo-link');
 
