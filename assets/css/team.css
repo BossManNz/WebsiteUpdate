@@ -330,17 +330,43 @@ input[type="text"]:focus{
   padding: 8px; /* match whatever your .person-photo padding is */
 }
 
-/* Team reveal (wait-all then rows) */
+/* =====================================================
+   Team portraits: keep layout visible, blur as placeholder, then unblur per row
+   No text/spinner, just a soft "glass" filter that fades away.
+   ===================================================== */
 .page-team .people-grid .profile-card,
 .page-team .people-grid .person-card{
-  opacity:0;
-  transform:translateY(8px);
-  filter:blur(12px);
-  transition:opacity 280ms ease, transform 280ms ease, filter 380ms ease;
+  position: relative;
 }
-.page-team .people-grid .profile-card.is-visible,
-.page-team .people-grid .person-card.is-visible{
-  opacity:1;
-  transform:none;
-  filter:blur(0);
+
+/* Base placeholder surface (subtle) */
+.page-team .people-grid .profile-card::before,
+.page-team .people-grid .person-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius: inherit;
+  background: rgba(255,255,255,0.04);
+  opacity: 0;
+  transition: opacity 280ms ease;
+  pointer-events:none;
+}
+
+/* While loading, show the surface and blur the image */
+.page-team img.team-img-loading{
+  filter: blur(18px);
+  transform: scale(1.03);
+  opacity: 0.85;
+  transition: filter 520ms ease, transform 520ms ease, opacity 520ms ease;
+}
+.page-team .profile-card.team-card-loading::before,
+.page-team .person-card.team-card-loading::before{
+  opacity: 1;
+}
+
+/* When the row is released, remove blur */
+.page-team img.team-img-loaded{
+  filter: blur(0);
+  transform: none;
+  opacity: 1;
 }

@@ -295,259 +295,107 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-img.addEventListener('error', function(){ resolve(); }, { once: true });
-    });
-  }
+/* =====================================================
+   Team portraits row reveal (blur placeholder -> crisp)
+   - Never hides the grid, so there is no "blank forever" failure mode
+   - Images start blurred (CSS class), then we remove blur for a whole visual row at once
+   - This matches the feel of Squarespace-style team grids
+   ===================================================== */
+(function(){
+  document.addEventListener('DOMContentLoaded', function(){
+    if (!document.body.classList.contains('page-team')) return;
 
-  function markReady(i){
-    if (ready[i]) return;
-    ready[i] = true;
-    tryReveal();
-  }
+    const grid = document.querySelector('.people-grid');
+    if (!grid) return;
 
-  function tryReveal(){
-    if (next >= cards.length) {
-      clearTimeout(failSafe);
-      document.body.classList.remove('team-reveal-pending');
-      return;
-    }
-    const end = Math.min(next + BATCH_SIZE, cards.length);
-    for (let i = next; i < end; i++){
-      if (!ready[i]) return;
-    }
-    // reveal batch together
-    for (let i = next; i < end; i++){
-      cards[i].classList.add('is-visible');
-    }
-    next = end;
+    const cards = Array.from(grid.querySelectorAll('.profile-card, .person-card'));
+    if (!cards.length) return;
 
-    // Once first batch is visible, allow rest of page to behave normally
-    if (next > 0) {
-      document.body.classList.remove('team-reveal-pending');
-    }
-
-    // cascade to next batch
-    tryReveal();
-  }
-
-  cards.forEach(function(card, idx){
-    const imgs = Array.from(card.querySelectorAll('img'));
-    if (!imgs.length) { markReady(idx); return; }
-    Promise.all(imgs.map(waitForImage)).then(function(){ markReady(idx); });
-  });
-});
-
-// Sort rows by top position
-  const sortedKeys = Array.from(rowMap.keys()).sort((a,b)=>a-b);
-  sortedKeys.forEach(k => rows.push(rowMap.get(k)));
-
-  const ready = new Array(cards.length).fill(false);
-  let nextRow = 0;
-
-  const MAX_WAIT = 2500;
-  const failSafe = setTimeout(function(){
-    cards.forEach(c => c.classList.add('is-visible'));
-  }, MAX_WAIT);
-
-  function waitForImage(img){
-    return new Promise(function(resolve){
-      if (!img) return resolve();
-      if (img.complete && img.naturalWidth > 0) {
-        if (img.decode) img.decode().then(resolve).catch(resolve);
-        else resolve();
-        return;
-      }
-      img.addEventListener('load', function(){
-        if (img.decode) img.decode().then(resolve).catch(resolve);
-        else resolve();
-      }, { once: true });
-      img.addEventListener('error', function(){ resolve(); }, { once: true });
-    });
-  }
-
-  function tryReveal(){
-    if (nextRow >= rows.length) {
-      clearTimeout(failSafe);
-      return;
-    }
-    const idxs = rows[nextRow];
-    for (let i=0;i<idxs.length;i++){
-      if (!ready[idxs[i]]) return;
-    }
-    // reveal this row together
-    idxs.forEach(i => cards[i].classList.add('is-visible'));
-    nextRow++;
-    // small beat between rows for intentional feel
-    setTimeout(tryReveal, 120);
-  }
-
-  function markReady(i){
-    if (ready[i]) return;
-    ready[i]=true;
-    tryReveal();
-  }
-
-  cards.forEach(function(card, idx){
-    const imgs = Array.from(card.querySelectorAll('img'));
-    if (!imgs.length) { markReady(idx); return; }
-    Promise.all(imgs.map(waitForImage)).then(function(){ markReady(idx); });
-  });
-});
-
-}
-
-  // Collect every image URL a card might display
-  function cardImageUrls(card){
-    const urls = new Set();
-    card.querySelectorAll('img').forEach(function(img){
-      const src = img.getAttribute('src');
-      if (src) urls.add(src);
-      // common patterns for hover/fun images
-      const dataHover = img.getAttribute('data-hover') || img.getAttribute('data-fun') || img.getAttribute('data-alt-src');
-      if (dataHover) urls.add(dataHover);
-      // srcset: grab first URL (good enough for preload to avoid late swaps)
-      const srcset = img.getAttribute('srcset');
-      if (srcset){
-        const first = srcset.split(',')[0].trim().split(' ')[0];
-        if (first) urls.add(first);
-      }
-    });
-    return Array.from(urls);
-  }
-
-  // Build visual rows after layout is stable
-  function buildRows(){
-    const rowMap = new Map();
-    cards.forEach(function(card, idx){
-      const top = card.offsetTop; // stable within document flow
-      if (!rowMap.has(top)) rowMap.set(top, []);
-      rowMap.get(top).push(idx);
-    });
-    const keys = Array.from(rowMap.keys()).sort(function(a,b){ return a-b; });
-    return keys.map(function(k){ return rowMap.get(k); });
-  }
-
-  // Wait one paint so offsetTop reflects final layout (fonts/CSS)
-  requestAnimationFrame(function(){
-    const rows = buildRows();
-
-    // readiness per card
-    const ready = new Array(cards.length).fill(false);
-
-    let nextRow = 0;
-
-    function tryReveal(){
-      if (nextRow >= rows.length) return;
-      const row = rows[nextRow];
-      for (let i=0;i<row.length;i++){
-        if (!ready[row[i]]) return;
-      }
-      // reveal the whole row at once
-      row.forEach(function(i){ cards[i].classList.add('is-visible'); });
-      nextRow++;
-      // tiny beat between rows
-      setTimeout(tryReveal, 120);
-    }
-
-    // Preload card assets, then mark ready
-    cards.forEach(function(card, idx){
-      const urls = cardImageUrls(card);
-      if (!urls.length){
-        ready[idx] = true;
-        tryReveal();
-        return;
-      }
-      Promise.all(urls.map(preload)).then(function(){
-        ready[idx] = true;
-        tryReveal();
+    // Mark images as "loading" (blurred)
+    const cardImgs = cards.map(card => Array.from(card.querySelectorAll('img')));
+    cards.forEach((card, i) => {
+      card.classList.add('team-card-loading');
+      cardImgs[i].forEach(img => {
+        img.classList.add('team-img-loading');
       });
     });
-  });
-});
 
-/* =====================================================
-   Team page reveal (wait all images, then reveal rows)
-   - Guarantees no within-row randomness: nothing is revealed until ALL portraits are ready
-   - Then reveals row-by-row based on actual layout (offsetTop), with a small beat between rows
-   - No loader text/spinner
-   - Fail-safe: reveal everything after MAX_WAIT even if some images are missing
-   ===================================================== */
-document.addEventListener('DOMContentLoaded', function () {
-  if (!document.body.classList.contains('page-team')) return;
+    function waitForImg(img){
+      return new Promise(resolve => {
+        if (!img) return resolve();
+        if (img.complete && img.naturalWidth > 0) {
+          if (img.decode) img.decode().then(resolve).catch(resolve);
+          else resolve();
+          return;
+        }
+        img.addEventListener('load', () => {
+          if (img.decode) img.decode().then(resolve).catch(resolve);
+          else resolve();
+        }, { once:true });
+        img.addEventListener('error', () => resolve(), { once:true });
+      });
+    }
 
-  const grid = document.querySelector('.people-grid');
-  if (!grid) return;
+    function buildRows(){
+      const rowMap = new Map();
+      cards.forEach((card, idx) => {
+        const top = card.offsetTop;
+        if (!rowMap.has(top)) rowMap.set(top, []);
+        rowMap.get(top).push(idx);
+      });
+      return Array.from(rowMap.keys()).sort((a,b)=>a-b).map(k => rowMap.get(k));
+    }
 
-  const cards = Array.from(grid.querySelectorAll('.profile-card, .person-card'));
-  if (!cards.length) return;
+    // Wait a frame so layout stabilizes
+    requestAnimationFrame(() => {
+      const rows = buildRows();
+      const ready = new Array(cards.length).fill(false);
 
-  function preload(url){
-    return new Promise(function(resolve){
-      if (!url) return resolve();
-      const im = new Image();
-      im.onload = function(){
-        if (im.decode) im.decode().then(resolve).catch(resolve);
-        else resolve();
-      };
-      im.onerror = function(){ resolve(); };
-      im.src = url;
-    });
-  }
-
-  function cardImageUrls(card){
-    const urls = new Set();
-    card.querySelectorAll('img').forEach(function(img){
-      const src = img.getAttribute('src');
-      if (src) urls.add(src);
-
-      const dataHover = img.getAttribute('data-hover') || img.getAttribute('data-fun') || img.getAttribute('data-alt-src');
-      if (dataHover) urls.add(dataHover);
-
-      const srcset = img.getAttribute('srcset');
-      if (srcset){
-        srcset.split(',').forEach(function(part){
-          const u = part.trim().split(' ')[0];
-          if (u) urls.add(u);
+      function releaseRow(rowIdx){
+        const idxs = rows[rowIdx];
+        idxs.forEach(i => {
+          cardImgs[i].forEach(img => {
+            img.classList.remove('team-img-loading');
+            img.classList.add('team-img-loaded');
+          });
+          cards[i].classList.remove('team-card-loading');
         });
       }
+
+      // Mark card ready when all its images are loaded
+      cards.forEach((card, idx) => {
+        const imgs = cardImgs[idx];
+        Promise.all(imgs.map(waitForImg)).then(() => {
+          ready[idx] = true;
+          // Try releasing any contiguous ready rows from the top
+          for (let r=0; r<rows.length; r++){
+            const idxs = rows[r];
+            const allReady = idxs.every(i => ready[i]);
+            // release only first unreleased row in order
+            const anyStillLoading = idxs.some(i => cards[i].classList.contains('team-card-loading'));
+            if (allReady && anyStillLoading){
+              releaseRow(r);
+              // tiny beat
+              setTimeout(()=>{}, 0);
+              continue;
+            }
+            if (!allReady) break;
+          }
+        });
+      });
+
+      // Fail-safe: after 4s, unblur everything that is still loading
+      setTimeout(() => {
+        cards.forEach((card, idx) => {
+          if (card.classList.contains('team-card-loading')){
+            cardImgs[idx].forEach(img => {
+              img.classList.remove('team-img-loading');
+              img.classList.add('team-img-loaded');
+            });
+            card.classList.remove('team-card-loading');
+          }
+        });
+      }, 4000);
     });
-    return Array.from(urls);
-  }
-
-  // Collect all urls across all cards
-  const allUrls = [];
-  cards.forEach(function(card){
-    cardImageUrls(card).forEach(function(u){ allUrls.push(u); });
   });
-
-  const MAX_WAIT = 3500;
-  let timedOut = false;
-  const failSafe = setTimeout(function(){
-    timedOut = true;
-    // reveal everything if loading drags
-    cards.forEach(function(c){ c.classList.add('is-visible'); });
-  }, MAX_WAIT);
-
-  Promise.all(allUrls.map(preload)).then(function(){
-    if (timedOut) return;
-    clearTimeout(failSafe);
-
-    // Build rows from final layout
-    const rowMap = new Map();
-    cards.forEach(function(card, idx){
-      const top = card.offsetTop;
-      if (!rowMap.has(top)) rowMap.set(top, []);
-      rowMap.get(top).push(idx);
-    });
-    const rows = Array.from(rowMap.keys()).sort(function(a,b){ return a-b; }).map(function(k){ return rowMap.get(k); });
-
-    let r = 0;
-    function revealNextRow(){
-      if (r >= rows.length) return;
-      rows[r].forEach(function(i){ cards[i].classList.add('is-visible'); });
-      r++;
-      setTimeout(revealNextRow, 120);
-    }
-    revealNextRow();
-  });
-});
+})();
