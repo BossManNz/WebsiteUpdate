@@ -331,38 +331,66 @@ input[type="text"]:focus{
 }
 
 /* =====================================================
-   Team photos: WHITE → sharp reveal (final, robust)
-   - White overlay fades out
-   - Normal photo only (first-child)
-   - Keeps greyscale behaviour
+   Team cards: white placeholder until loaded (final v2)
+   - Whole card is white until .is-loaded is added to the card
+   - Keeps layout visible (no jumps)
+   - Does not break hover fun photos, it only hides the inner content until reveal
    ===================================================== */
 
-.page-team .people-grid .person-photo{
+/* Card container must be positioning context */
+.page-team .people-grid .profile-card,
+.page-team .people-grid .person-card{
   position: relative;
+  overflow: hidden;
 }
 
-.page-team .people-grid .person-photo::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:#fff;
-  opacity:1;
-  transition:opacity .45s ease;
-  z-index:3;
-  pointer-events:none;
+/* White placeholder overlay on the whole card */
+.page-team .people-grid .profile-card::before,
+.page-team .people-grid .person-card::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  opacity: 1;
+  transition: opacity 0.45s ease;
+  z-index: 5;
+  pointer-events: none;
 }
 
+/* Hide card content until loaded (so you see a clean white card) */
+.page-team .people-grid .profile-card:not(.is-loaded) > *,
+.page-team .people-grid .person-card:not(.is-loaded) > *{
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* When loaded: fade overlay away and reveal content */
+.page-team .people-grid .profile-card.is-loaded::before,
+.page-team .people-grid .person-card.is-loaded::before{
+  opacity: 0;
+}
+
+.page-team .people-grid .profile-card.is-loaded > *,
+.page-team .people-grid .person-card.is-loaded > *{
+  opacity: 1;
+  transition: opacity 0.35s ease;
+}
+
+/* Keep your normal-photo greyscale, and start slightly blurred until the card reveals */
 .page-team .people-grid .person-photo img:first-child{
-  filter: blur(18px) grayscale(100%);
+  filter: grayscale(100%);
+}
+
+/* Optional: add a tiny "resolve" feel on the normal image */
+.page-team .people-grid .profile-card:not(.is-loaded) .person-photo img:first-child,
+.page-team .people-grid .person-card:not(.is-loaded) .person-photo img:first-child{
+  filter: blur(14px) grayscale(100%);
   transform: scale(1.03);
-  transition: filter .7s ease, transform .7s ease;
+  transition: filter 0.7s ease, transform 0.7s ease;
 }
 
-.page-team .people-grid .person-photo.is-loaded::before{
-  opacity:0;
-}
-
-.page-team .people-grid .person-photo.is-loaded img:first-child{
+.page-team .people-grid .profile-card.is-loaded .person-photo img:first-child,
+.page-team .people-grid .person-card.is-loaded .person-photo img:first-child{
   filter: blur(0) grayscale(100%);
-  transform:none;
+  transform: none;
 }

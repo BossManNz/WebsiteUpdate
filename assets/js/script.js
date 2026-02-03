@@ -432,28 +432,7 @@ imgs.forEach(function (img) {
   });
 });
 
-/* =====================================================
-   TEAM PAGE — white placeholder → sharp (final)
-   - Wrapper based, impossible to perma-blur
-   - Navbar safe
-   ===================================================== */
-document.addEventListener("DOMContentLoaded", function () {
-  if (!document.body.classList.contains("page-team")) return;
-
-  var cards = document.querySelectorAll(".people-grid .person-photo");
-
-  cards.forEach(function (wrap) {
-    var img = wrap.querySelector("img:first-child");
-    if (!img) return;
-
-    wrap.classList.remove("is-loaded");
-
-    function reveal(){
-      requestAnimationFrame(function(){
-        requestAnimationFrame(function(){
-          wrap.classList.add("is-loaded");
-        });
-      });
+});
     }
 
     var fail = setTimeout(reveal, 1200);
@@ -466,5 +445,69 @@ document.addEventListener("DOMContentLoaded", function () {
 
     img.addEventListener("load", function(){ clearTimeout(fail); reveal(); }, {once:true});
     img.addEventListener("error", function(){ clearTimeout(fail); reveal(); }, {once:true});
+  });
+});
+
+/* =====================================================
+   TEAM PAGE — card white placeholder → reveal (final v2)
+   - Whole card stays white until its normal portrait is ready
+   - Adds .is-loaded to the CARD element, not the image
+   - Does not interfere with navbar or hover "fun" photos
+   ===================================================== */
+document.addEventListener("DOMContentLoaded", function () {
+  if (!document.body.classList.contains("page-team")) return;
+
+  var grid = document.querySelector(".people-grid");
+  if (!grid) return;
+
+  var cards = Array.from(grid.querySelectorAll(".profile-card, .person-card"));
+  if (!cards.length) return;
+
+  function decodeIfPossible(img, done) {
+    if (!img) return done();
+    if (img.decode) {
+      img.decode().then(done).catch(done);
+    } else {
+      done();
+    }
+  }
+
+  cards.forEach(function(card){
+    card.classList.remove("is-loaded");
+
+    var img = card.querySelector(".person-photo img:first-child");
+    if (!img) {
+      card.classList.add("is-loaded");
+      return;
+    }
+
+    function reveal(){
+      // ensure at least one paint before revealing for consistent transitions
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+          card.classList.add("is-loaded");
+        });
+      });
+    }
+
+    // Fail-safe: never stay white forever
+    var fail = setTimeout(reveal, 2000);
+
+    // Already cached
+    if (img.complete && img.naturalWidth > 0) {
+      clearTimeout(fail);
+      decodeIfPossible(img, reveal);
+      return;
+    }
+
+    img.addEventListener("load", function(){
+      clearTimeout(fail);
+      decodeIfPossible(img, reveal);
+    }, { once: true });
+
+    img.addEventListener("error", function(){
+      clearTimeout(fail);
+      reveal();
+    }, { once: true });
   });
 });
