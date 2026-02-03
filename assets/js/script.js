@@ -59,19 +59,36 @@ document.querySelectorAll('.team-filters button').forEach(btn=>{
       // if link has href, browser will navigate naturally
     });
   }
-
-  // Active link highlight by filename, handle / and /index.html
-  const current = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
-  nav.querySelectorAll('ul li a').forEach(a=>{
-    const target = (a.getAttribute('href') || '').split('/').pop().toLowerCase();
-    if((!target && current==='index.html') || target===current){
-      a.classList.add('active');
     }
   });
 })();
 
 // Page fade-in on load
 document.addEventListener('DOMContentLoaded', function(){
+
+  // Active link highlight (resolve hrefs to absolute paths, works for GitHub Pages + clean URLs)
+  function normPath(p){
+    if(!p) return '/';
+    p = p.split('?')[0].split('#')[0];
+    p = p.replace(/\/+/g,'/');
+    p = p.replace(/\/index\.html$/i,'/');
+    if(!p.startsWith('/')) p = '/' + p;
+    if(!/\.[a-z0-9]+$/i.test(p) && !p.endsWith('/')) p += '/';
+    return p;
+  }
+  const current = normPath(window.location.pathname);
+
+  document.querySelectorAll('nav a[href]').forEach(a => {
+    const href = a.getAttribute('href') || '';
+    if (/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(href) || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#')) return;
+    let absPath = '';
+    try { absPath = new URL(href, window.location.href).pathname; }
+    catch (e) { absPath = href; }
+    const target = normPath(absPath);
+    if (target === current) a.classList.add('active');
+    else a.classList.remove('active');
+  });
+
   document.body.classList.add('is-ready');
 });
 
