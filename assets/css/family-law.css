@@ -11,7 +11,7 @@
 /* =======================
    Services section spacing
    ======================= */
-/* Header is immediately followed by the services section in /services/ */
+/* Header is immediately followed by the services section in services.html */
 .site-header + .services-tiles{
   padding-top: 70px;   /* space below sticky navbar, adjust if needed */
   padding-bottom: 64px; /* internal bottom padding */
