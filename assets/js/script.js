@@ -59,146 +59,38 @@ document.querySelectorAll('.team-filters button').forEach(btn=>{
       // if link has href, browser will navigate naturally
     });
   }
+
+  // Active link highlight by *path*, so clean URLs like /services/ work
+  function normalizePath(p){
+    if(!p) return '/';
+    // strip query/hash
+    p = p.split('#')[0].split('?')[0];
+    // ensure leading slash
+    if(p[0] !== '/') p = '/' + p;
+    // collapse multiple slashes
+    p = p.replace(/\/+/g,'/');
+    // treat /index.html as /
+    if(p.toLowerCase().endsWith('/index.html')) p = p.slice(0, -'/index.html'.length) + '/';
+    // ensure trailing slash for non-file paths
+    const looksLikeFile = /\.[a-z0-9]+$/i.test(p);
+    if(!looksLikeFile && !p.endsWith('/')) p += '/';
+    return p.toLowerCase();
+  }
+
+  const currentPath = normalizePath(window.location.pathname || '/');
+  nav.querySelectorAll('ul li a').forEach(a=>{
+    const href = a.getAttribute('href') || '';
+    // Ignore placeholder links (eg Shielded modal trigger)
+    if(href === '#') return;
+    const targetPath = normalizePath(href);
+    if(targetPath === currentPath){
+      a.classList.add('active');
     }
   });
 })();
 
 // Page fade-in on load
 document.addEventListener('DOMContentLoaded', function(){
-
-  // Active nav (GitHub Pages base-aware, clean URLs)
-  function getSiteBase(){
-    var base = '/';
-    try{
-      var host = (window.location.hostname || '').toLowerCase();
-      var path = window.location.pathname || '/';
-      if (host.endsWith('github.io')){
-        var seg = path.split('/').filter(Boolean);
-        if (seg.length > 0) base = '/' + seg[0] + '/';
-      }
-    } catch(e){}
-    return base;
-  }
-
-  function localPathname(){
-    var base = getSiteBase();
-    var p = (window.location.pathname || '/').split('?')[0].split('#')[0];
-    p = p.replace(/\/+/g,'/').replace(/\/index\.html$/i,'/');
-    if (!p.startsWith('/')) p = '/' + p;
-    if (!/\.[a-z0-9]+$/i.test(p) && !p.endsWith('/')) p += '/';
-    // strip base ("/REPO/") so we compare like "/services/"
-    if (base !== '/' && p.startsWith(base)) p = '/' + p.slice(base.length);
-    return { base: base, path: p };
-  }
-
-  (function(){
-    var info = localPathname();
-    var base = info.base;
-    var path = info.path;
-
-    // figure current route segment ("" for home)
-    var segs = path.split('/').filter(Boolean);
-    var route = segs.length ? segs[0].toLowerCase() : '';
-
-    // Rewrite home links (logo/home) to base so they never go to /index
-    document.querySelectorAll('a[href]').forEach(function(a){
-      var href = (a.getAttribute('href') || '').trim();
-      if (!href) return;
-      if (/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(href) || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#')) return;
-      // resolve to pathname
-      var p = '';
-      try { p = new URL(href, window.location.href).pathname; } catch(e){ p = href; }
-      p = (p || '').toString();
-      if (/(^|\/)index(\.html?)?\/?$/i.test(p) || p === '/'){
-        a.setAttribute('href', base);
-      }
-    });
-
-    // Mark active nav items by matching first path segment
-    var nav = document.querySelector('nav') || document.querySelector('.navbar') || document.querySelector('header');
-    if (!nav) return;
-
-    nav.querySelectorAll('a[href]').forEach(function(a){
-      var href = (a.getAttribute('href') || '').trim();
-      if (!href) return;
-      if (/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(href) || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#')) return;
-
-      var p = '';
-      try { p = new URL(href, window.location.href).pathname; } catch(e){ p = href; }
-      p = (p || '').toString().replace(/\/+/g,'/').replace(/\/index\.html$/i,'/');
-      if (!p.startsWith('/')) p = '/' + p;
-      if (!/\.[a-z0-9]+$/i.test(p) && !p.endsWith('/')) p += '/';
-      if (base !== '/' && p.startsWith(base)) p = '/' + p.slice(base.length);
-
-      var s = p.split('/').filter(Boolean);
-      var linkRoute = s.length ? s[0].toLowerCase() : '';
-
-      var isActive = (linkRoute === route);
-      // special case: home
-      if (route === '' && linkRoute === '') isActive = true;
-
-      a.classList.toggle('active', isActive);
-      var li = a.closest('li');
-      if (li) li.classList.toggle('active', isActive);
-    });
-  })();
-
-var currentLocal = current;
-    if (base !== '/' && currentLocal.startsWith(base)) currentLocal = '/' + currentLocal.slice(base.length);
-
-    // Fix HOME links everywhere (logo, "Home", etc)
-    document.querySelectorAll('a[href]').forEach(function(a){
-      var href = (a.getAttribute('href') || '').trim();
-      if (!href) return;
-      if (/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(href) || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#')) return;
-      var h = href;
-      if (h === '/' || h === 'index' || h === 'index/' || h === 'index.html' || h === '/index' || h === '/index/' || h === '/index.html') {
-        a.setAttribute('href', base);
-      }
-    });
-
-    // Active class within navbar scope
-    var scope = document.querySelector('nav') || document.querySelector('.navbar') || document.querySelector('header') || document.body;
-    scope.querySelectorAll('a[href]').forEach(function(a){
-      var href = (a.getAttribute('href') || '').trim();
-      if (!href) return;
-      if (/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(href) || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#')) return;
-
-      var absPath = '';
-      try { absPath = new URL(href, window.location.href).pathname; } catch(e){ absPath = href; }
-      absPath = absPath.split('?')[0].split('#')[0].replace(/\/+/g,'/').replace(/\/index\.html$/i,'/');
-      if(!absPath.startsWith('/')) absPath = '/' + absPath;
-      if(!/\.[a-z0-9]+$/i.test(absPath) && !absPath.endsWith('/')) absPath += '/';
-
-      var targetLocal = absPath;
-      if (base !== '/' && targetLocal.startsWith(base)) targetLocal = '/' + targetLocal.slice(base.length);
-
-      if (targetLocal === currentLocal){
-        a.classList.add('active');
-        var li = a.closest('li');
-        if (li) li.classList.add('active');
-      } else {
-        a.classList.remove('active');
-        var li2 = a.closest('li');
-        if (li2) li2.classList.remove('active');
-      }
-    });
-  })();
-
-}
-  const current = normPath(window.location.pathname);
-
-  document.querySelectorAll('nav a[href]').forEach(a => {
-    const href = a.getAttribute('href') || '';
-    if (/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(href) || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#')) return;
-    let absPath = '';
-    try { absPath = new URL(href, window.location.href).pathname; }
-    catch (e) { absPath = href; }
-    const target = normPath(absPath);
-    if (target === current) a.classList.add('active');
-    else a.classList.remove('active');
-  });
-
   document.body.classList.add('is-ready');
 });
 
@@ -211,3 +103,80 @@ var currentLocal = current;
     shield.init();
   });
 })();
+
+// Clean URL + GitHub Pages base-aware: fix Home links and active nav state
+document.addEventListener('DOMContentLoaded', function () {
+  function getSiteBase(){
+    var base = '/';
+    try{
+      var host = (window.location.hostname || '').toLowerCase();
+      var path = window.location.pathname || '/';
+      if (host.endsWith('github.io')) {
+        var seg = path.split('/').filter(Boolean);
+        if (seg.length > 0) base = '/' + seg[0] + '/';
+      }
+    } catch(e){}
+    return base;
+  }
+
+  function normalizePath(p){
+    if(!p) return '/';
+    p = p.split('?')[0].split('#')[0];
+    p = p.replace(/\/+/g,'/');
+    p = p.replace(/\/index\.html$/i,'/');
+    if(!p.startsWith('/')) p = '/' + p;
+    if(!/\.[a-z0-9]+$/i.test(p) && !p.endsWith('/')) p += '/';
+    return p;
+  }
+
+  var base = getSiteBase();
+  var current = normalizePath(window.location.pathname);
+
+  // Strip base for comparison so "/REPO/services/" matches "/services/"
+  var currentLocal = current;
+  if (base !== '/' && currentLocal.startsWith(base)) currentLocal = '/' + currentLocal.slice(base.length);
+
+  var currentSeg = (currentLocal.split('/').filter(Boolean)[0] || '').toLowerCase(); // '' for home
+
+  // Fix any lingering index links (logo/home) to point to base root
+  document.querySelectorAll('a[href]').forEach(function(a){
+    var href = (a.getAttribute('href') || '').trim();
+    if (!href) return;
+    if (/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(href) || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#')) return;
+
+    var p = '';
+    try { p = new URL(href, window.location.href).pathname; } catch(e){ p = href; }
+    p = (p || '').toString();
+
+    if (/(^|\/)index(\.html?)?\/?$/i.test(p) || p === '/') {
+      a.setAttribute('href', base);
+    }
+  });
+
+  // Apply active class on navbar links by first segment match
+  var nav = document.querySelector('nav.nav') || document.querySelector('nav') || document.querySelector('.nav');
+  if (!nav) return;
+
+  nav.querySelectorAll('a[href]').forEach(function(a){
+    var href = (a.getAttribute('href') || '').trim();
+    if (!href) return;
+    if (/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(href) || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#')) return;
+
+    var p = '';
+    try { p = new URL(href, window.location.href).pathname; } catch(e){ p = href; }
+    p = normalizePath(p);
+
+    var pLocal = p;
+    if (base !== '/' && pLocal.startsWith(base)) pLocal = '/' + pLocal.slice(base.length);
+
+    var seg = (pLocal.split('/').filter(Boolean)[0] || '').toLowerCase();
+    var isActive = (seg === currentSeg);
+
+    // Home special-case
+    if (currentSeg === '' && seg === '') isActive = true;
+
+    a.classList.toggle('active', isActive);
+    var li = a.closest('li');
+    if (li) li.classList.toggle('active', isActive);
+  });
+});
