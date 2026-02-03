@@ -331,11 +331,76 @@ input[type="text"]:focus{
 }
 
 /* =====================================================
-   Team cards: white photo placeholder -> fade-in portrait (v3)
-   - Keeps card layout visible
-   - Photo area is white until the portrait is ready
-   - Portrait fades in + unblurs (greyscale preserved)
-   - Does not interfere with hover fun photos
+   Team portraits: keep layout visible, blur as placeholder, then unblur per row
+   No text/spinner, just a soft "glass" filter that fades away.
+   ===================================================== */
+.page-team .people-grid .profile-card,
+.page-team .people-grid .person-card{
+  position: relative;
+}
+
+/* Base placeholder surface (subtle) */
+.page-team .people-grid .profile-card::before,
+.page-team .people-grid .person-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius: inherit;
+  background: rgba(255,255,255,0.04);
+  opacity: 0;
+  transition: opacity 280ms ease;
+  pointer-events:none;
+}
+
+/* While loading, show the surface and blur the image */
+.page-team img.team-img-loading{
+  filter: blur(18px);
+  transform: scale(1.03);
+  opacity: 0.85;
+  transition: filter 520ms ease, transform 520ms ease, opacity 520ms ease;
+}
+.page-team .profile-card.team-card-loading::before,
+.page-team .person-card.team-card-loading::before{
+  opacity: 1;
+}
+
+/* When the row is released, remove blur */
+.page-team img.team-img-loaded{
+  filter: blur(0);
+  transform: none;
+  opacity: 1;
+}
+
+/* =====================================================
+   Team photos: blur placeholder, then sharpen on load (normal photo only)
+   - No loader text/spinner
+   - Does NOT interfere with your hover "fun photo" swap (last-child stays hidden until hover)
+   - JS adds .is-loaded to images; we only animate the FIRST (normal) image
+   ===================================================== */
+
+/* Normal image starts softly blurred */
+.page-team .people-grid .person-photo img:first-child {
+  filter: blur(16px);
+  opacity: 0.88;
+  transform: scale(1.03);
+  transition: filter 0.6s ease, opacity 0.45s ease, transform 0.6s ease;
+}
+
+/* When loaded, normal image becomes crisp */
+.page-team .people-grid .person-photo img:first-child.is-loaded {
+  filter: blur(0);
+  opacity: 1;
+  transform: none;
+}
+
+/* Optional: if the fun image loads late, keep it crisp once it appears */
+.page-team .people-grid .person-photo img:last-child.is-loaded {
+  filter: blur(0);
+}
+
+/* =====================================================
+   Team portraits: white placeholder -> fade in (v4)
+   - State lives on .person-photo.is-loaded (not card)
    ===================================================== */
 
 .page-team .people-grid .person-photo{
@@ -366,13 +431,12 @@ input[type="text"]:focus{
   object-fit: cover;
 }
 
-.page-team .people-grid .profile-card.is-loaded .person-photo::before,
-.page-team .people-grid .person-card.is-loaded .person-photo::before{
+/* Reveal */
+.page-team .people-grid .person-photo.is-loaded::before{
   opacity:0;
 }
 
-.page-team .people-grid .profile-card.is-loaded .person-photo img:first-child,
-.page-team .people-grid .person-card.is-loaded .person-photo img:first-child{
+.page-team .people-grid .person-photo.is-loaded img:first-child{
   opacity: 1;
   filter: blur(0) grayscale(100%);
   transform: none;

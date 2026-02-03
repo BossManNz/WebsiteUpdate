@@ -400,11 +400,36 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 })();
 
-img.addEventListener("error", markLoaded, { once: true });
+/* Team image blur->sharp on load (nav-safe) */
+document.addEventListener("DOMContentLoaded", function () {
+  if (!document.body.classList.contains("page-team")) return;
+
+  var imgs = document.querySelectorAll(".people-grid .person-photo img");
+  imgs.forEach(function (img) {
+    function markLoaded() {
+      img.classList.add("is-loaded");
+    }
+
+    if (img.complete && img.naturalWidth > 0) {
+      markLoaded();
+      return;
+    }
+
+    img.addEventListener("load", markLoaded, { once: true });
+    img.addEventListener("error", markLoaded, { once: true });
   });
 });
 
-imgs.forEach(function (img) {
+/* =====================================================
+   TEAM PAGE — blur → sharp image reveal (nav-safe)
+   Only runs on <body class="page-team">
+   ===================================================== */
+document.addEventListener("DOMContentLoaded", function () {
+  if (!document.body.classList.contains("page-team")) return;
+
+  var imgs = document.querySelectorAll(".people-grid .person-photo img");
+
+  imgs.forEach(function (img) {
 
     function markLoaded() {
       img.classList.add("is-loaded");
@@ -420,92 +445,53 @@ imgs.forEach(function (img) {
   });
 });
 
-}
-
-    if (img.complete && img.naturalWidth > 0) {
-      reveal();
-    } else {
-      img.addEventListener("load", reveal, { once: true });
-      img.addEventListener("error", reveal, { once: true });
-    }
-
-  });
-});
-
-});
-    }
-
-    var fail = setTimeout(reveal, 1200);
-
-    if (img.complete && img.naturalWidth > 0){
-      clearTimeout(fail);
-      reveal();
-      return;
-    }
-
-    img.addEventListener("load", function(){ clearTimeout(fail); reveal(); }, {once:true});
-    img.addEventListener("error", function(){ clearTimeout(fail); reveal(); }, {once:true});
-  });
-});
-
 /* =====================================================
-   TEAM PAGE — card white placeholder → reveal (final v2)
-   - Whole card stays white until its normal portrait is ready
-   - Adds .is-loaded to the CARD element, not the image
-   - Does not interfere with navbar or hover "fun" photos
+   TEAM PAGE — white placeholder → fade in portrait (v4, robust)
+   - Adds .is-loaded to the PHOTO WRAPPER (.person-photo)
+   - Works regardless of card class names (.profile-card/.person-card/etc)
+   - Forces a paint so the transition always runs
+   - Fail-safe: never stays white forever
    ===================================================== */
 document.addEventListener("DOMContentLoaded", function () {
   if (!document.body.classList.contains("page-team")) return;
 
-  var grid = document.querySelector(".people-grid");
-  if (!grid) return;
-
-  var cards = Array.from(grid.querySelectorAll(".profile-card, .person-card"));
-  if (!cards.length) return;
+  var wraps = Array.from(document.querySelectorAll(".people-grid .person-photo"));
+  if (!wraps.length) return;
 
   function decodeIfPossible(img, done) {
     if (!img) return done();
-    if (img.decode) {
-      img.decode().then(done).catch(done);
-    } else {
-      done();
-    }
+    if (img.decode) { img.decode().then(done).catch(done); }
+    else done();
   }
 
-  cards.forEach(function(card){
-    card.classList.remove("is-loaded");
+  wraps.forEach(function (wrap) {
+    var img = wrap.querySelector("img:first-child");
+    if (!img) return;
 
-    var img = card.querySelector(".person-photo img:first-child");
-    if (!img) {
-      card.classList.add("is-loaded");
-      return;
-    }
+    wrap.classList.remove("is-loaded");
 
-    function reveal(){
-      // ensure at least one paint before revealing for consistent transitions
-      requestAnimationFrame(function(){
-        requestAnimationFrame(function(){
-          card.classList.add("is-loaded");
+    function reveal() {
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          wrap.classList.add("is-loaded");
         });
       });
     }
 
-    // Fail-safe: never stay white forever
     var fail = setTimeout(reveal, 2000);
 
-    // Already cached
     if (img.complete && img.naturalWidth > 0) {
       clearTimeout(fail);
       decodeIfPossible(img, reveal);
       return;
     }
 
-    img.addEventListener("load", function(){
+    img.addEventListener("load", function () {
       clearTimeout(fail);
       decodeIfPossible(img, reveal);
     }, { once: true });
 
-    img.addEventListener("error", function(){
+    img.addEventListener("error", function () {
       clearTimeout(fail);
       reveal();
     }, { once: true });
