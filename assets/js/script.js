@@ -294,3 +294,48 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+
+
+// Team page: preload all portraits before showing grid
+document.addEventListener('DOMContentLoaded', function () {
+  // Only run on the Team page
+  if (!document.body.classList.contains('page-team')) return;
+
+  var grid = document.querySelector('.people-grid');
+  if (!grid) return;
+
+  // Mark loading state immediately
+  document.body.classList.remove('team-ready');
+
+  // Collect all portrait image URLs (normal + fun)
+  var imgs = Array.prototype.slice.call(grid.querySelectorAll('img[src]'));
+  var urls = imgs.map(function(img){ return img.getAttribute('src'); }).filter(Boolean);
+
+  // Force eager loading so "loading=lazy" does not prevent completion
+  imgs.forEach(function(img){
+    try { img.loading = 'eager'; } catch(e){}
+    img.removeAttribute('loading');
+  });
+
+  // Preload all URLs
+  var remaining = urls.length;
+  if (remaining === 0){
+    document.body.classList.add('team-ready');
+    return;
+  }
+
+  function done(){
+    remaining--;
+    if (remaining <= 0){
+      document.body.classList.add('team-ready');
+    }
+  }
+
+  urls.forEach(function(url){
+    var im = new Image();
+    im.onload = done;
+    im.onerror = done;
+    // Preserve relative paths
+    im.src = url;
+  });
+});
