@@ -420,28 +420,7 @@ imgs.forEach(function (img) {
   });
 });
 
-/* =====================================================
-   TEAM PAGE — blur → sharp (always animates, navbar-safe)
-   - Only runs on <body class="page-team">
-   - Targets ONLY the normal photo (first-child) so fun hover swap stays intact
-   - Forces a paint in the blurred state, even when images are cached
-   ===================================================== */
-document.addEventListener("DOMContentLoaded", function () {
-  if (!document.body.classList.contains("page-team")) return;
-
-  var imgs = document.querySelectorAll(".people-grid .person-photo img:first-child");
-
-  imgs.forEach(function (img) {
-
-    // Ensure we start from the blurred state
-    img.classList.remove("is-loaded");
-
-    function reveal() {
-      // Force the browser to paint once before we toggle loaded (so transition always runs)
-      requestAnimationFrame(function () {
-        img.classList.add("is-loaded");
-      });
-    }
+}
 
     if (img.complete && img.naturalWidth > 0) {
       reveal();
@@ -450,5 +429,42 @@ document.addEventListener("DOMContentLoaded", function () {
       img.addEventListener("error", reveal, { once: true });
     }
 
+  });
+});
+
+/* =====================================================
+   TEAM PAGE — white placeholder → sharp (final)
+   - Wrapper based, impossible to perma-blur
+   - Navbar safe
+   ===================================================== */
+document.addEventListener("DOMContentLoaded", function () {
+  if (!document.body.classList.contains("page-team")) return;
+
+  var cards = document.querySelectorAll(".people-grid .person-photo");
+
+  cards.forEach(function (wrap) {
+    var img = wrap.querySelector("img:first-child");
+    if (!img) return;
+
+    wrap.classList.remove("is-loaded");
+
+    function reveal(){
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+          wrap.classList.add("is-loaded");
+        });
+      });
+    }
+
+    var fail = setTimeout(reveal, 1200);
+
+    if (img.complete && img.naturalWidth > 0){
+      clearTimeout(fail);
+      reveal();
+      return;
+    }
+
+    img.addEventListener("load", function(){ clearTimeout(fail); reveal(); }, {once:true});
+    img.addEventListener("error", function(){ clearTimeout(fail); reveal(); }, {once:true});
   });
 });

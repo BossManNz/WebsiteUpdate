@@ -331,23 +331,38 @@ input[type="text"]:focus{
 }
 
 /* =====================================================
-   Team photos: consistent blur placeholder, always unblur
-   - Keeps your greyscale (normal photo) behaviour
-   - Never forces the "fun" photo to show
-   - Always animates, even if the image is cached (JS forces a paint)
+   Team photos: WHITE → sharp reveal (final, robust)
+   - White overlay fades out
+   - Normal photo only (first-child)
+   - Keeps greyscale behaviour
    ===================================================== */
 
-/* Normal image (first-child): greyscale stays, blur fades out on load */
-.page-team .people-grid .person-photo img:first-child {
-  filter: blur(16px) grayscale(100%);
-  opacity: 0.9;
-  transform: scale(1.03);
-  transition: filter 0.6s ease, opacity 0.45s ease, transform 0.6s ease;
+.page-team .people-grid .person-photo{
+  position: relative;
 }
 
-/* When loaded, remove blur but keep greyscale */
-.page-team .people-grid .person-photo img:first-child.is-loaded {
+.page-team .people-grid .person-photo::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:#fff;
+  opacity:1;
+  transition:opacity .45s ease;
+  z-index:3;
+  pointer-events:none;
+}
+
+.page-team .people-grid .person-photo img:first-child{
+  filter: blur(18px) grayscale(100%);
+  transform: scale(1.03);
+  transition: filter .7s ease, transform .7s ease;
+}
+
+.page-team .people-grid .person-photo.is-loaded::before{
+  opacity:0;
+}
+
+.page-team .people-grid .person-photo.is-loaded img:first-child{
   filter: blur(0) grayscale(100%);
-  opacity: 1;
-  transform: none;
+  transform:none;
 }
