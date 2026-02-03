@@ -66,13 +66,13 @@ document.querySelectorAll('.team-filters button').forEach(btn=>{
 // Page fade-in on load
 document.addEventListener('DOMContentLoaded', function(){
 
-  // GitHub Pages base-aware nav fixing (home + active)
+  // Active nav (GitHub Pages base-aware, clean URLs)
   function getSiteBase(){
     var base = '/';
     try{
       var host = (window.location.hostname || '').toLowerCase();
       var path = window.location.pathname || '/';
-      if (host.endsWith('github.io')) {
+      if (host.endsWith('github.io')){
         var seg = path.split('/').filter(Boolean);
         if (seg.length > 0) base = '/' + seg[0] + '/';
       }
@@ -80,27 +80,70 @@ document.addEventListener('DOMContentLoaded', function(){
     return base;
   }
 
-  function normPath(p){
-    if(!p) return '/';
-    p = p.split('?')[0].split('#')[0];
-    p = p.replace(/\/+ /g,'/');
-    p = p.replace(/\/index\.html$/i,'/');
-    if(!p.startsWith('/')) p = '/' + p;
-    if(!/\.[a-z0-9]+$/i.test(p) && !p.endsWith('/')) p += '/';
-    return p;
+  function localPathname(){
+    var base = getSiteBase();
+    var p = (window.location.pathname || '/').split('?')[0].split('#')[0];
+    p = p.replace(/\/+/g,'/').replace(/\/index\.html$/i,'/');
+    if (!p.startsWith('/')) p = '/' + p;
+    if (!/\.[a-z0-9]+$/i.test(p) && !p.endsWith('/')) p += '/';
+    // strip base ("/REPO/") so we compare like "/services/"
+    if (base !== '/' && p.startsWith(base)) p = '/' + p.slice(base.length);
+    return { base: base, path: p };
   }
 
   (function(){
-    var base = getSiteBase();
-    var current = (function(){
-      var p = (window.location.pathname || '/');
-      p = p.split('?')[0].split('#')[0].replace(/\/+/g,'/').replace(/\/index\.html$/i,'/');
-      if(!p.startsWith('/')) p = '/' + p;
-      if(!/\.[a-z0-9]+$/i.test(p) && !p.endsWith('/')) p += '/';
-      return p;
-    })();
+    var info = localPathname();
+    var base = info.base;
+    var path = info.path;
 
-    var currentLocal = current;
+    // figure current route segment ("" for home)
+    var segs = path.split('/').filter(Boolean);
+    var route = segs.length ? segs[0].toLowerCase() : '';
+
+    // Rewrite home links (logo/home) to base so they never go to /index
+    document.querySelectorAll('a[href]').forEach(function(a){
+      var href = (a.getAttribute('href') || '').trim();
+      if (!href) return;
+      if (/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(href) || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#')) return;
+      // resolve to pathname
+      var p = '';
+      try { p = new URL(href, window.location.href).pathname; } catch(e){ p = href; }
+      p = (p || '').toString();
+      if (/(^|\/)index(\.html?)?\/?$/i.test(p) || p === '/'){
+        a.setAttribute('href', base);
+      }
+    });
+
+    // Mark active nav items by matching first path segment
+    var nav = document.querySelector('nav') || document.querySelector('.navbar') || document.querySelector('header');
+    if (!nav) return;
+
+    nav.querySelectorAll('a[href]').forEach(function(a){
+      var href = (a.getAttribute('href') || '').trim();
+      if (!href) return;
+      if (/^[a-zA-Z][a-zA-Z0-9+\-.]*:/.test(href) || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#')) return;
+
+      var p = '';
+      try { p = new URL(href, window.location.href).pathname; } catch(e){ p = href; }
+      p = (p || '').toString().replace(/\/+/g,'/').replace(/\/index\.html$/i,'/');
+      if (!p.startsWith('/')) p = '/' + p;
+      if (!/\.[a-z0-9]+$/i.test(p) && !p.endsWith('/')) p += '/';
+      if (base !== '/' && p.startsWith(base)) p = '/' + p.slice(base.length);
+
+      var s = p.split('/').filter(Boolean);
+      var linkRoute = s.length ? s[0].toLowerCase() : '';
+
+      var isActive = (linkRoute === route);
+      // special case: home
+      if (route === '' && linkRoute === '') isActive = true;
+
+      a.classList.toggle('active', isActive);
+      var li = a.closest('li');
+      if (li) li.classList.toggle('active', isActive);
+    });
+  })();
+
+var currentLocal = current;
     if (base !== '/' && currentLocal.startsWith(base)) currentLocal = '/' + currentLocal.slice(base.length);
 
     // Fix HOME links everywhere (logo, "Home", etc)
