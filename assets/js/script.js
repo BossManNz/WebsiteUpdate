@@ -340,29 +340,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-/* =====================================================
-   Team page staged batch reveal (wait for both portraits)
-   ===================================================== */
-
-document.addEventListener('DOMContentLoaded', function () {
-  if (!document.body.classList.contains('page-team')) return;
-
-  var grid = document.querySelector('.people-grid');
-  if (!grid) return;
-
-  var cards = Array.prototype.slice.call(grid.querySelectorAll('.person'));
-  if (!cards.length) return;
-
-  var queue = [];
-  var BATCH_SIZE = 3;   // how many cards appear at once
-  var BATCH_DELAY = 120; // ms between waves
-
-  function flush() {
-    if (!queue.length) return;
-    queue.splice(0, BATCH_SIZE).forEach(function(card){
-      card.classList.add('is-visible');
-    });
-    if (queue.length) {
+if (queue.length) {
       setTimeout(flush, BATCH_DELAY);
     }
   }
@@ -403,6 +381,105 @@ document.addEventListener('DOMContentLoaded', function () {
         img.addEventListener('load', ready, { once: true });
         img.addEventListener('error', ready, { once: true });
       }
+    });
+  });
+});
+
+/* =====================================================
+   Team page staged batch reveal (row-synced, no spinner)
+   - Each card is revealed only after BOTH portraits (normal + fun) are ready
+   - Reveals in DOM order, in waves of 3 at a time (so rows pop in together)
+   ===================================================== */
+
+document.addEventListener('DOMContentLoaded', function () {
+  if (!document.body.classList.contains('page-team')) return;
+
+  const grid = document.querySelector('.people-grid');
+  if (!grid) return;
+
+  const cards = Array.from(grid.querySelectorAll('.profile-card, .person-card'));
+  if (!cards.length) return;
+
+  const ready = new Array(cards.length).fill(false);
+
+  const BATCH_SIZE = 3;
+  const MAX_BATCH_WAIT = 1200;
+
+  let nextIndexToReveal = 0;
+  let batchTimer = null;
+
+  function clearBatchTimer(){
+    if (batchTimer) {
+      clearTimeout(batchTimer);
+      batchTimer = null;
+    }
+  }
+
+  function startBatchTimer(){
+    clearBatchTimer();
+    batchTimer = setTimeout(function(){
+      const end = Math.min(nextIndexToReveal + BATCH_SIZE, cards.length);
+      for (let i = nextIndexToReveal; i < end; i++) {
+        cards[i].classList.add('is-visible');
+      }
+      nextIndexToReveal = end;
+      clearBatchTimer();
+      tryReveal();
+    }, MAX_BATCH_WAIT);
+  }
+
+  function tryReveal(){
+    if (nextIndexToReveal >= cards.length) {
+      clearBatchTimer();
+      return;
+    }
+    const end = Math.min(nextIndexToReveal + BATCH_SIZE, cards.length);
+
+    for (let i = nextIndexToReveal; i < end; i++) {
+      if (!ready[i]) {
+        if (!batchTimer) startBatchTimer();
+        return;
+      }
+    }
+
+    for (let i = nextIndexToReveal; i < end; i++) {
+      cards[i].classList.add('is-visible');
+    }
+    nextIndexToReveal = end;
+    clearBatchTimer();
+    tryReveal();
+  }
+
+  function markReady(idx){
+    if (ready[idx]) return;
+    ready[idx] = true;
+    tryReveal();
+  }
+
+  function waitForImage(img){
+    return new Promise(function(resolve){
+      if (!img) return resolve();
+      if (img.complete && img.naturalWidth > 0) {
+        if (img.decode) img.decode().then(resolve).catch(resolve);
+        else resolve();
+        return;
+      }
+      img.addEventListener('load', function(){
+        if (img.decode) img.decode().then(resolve).catch(resolve);
+        else resolve();
+      }, { once: true });
+      img.addEventListener('error', function(){ resolve(); }, { once: true });
+    });
+  }
+
+  cards.forEach(function(card, idx){
+    const imgs = Array.from(card.querySelectorAll('img'));
+    if (!imgs.length) {
+      markReady(idx);
+      return;
+    }
+    Promise.all(imgs.map(waitForImage)).then(function(){
+      markReady(idx);
     });
   });
 });

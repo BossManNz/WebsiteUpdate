@@ -346,3 +346,19 @@ input[type="text"]:focus{
   transform: none;
   filter: blur(0);
 }
+
+
+/* Team batch reveal (row-synced) */
+.page-team .people-grid .profile-card,
+.page-team .people-grid .person-card{
+  opacity:0;
+  transform:translateY(8px);
+  filter:blur(12px);
+  transition:opacity 280ms ease, transform 280ms ease, filter 380ms ease;
+}
+.page-team .people-grid .profile-card.is-visible,
+.page-team .people-grid .person-card.is-visible{
+  opacity:1;
+  transform:none;
+  filter:blur(0);
+}
