@@ -330,14 +330,6 @@ input[type="text"]:focus{
   padding: 8px; /* match whatever your .person-photo padding is */
 }
 
-/* =====================================================
-   Team portraits: keep layout visible, blur as placeholder, then unblur per row
-   No text/spinner, just a soft "glass" filter that fades away.
-   ===================================================== */
-.page-team .people-grid .profile-card,
-.page-team .people-grid .person-card{
-  position: relative;
-}
 
 /* Base placeholder surface (subtle) */
 .page-team .people-grid .profile-card::before,
@@ -369,4 +361,24 @@ input[type="text"]:focus{
   filter: blur(0);
   transform: none;
   opacity: 1;
+}
+
+/* =====================================================
+   Team photos: blur placeholder, then sharpen on load
+   - No loader text/spinner
+   - Keeps layout visible, images render blurred immediately
+   - JS adds .is-loaded when each image finishes loading
+   ===================================================== */
+
+.page-team .people-grid .person-photo img {
+  filter: blur(16px);
+  opacity: 0.88;
+  transform: scale(1.03);
+  transition: filter 0.6s ease, opacity 0.45s ease, transform 0.6s ease;
+}
+
+.page-team .people-grid .person-photo img.is-loaded {
+  filter: blur(0);
+  opacity: 1;
+  transform: none;
 }
