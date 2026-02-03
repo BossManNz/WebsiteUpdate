@@ -138,6 +138,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var currentSeg = (currentLocal.split('/').filter(Boolean)[0] || '').toLowerCase(); // '' for home
 
+  // Route-to-nav mapping for sections that should highlight a different nav item
+  var routeMap = {
+    'legal-aid-eligibility': 'fees',
+    'profiles': 'team'
+  };
+  var effectiveSeg = routeMap[currentSeg] || currentSeg;
+
   // Fix any lingering index links (logo/home) to point to base root
   document.querySelectorAll('a[href]').forEach(function(a){
     var href = (a.getAttribute('href') || '').trim();
