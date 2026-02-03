@@ -330,7 +330,7 @@ input[type="text"]:focus{
   padding: 8px; /* match whatever your .person-photo padding is */
 }
 
-/* Team reveal by layout rows */
+/* Team reveal (strict rows) */
 .page-team .people-grid .profile-card,
 .page-team .people-grid .person-card{
   opacity:0;

@@ -375,39 +375,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-/* =====================================================
-   Team page reveal by layout rows (no loader)
-   - Cards start at opacity 0 but still occupy layout
-   - We group cards by their offsetTop (actual row)
-   - Reveal the first row only when all images in that row are ready, then next row, etc
-   - Fail-safe: reveal everything after MAX_WAIT
-   ===================================================== */
-document.addEventListener('DOMContentLoaded', function () {
-  if (!document.body.classList.contains('page-team')) return;
-
-  const grid = document.querySelector('.people-grid');
-  if (!grid) return;
-
-  const cards = Array.from(grid.querySelectorAll('.profile-card, .person-card'));
-  if (!cards.length) return;
-
-  // Build rows from current layout
-  const rows = [];
-  const rowMap = new Map(); // key -> array of card indexes
-
-  cards.forEach((card, idx) => {
-    const top = Math.round(card.getBoundingClientRect().top); // stable enough for grouping
-    // Find an existing row key within small tolerance (layout rounding)
-    let key = null;
-    for (const k of rowMap.keys()) {
-      if (Math.abs(k - top) <= 4) { key = k; break; }
-    }
-    if (key === null) key = top;
-    if (!rowMap.has(key)) rowMap.set(key, []);
-    rowMap.get(key).push(idx);
-  });
-
-  // Sort rows by top position
+// Sort rows by top position
   const sortedKeys = Array.from(rowMap.keys()).sort((a,b)=>a-b);
   sortedKeys.forEach(k => rows.push(rowMap.get(k)));
 
@@ -461,5 +429,104 @@ document.addEventListener('DOMContentLoaded', function () {
     const imgs = Array.from(card.querySelectorAll('img'));
     if (!imgs.length) { markReady(idx); return; }
     Promise.all(imgs.map(waitForImage)).then(function(){ markReady(idx); });
+  });
+});
+
+/* =====================================================
+   Team page reveal by layout rows (strict)
+   - Cards stay hidden until the ENTIRE visual row is fully ready
+   - "Ready" means: every image used by the card (including hover/fun image) is loaded + decoded
+   - Reveals row-by-row, not card-by-card, regardless of network timing
+   - No loader text/spinner
+   ===================================================== */
+document.addEventListener('DOMContentLoaded', function () {
+  if (!document.body.classList.contains('page-team')) return;
+
+  const grid = document.querySelector('.people-grid');
+  if (!grid) return;
+
+  const cards = Array.from(grid.querySelectorAll('.profile-card, .person-card'));
+  if (!cards.length) return;
+
+  // Helper: preload an image URL and wait for decode
+  function preload(url){
+    return new Promise(function(resolve){
+      if (!url) return resolve();
+      const im = new Image();
+      im.onload = function(){
+        if (im.decode) im.decode().then(resolve).catch(resolve);
+        else resolve();
+      };
+      im.onerror = function(){ resolve(); };
+      im.src = url;
+    });
+  }
+
+  // Collect every image URL a card might display
+  function cardImageUrls(card){
+    const urls = new Set();
+    card.querySelectorAll('img').forEach(function(img){
+      const src = img.getAttribute('src');
+      if (src) urls.add(src);
+      // common patterns for hover/fun images
+      const dataHover = img.getAttribute('data-hover') || img.getAttribute('data-fun') || img.getAttribute('data-alt-src');
+      if (dataHover) urls.add(dataHover);
+      // srcset: grab first URL (good enough for preload to avoid late swaps)
+      const srcset = img.getAttribute('srcset');
+      if (srcset){
+        const first = srcset.split(',')[0].trim().split(' ')[0];
+        if (first) urls.add(first);
+      }
+    });
+    return Array.from(urls);
+  }
+
+  // Build visual rows after layout is stable
+  function buildRows(){
+    const rowMap = new Map();
+    cards.forEach(function(card, idx){
+      const top = card.offsetTop; // stable within document flow
+      if (!rowMap.has(top)) rowMap.set(top, []);
+      rowMap.get(top).push(idx);
+    });
+    const keys = Array.from(rowMap.keys()).sort(function(a,b){ return a-b; });
+    return keys.map(function(k){ return rowMap.get(k); });
+  }
+
+  // Wait one paint so offsetTop reflects final layout (fonts/CSS)
+  requestAnimationFrame(function(){
+    const rows = buildRows();
+
+    // readiness per card
+    const ready = new Array(cards.length).fill(false);
+
+    let nextRow = 0;
+
+    function tryReveal(){
+      if (nextRow >= rows.length) return;
+      const row = rows[nextRow];
+      for (let i=0;i<row.length;i++){
+        if (!ready[row[i]]) return;
+      }
+      // reveal the whole row at once
+      row.forEach(function(i){ cards[i].classList.add('is-visible'); });
+      nextRow++;
+      // tiny beat between rows
+      setTimeout(tryReveal, 120);
+    }
+
+    // Preload card assets, then mark ready
+    cards.forEach(function(card, idx){
+      const urls = cardImageUrls(card);
+      if (!urls.length){
+        ready[idx] = true;
+        tryReveal();
+        return;
+      }
+      Promise.all(urls.map(preload)).then(function(){
+        ready[idx] = true;
+        tryReveal();
+      });
+    });
   });
 });
