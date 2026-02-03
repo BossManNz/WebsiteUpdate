@@ -330,6 +330,14 @@ input[type="text"]:focus{
   padding: 8px; /* match whatever your .person-photo padding is */
 }
 
+/* =====================================================
+   Team portraits: keep layout visible, blur as placeholder, then unblur per row
+   No text/spinner, just a soft "glass" filter that fades away.
+   ===================================================== */
+.page-team .people-grid .profile-card,
+.page-team .people-grid .person-card{
+  position: relative;
+}
 
 /* Base placeholder surface (subtle) */
 .page-team .people-grid .profile-card::before,
@@ -364,21 +372,28 @@ input[type="text"]:focus{
 }
 
 /* =====================================================
-   Team photos: blur placeholder, then sharpen on load
+   Team photos: blur placeholder, then sharpen on load (normal photo only)
    - No loader text/spinner
-   - Keeps layout visible, images render blurred immediately
-   - JS adds .is-loaded when each image finishes loading
+   - Does NOT interfere with your hover "fun photo" swap (last-child stays hidden until hover)
+   - JS adds .is-loaded to images; we only animate the FIRST (normal) image
    ===================================================== */
 
-.page-team .people-grid .person-photo img {
+/* Normal image starts softly blurred */
+.page-team .people-grid .person-photo img:first-child {
   filter: blur(16px);
   opacity: 0.88;
   transform: scale(1.03);
   transition: filter 0.6s ease, opacity 0.45s ease, transform 0.6s ease;
 }
 
-.page-team .people-grid .person-photo img.is-loaded {
+/* When loaded, normal image becomes crisp */
+.page-team .people-grid .person-photo img:first-child.is-loaded {
   filter: blur(0);
   opacity: 1;
   transform: none;
+}
+
+/* Optional: if the fun image loads late, keep it crisp once it appears */
+.page-team .people-grid .person-photo img:last-child.is-loaded {
+  filter: blur(0);
 }
