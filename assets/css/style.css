@@ -1002,8 +1002,7 @@ body {
   font-synthesis: none;
   margin: 0 !important;
   padding: 0 !important;
-  opacity: 0;
-  transition: opacity 320ms ease;
+  opacity: 1;
 }
 
 * {
@@ -2057,7 +2056,16 @@ html, body {
     border-bottom: 1px solid rgba(255,255,255,0.2); /* keep the line */
   }
 }
-.seo-helper { font-size: 1.05rem; margin-top: 0.5rem; opacity: 0.85; }
-.seo-links, .seo-faq { max-width: 900px; margin: 4rem auto; text-align: center; }
-.seo-links a { font-weight: 600; text-decoration: none; }
-.seo-faq h3 { margin-top: 1.5rem; }
+
+/* Accessibility: visually hidden text for SEO/AT only */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
