@@ -615,7 +615,7 @@ body {
 
 #legal-aid-eligibility .he-results {
   margin: 16px;
-  padding: 16px;
+  padding: 20px;
   border-radius: 18px;
   background: #ffffff;
   border: 1px solid #e6e6e8;
@@ -723,6 +723,43 @@ body {
 
 #legal-aid-eligibility .btn.btn-outline:hover {
   background: #f5f5f7;
+}
+
+
+#legal-aid-eligibility .he-results__pill{
+  font-size: 1.20rem;
+  padding: 12px 18px;
+}
+
+#legal-aid-eligibility .he-results__status{
+  font-size: 1.05rem;
+}
+
+#legal-aid-eligibility .he-results:not(.is-under):not(.is-over) .he-results__pill{
+  color:#6e6e73;
+  font-weight: 700;
+}
+
+#legal-aid-eligibility .he-results.is-under{
+  background: #ffffff;
+}
+
+#legal-aid-eligibility .he-results.is-under .he-results__pill{
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0,0,0,0.08);
+  color: #1d1d1f;
+}
+
+#legal-aid-eligibility .he-actions{
+  justify-content: flex-start;
+}
+
+#legal-aid-eligibility .he-actions .btn{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  white-space: nowrap;
 }
 
 /* Responsive */

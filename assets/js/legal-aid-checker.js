@@ -125,6 +125,8 @@
       resultsEl.classList.remove('is-under');
     }
 
+  }
+
   function reset() {
     setType('single');
     els.deps.value = '0';
