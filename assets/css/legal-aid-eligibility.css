@@ -19,6 +19,37 @@
   .eligibility-title {
     font-size: 2rem;
   }
+
+
+@media (max-width: 900px) {
+  /* Tablet portrait: make the checker feel like iOS Settings, not a squeezed desktop row */
+  .he-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .he-row__help { max-width: none; }
+  .he-row__right {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .he-row__right--income { flex-wrap: wrap; }
+  .he-field {
+    min-width: 0;
+    flex: 1 1 220px;
+  }
+  .he-field--compact { flex: 1 1 160px; text-align: left; }
+  .he-field--select { flex: 1 1 180px; }
+  .he-money { flex: 1 1 260px; }
+  .he-seg { width: 100%; justify-content: flex-end; }
+  .he-switch { margin-left: auto; }
+  /* Actions: avoid awkward spacing, keep right actions aligned */
+  .he-actions { flex-wrap: wrap; }
+  .he-actions__right { margin-left: auto; flex-wrap: wrap; justify-content: flex-end; }
+}
+
 }
 
 /* =========================
