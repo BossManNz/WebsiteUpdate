@@ -53,7 +53,7 @@
     width: 100%;
     text-align: left;
   }
-  .he-seg { width: 100%; justify-content: flex-end; }
+  .he-seg { width: fit-content; justify-content: flex-start; margin-left: auto; }
   .he-switch { margin-left: auto; }
   /* Actions: avoid awkward spacing, keep right actions aligned */
   .he-actions { flex-wrap: wrap; }
