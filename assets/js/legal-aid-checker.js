@@ -1,179 +1,159 @@
-(function () {
-  const form = document.getElementById('eligibilityChecker');
-  if (!form) return;
+(() => {
+  const el = (id) => document.getElementById(id);
 
-  // Income thresholds (1 July 2024), annual, before tax.
-  // Index: 0 dependents, then 1..5 dependents. For 6+ dependents we use the 5+ threshold.
-  const THRESHOLDS = {
+  const appButtons = Array.from(document.querySelectorAll('.segmented-btn[data-app-type]'));
+  const dependentsEl = el('laDependents');
+  const incomeEl = el('laIncome');
+  const freqEl = el('laIncomeFreq');
+  const savingsEl = el('laSavings');
+  const assetsEl = el('laAssets');
+  const ownHomeEl = el('laOwnHome');
+
+  const incomeLabelEl = el('incomeLabel');
+  const incomeHelpEl = el('incomeHelp');
+  const thresholdLabelEl = el('laThresholdLabel');
+
+  const statusEl = el('laStatus');
+  const thresholdValueEl = el('laThresholdValue');
+  const annualIncomeEl = el('laAnnualIncome');
+  const netAssetsEl = el('laNetAssets');
+  const noteEl = el('laNote');
+  const resetEl = el('laReset');
+
+  if (!dependentsEl || !incomeEl || !freqEl || !savingsEl || !assetsEl || !statusEl) return;
+
+  const thresholds = {
     single: [28444, 45044, 64775, 73608, 82253, 91949],
     partnered: [45044, 64775, 73608, 82253, 91949, 99341],
   };
 
-  const el = {
-    dependents: document.getElementById('checkerDependents'),
-    income: document.getElementById('checkerIncome'),
-    incomePeriod: document.getElementById('checkerIncomePeriod'),
-    savings: document.getElementById('checkerSavings'),
-    assets: document.getElementById('checkerAssets'),
-    debt: document.getElementById('checkerDebt'),
-    threshold: document.getElementById('checkerThreshold'),
-    annualised: document.getElementById('checkerAnnualised'),
-    incomeStatus: document.getElementById('checkerIncomeStatus'),
-    netWorth: document.getElementById('checkerNetWorth'),
-    note: document.getElementById('checkerNote'),
-    reset: document.getElementById('checkerReset'),
-    incomeLabel: document.getElementById('checkerIncomeLabel'),
-    incomeHelp: document.getElementById('checkerIncomeHelp'),
-  };
+  let appType = 'single';
 
-  const nf = new Intl.NumberFormat('en-NZ', {
-    style: 'currency',
-    currency: 'NZD',
-    maximumFractionDigits: 0,
-  });
-
-  function parseMoney(raw) {
+  const parseMoney = (raw) => {
     if (!raw) return 0;
-    const cleaned = String(raw)
-      .replace(/[^0-9.\-]/g, '')
-      .replace(/(\..*)\./g, '$1');
+    const cleaned = String(raw).replace(/[^0-9.]/g, '');
     const n = Number(cleaned);
     return Number.isFinite(n) ? n : 0;
-  }
+  };
 
-  function formatMoney(n) {
-    if (!Number.isFinite(n)) return 'N/A';
-    return nf.format(n);
-  }
+  const formatNZD = (n) => {
+    const v = Math.round(Number(n) || 0);
+    return '$' + v.toLocaleString('en-NZ');
+  };
 
-  function getAppType() {
-    const checked = form.querySelector('input[name="appType"]:checked');
-    return checked && checked.value === 'partnered' ? 'partnered' : 'single';
-  }
-
-  function getDependents() {
-    const d = Number(el.dependents && el.dependents.value);
+  const clampDependentsIndex = (d) => {
     if (!Number.isFinite(d) || d < 0) return 0;
-    return Math.min(Math.floor(d), 20);
-  }
+    if (d >= 5) return 5;
+    return Math.floor(d);
+  };
 
-  function getIncomeMultiplier() {
-    const p = el.incomePeriod && el.incomePeriod.value;
-    if (p === 'weekly') return 52;
-    if (p === 'fortnight') return 26;
-    return 1; // annual
-  }
+  const annualiseIncome = (amount, freq) => {
+    const a = Number(amount) || 0;
+    if (freq === 'week') return a * 52;
+    if (freq === 'fortnight') return a * 26;
+    return a; // year
+  };
 
-  function describeIncomePeriod() {
-    const p = el.incomePeriod && el.incomePeriod.value;
-    if (p === 'weekly') return 'per week';
-    if (p === 'fortnight') return 'per fortnight';
-    return 'per year';
-  }
+  const setAppType = (next) => {
+    appType = next === 'partnered' ? 'partnered' : 'single';
+    appButtons.forEach((b) => {
+      const isActive = b.dataset.appType === appType;
+      b.classList.toggle('is-active', isActive);
+      b.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
 
-  function update() {
-    const appType = getAppType();
-    const dep = getDependents();
-    const depIdx = Math.min(dep, 5);
-    const threshold = THRESHOLDS[appType][depIdx];
-
-    const incomeEnteredRaw = parseMoney(el.income && el.income.value);
-    const annualisedIncome = incomeEnteredRaw * getIncomeMultiplier();
-    const savings = parseMoney(el.savings && el.savings.value);
-    const assets = parseMoney(el.assets && el.assets.value);
-    const debt = parseMoney(el.debt && el.debt.value);
-    const netWorth = savings + assets - debt;
-
-    const depLabel = dep >= 5 ? '5+ dependents' : `${dep} dependents`;
-    const typeLabel = appType === 'partnered' ? 'Partnered' : 'Single';
-
-    if (el.threshold) {
-      const suffix = dep > 5 ? ' (using 5+ threshold)' : '';
-      el.threshold.innerHTML = `Guideline income threshold (${typeLabel}, ${depLabel}): <strong>${formatMoney(threshold)}</strong>${suffix}`;
+    if (appType === 'partnered') {
+      incomeLabelEl.textContent = 'Combined income (before tax)';
+      incomeHelpEl.textContent = "Include your partner's income too. Use your best estimate (you can include benefit income).";
+    } else {
+      incomeLabelEl.textContent = 'Income (before tax)';
+      incomeHelpEl.textContent = 'Enter your best estimate. You can include benefit income.';
     }
 
-    if (el.annualised) {
-      el.annualised.innerHTML = `Your annualised income: <strong>${formatMoney(annualisedIncome)}</strong>`;
-    }
+    update();
+  };
 
-    // Make it explicit what income to include.
-    if (el.incomeLabel) {
-      el.incomeLabel.textContent = appType === 'partnered'
-        ? 'Combined income (before tax)'
-        : 'Income (before tax)';
-    }
+  const getThreshold = () => {
+    const d = Number(dependentsEl.value || 0);
+    const idx = clampDependentsIndex(d);
+    const list = thresholds[appType];
+    return list[idx] ?? list[list.length - 1];
+  };
 
-    if (el.incomeHelp) {
-      const base = appType === 'partnered'
-        ? 'Include your income and your partner’s income.'
-        : 'Enter your best estimate.';
-      el.incomeHelp.textContent = `${base} You can include benefit income. (${describeIncomePeriod()})`;
-    }
+  const update = () => {
+    const dep = Number(dependentsEl.value || 0);
+    const idx = clampDependentsIndex(dep);
 
-    if (el.netWorth) {
-      el.netWorth.innerHTML = `Savings + sellable assets minus debt: <strong>${formatMoney(netWorth)}</strong>`;
-    }
+    const threshold = getThreshold();
+    const incomeRaw = parseMoney(incomeEl.value);
+    const annualIncome = annualiseIncome(incomeRaw, freqEl.value);
 
-    const hasAnyInputs = [el.income, el.savings, el.assets, el.debt].some((x) => x && String(x.value || '').trim() !== '');
-    if (!hasAnyInputs) {
-      if (el.incomeStatus) el.incomeStatus.innerHTML = `Income comparison: <strong class="he-ios-muted">N/A</strong>`;
-      if (el.note) el.note.textContent = 'Enter your details to see how your income compares with the guideline thresholds.';
+    const savings = parseMoney(savingsEl.value);
+    const assets = parseMoney(assetsEl.value);
+    const netAssets = savings + assets;
+
+    // Labels
+    const depLabel = dep >= 5 ? '5+ dependents' : `${idx} dependents`;
+    thresholdLabelEl.textContent = `Guideline income threshold (${appType === 'partnered' ? 'Partnered' : 'Single'}, ${depLabel})`;
+
+    thresholdValueEl.textContent = formatNZD(threshold);
+    annualIncomeEl.textContent = formatNZD(annualIncome);
+    netAssetsEl.textContent = formatNZD(netAssets);
+
+    const hasAnyInput =
+      String(incomeEl.value || '').trim() !== '' ||
+      String(savingsEl.value || '').trim() !== '' ||
+      String(assetsEl.value || '').trim() !== '' ||
+      String(dependentsEl.value || '').trim() !== '';
+
+    statusEl.classList.remove('is-under', 'is-over');
+
+    if (!hasAnyInput || annualIncome <= 0) {
+      statusEl.textContent = 'Enter your details to compare with the guideline thresholds.';
+      noteEl.textContent = 'This is a guideline comparison only. Legal aid can still consider hardship and other circumstances.';
       return;
     }
 
-    const incomeEntered = el.income && String(el.income.value || '').trim() !== '';
-    if (!incomeEntered) {
-      if (el.incomeStatus) el.incomeStatus.innerHTML = `Income comparison: <strong>Enter income to compare</strong>`;
-      if (el.note) el.note.textContent = 'Income is the quickest first check, add your before-tax amount (weekly, fortnightly, or annual) to compare with the guideline thresholds.';
-      return;
+    if (annualIncome <= threshold) {
+      statusEl.textContent = 'Based on income, you appear under the guideline threshold.';
+      statusEl.classList.add('is-under');
+      noteEl.textContent = 'This suggests your income is under the guideline threshold. Legal aid may still consider your savings, assets, and hardship factors.';
+    } else {
+      statusEl.textContent = 'Based on income, you appear over the guideline threshold (hardship may still apply).';
+      statusEl.classList.add('is-over');
+      noteEl.textContent = 'This suggests your income is over the guideline threshold. You may still qualify on hardship grounds, and legal aid can consider savings, assets, and your circumstances.';
     }
 
-    const under = annualisedIncome <= threshold;
-
-    if (el.incomeStatus) {
-      el.incomeStatus.innerHTML = under
-        ? `Income comparison: <strong class="he-ios-status he-ios-status--under">Under guideline threshold</strong>`
-        : `Income comparison: <strong class="he-ios-status he-ios-status--over">Over guideline threshold (hardship may still apply)</strong>`;
+    // Home toggle is informational only, but we keep it from feeling pointless by slightly adjusting the note
+    if (ownHomeEl && ownHomeEl.checked) {
+      noteEl.textContent += ' (Your main home is usually excluded from asset calculations.)';
     }
+  };
 
-    if (el.note) {
-      if (under) {
-        el.note.textContent = 'Your income is under the guideline threshold for your household size. This is not a decision, legal aid can also consider savings, assets, debt, and hardship factors.';
-      } else {
-        el.note.textContent = 'Your income is over the guideline threshold. You may still qualify on hardship grounds, and legal aid can consider savings, assets, and debt.';
-      }
-    }
-  }
+  // Segmented control events
+  appButtons.forEach((b) => b.addEventListener('click', () => setAppType(b.dataset.appType)));
 
-  function tidyMoneyInput(e) {
-    const input = e && e.target;
-    if (!input) return;
-    const n = parseMoney(input.value);
-    if (!input.value || String(input.value).trim() === '') return;
-    input.value = n ? nf.format(n).replace(/\$\s?/, '') : '';
-  }
-
-  form.addEventListener('input', update);
-  form.addEventListener('change', update);
-
-  ['checkerIncome', 'checkerSavings', 'checkerAssets', 'checkerDebt'].forEach((id) => {
-    const node = document.getElementById(id);
+  // Input events
+  [dependentsEl, incomeEl, freqEl, savingsEl, assetsEl, ownHomeEl].forEach((node) => {
     if (!node) return;
-    node.addEventListener('blur', tidyMoneyInput);
+    node.addEventListener('input', update);
+    node.addEventListener('change', update);
   });
 
-  if (el.reset) {
-    el.reset.addEventListener('click', () => {
-      const single = form.querySelector('input[name="appType"][value="single"]');
-      if (single) single.checked = true;
-      if (el.dependents) el.dependents.value = '0';
-      if (el.income) el.income.value = '';
-      if (el.savings) el.savings.value = '';
-      if (el.assets) el.assets.value = '';
-      if (el.debt) el.debt.value = '';
+  // Reset
+  if (resetEl) {
+    resetEl.addEventListener('click', () => {
+      setAppType('single');
+      dependentsEl.value = '0';
+      incomeEl.value = '';
+      freqEl.value = 'year';
+      savingsEl.value = '';
+      assetsEl.value = '';
+      if (ownHomeEl) ownHomeEl.checked = false;
       update();
     });
   }
 
-  update();
+  // Initial state
+  setAppType('single');
 })();

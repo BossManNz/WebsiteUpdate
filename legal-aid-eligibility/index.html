@@ -39,7 +39,6 @@
       </a>
     </div>
 
-
     <button aria-expanded="false" aria-label="Toggle menu" class="menu-toggle">
       <span class="bar"></span>
       <span class="bar"></span>
@@ -130,134 +129,132 @@
       </div>
     </div>
 
-	        <!-- ===== Eligibility checker ===== -->
-    <section class="he-ios-checker" aria-label="Legal aid guideline checker">
-      <header class="he-ios-checker__header">
-        <h2 class="he-ios-checker__title">Quick guideline checker</h2>
-        <p class="he-ios-checker__sub">
-          This tool compares your income to the guideline thresholds below, it is not a legal aid decision.
-          Legal aid can also consider your circumstances, including savings, assets, debt, and hardship factors.
+    
+    <section class="eligibility-checker eligibility-card" aria-label="Quick guideline checker">
+      <div class="checker-header">
+        <h2 class="checker-title">Quick guideline checker</h2>
+        <p class="checker-subtitle">
+          This tool compares your income to the guideline thresholds below. It is not a legal aid decision.
+          Legal aid can also consider your circumstances (including savings, assets, and hardship factors).
         </p>
-      </header>
+      </div>
 
-      <form class="he-ios-checker__form" id="eligibilityChecker" novalidate>
-        <div class="he-ios-group" role="group" aria-label="Your details">
-
-          <div class="he-ios-row he-ios-row--stack">
-            <div class="he-ios-row__left">
-              <div class="he-ios-label">Application type</div>
-              <div class="he-ios-help" id="checkerAppTypeHelp">
-                If partnered, the combined income of you and your partner is assessed.
-              </div>
-            </div>
-            <div class="he-ios-row__right">
-              <div class="he-ios-seg" role="radiogroup" aria-label="Application type">
-                <label class="he-ios-seg__opt">
-                  <input type="radio" name="appType" value="single" checked>
-                  <span>Single</span>
-                </label>
-                <label class="he-ios-seg__opt">
-                  <input type="radio" name="appType" value="partnered">
-                  <span>Partnered</span>
-                </label>
-              </div>
-            </div>
+      <div class="checker-rows">
+        <div class="checker-row">
+          <div class="checker-left">
+            <div class="checker-label">Application type</div>
+            <div class="checker-help">If partnered, the combined income of you and your partner is assessed.</div>
           </div>
-
-          <div class="he-ios-row">
-            <div class="he-ios-row__left">
-              <label class="he-ios-label" for="checkerDependents">Dependents</label>
-              <div class="he-ios-help">Children or others who are financially dependent on you.</div>
+          <div class="checker-right">
+            <div class="segmented" role="group" aria-label="Application type">
+              <button type="button" class="segmented-btn is-active" data-app-type="single" aria-pressed="true">Single</button>
+              <button type="button" class="segmented-btn" data-app-type="partnered" aria-pressed="false">Partnered</button>
             </div>
-            <div class="he-ios-row__right">
-              <input class="he-ios-input he-ios-input--num" id="checkerDependents" name="dependents" type="number" inputmode="numeric" min="0" max="20" value="0">
-            </div>
-          </div>
-
-          <div class="he-ios-row he-ios-row--income">
-            <div class="he-ios-row__left">
-              <label class="he-ios-label" id="checkerIncomeLabel" for="checkerIncome">Income (before tax)</label>
-              <div class="he-ios-help" id="checkerIncomeHelp">Enter your best estimate. You can include benefit income.</div>
-            </div>
-            <div class="he-ios-row__right">
-              <div class="he-ios-income">
-                <div class="he-ios-money">
-                  <span class="he-ios-money__prefix">$</span>
-                  <input class="he-ios-input he-ios-input--money" id="checkerIncome" name="income" type="text" inputmode="decimal" placeholder="0">
-                </div>
-                <select class="he-ios-select" id="checkerIncomePeriod" name="incomePeriod" aria-label="Income frequency">
-                  <option value="annual" selected>Year</option>
-                  <option value="fortnight">Fortnight</option>
-                  <option value="weekly">Week</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <div class="he-ios-row">
-            <div class="he-ios-row__left">
-              <label class="he-ios-label" for="checkerSavings">Savings (excluding KiwiSaver)</label>
-              <div class="he-ios-help">For example bank accounts, cash, term deposits.</div>
-            </div>
-            <div class="he-ios-row__right">
-              <div class="he-ios-money">
-                <span class="he-ios-money__prefix">$</span>
-                <input class="he-ios-input he-ios-input--money" id="checkerSavings" name="savings" type="text" inputmode="decimal" placeholder="0">
-              </div>
-            </div>
-          </div>
-
-          <div class="he-ios-row">
-            <div class="he-ios-row__left">
-              <label class="he-ios-label" for="checkerAssets">Sellable assets (each worth $3,500+)</label>
-              <div class="he-ios-help">Exclude your home. Total estimated resale value (vehicle, shares, valuables).</div>
-            </div>
-            <div class="he-ios-row__right">
-              <div class="he-ios-money">
-                <span class="he-ios-money__prefix">$</span>
-                <input class="he-ios-input he-ios-input--money" id="checkerAssets" name="assets" type="text" inputmode="decimal" placeholder="0">
-              </div>
-            </div>
-          </div>
-
-          <div class="he-ios-row">
-            <div class="he-ios-row__left">
-              <label class="he-ios-label" for="checkerDebt">Total debt</label>
-              <div class="he-ios-help">Credit cards, loans, and other debts.</div>
-            </div>
-            <div class="he-ios-row__right">
-              <div class="he-ios-money">
-                <span class="he-ios-money__prefix">$</span>
-                <input class="he-ios-input he-ios-input--money" id="checkerDebt" name="debt" type="text" inputmode="decimal" placeholder="0">
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="he-ios-summary" aria-live="polite" aria-atomic="true">
-          <div class="he-ios-summary__grid">
-            <div class="he-ios-summary__item" id="checkerThreshold"></div>
-            <div class="he-ios-summary__item" id="checkerAnnualised"></div>
-            <div class="he-ios-summary__item" id="checkerIncomeStatus"></div>
-          </div>
-
-          <div class="he-ios-summary__meta">
-            <div class="he-ios-summary__item" id="checkerNetWorth"></div>
-          </div>
-
-          <p class="he-ios-summary__note" id="checkerNote">Enter your details to see how your income compares with the guideline thresholds.</p>
-
-          <div class="he-ios-actions">
-            <button class="he-ios-btn" type="button" id="checkerReset">Reset</button>
-            <a class="he-ios-btn he-ios-btn--primary" href="../contact/">Talk to us</a>
           </div>
         </div>
-      </form>
+
+        <div class="checker-row">
+          <div class="checker-left">
+            <div class="checker-label">Dependents</div>
+            <div class="checker-help">Children or others who are financially dependent on you.</div>
+          </div>
+          <div class="checker-right">
+            <input id="laDependents" class="checker-input checker-input--small" type="number" min="0" step="1" value="0" inputmode="numeric" />
+          </div>
+        </div>
+
+        <div class="checker-row">
+          <div class="checker-left">
+            <div class="checker-label" id="incomeLabel">Income (before tax)</div>
+            <div class="checker-help" id="incomeHelp">Enter your best estimate. You can include benefit income.</div>
+          </div>
+          <div class="checker-right checker-right--income">
+            <div class="money-field">
+              <span class="money-prefix">$</span>
+              <input id="laIncome" class="checker-input" type="text" inputmode="decimal" placeholder="0" />
+            </div>
+            <select id="laIncomeFreq" class="checker-select" aria-label="Income frequency">
+              <option value="year">Per year</option>
+              <option value="fortnight">Per fortnight</option>
+              <option value="week">Per week</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="checker-row">
+          <div class="checker-left">
+            <div class="checker-label">Savings (excluding KiwiSaver)</div>
+            <div class="checker-help">For example bank accounts, cash, term deposits.</div>
+          </div>
+          <div class="checker-right">
+            <div class="money-field">
+              <span class="money-prefix">$</span>
+              <input id="laSavings" class="checker-input" type="text" inputmode="decimal" placeholder="0" />
+            </div>
+          </div>
+        </div>
+
+        <div class="checker-row">
+          <div class="checker-left">
+            <div class="checker-label">Sellable assets (each worth $3,500+)</div>
+            <div class="checker-help">Exclude your home. Total estimated resale value (vehicle, shares, valuables).</div>
+          </div>
+          <div class="checker-right">
+            <div class="money-field">
+              <span class="money-prefix">$</span>
+              <input id="laAssets" class="checker-input" type="text" inputmode="decimal" placeholder="0" />
+            </div>
+          </div>
+        </div>
+
+        <div class="checker-row">
+          <div class="checker-left">
+            <div class="checker-label">Own a home</div>
+            <div class="checker-help">Your main home is usually excluded from asset calculations.</div>
+          </div>
+          <div class="checker-right">
+            <label class="ios-switch">
+              <input id="laOwnHome" type="checkbox" />
+              <span class="ios-switch-track" aria-hidden="true"></span>
+              <span class="sr-only">I own a home</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="checker-results" aria-live="polite">
+        <div class="checker-results-top">
+          <div class="checker-results-title">Income comparison</div>
+          <div class="checker-results-status" id="laStatus">Enter your details to compare with the guideline thresholds.</div>
+        </div>
+
+        <div class="checker-results-meta">
+          <div class="meta-item">
+            <div class="meta-label" id="laThresholdLabel">Guideline income threshold</div>
+            <div class="meta-value" id="laThresholdValue">$0</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Your annualised income</div>
+            <div class="meta-value" id="laAnnualIncome">$0</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Savings + sellable assets</div>
+            <div class="meta-value" id="laNetAssets">$0</div>
+          </div>
+        </div>
+
+        <div class="checker-results-note" id="laNote">
+          This is a guideline comparison only. Legal aid can still consider hardship and other circumstances.
+        </div>
+
+        <div class="checker-actions">
+          <button type="button" class="btn btn-secondary" id="laReset">Reset</button>
+          <a class="btn btn-primary" href="../contact/" id="laTalk">Talk to us</a>
+        </div>
+      </div>
     </section>
 
-
-    <div class="eligibility-controls">
+<div class="eligibility-controls">
       <label class="filter">
         <span class="filter__label">Filter</span>
         <input id="eligibilityFilter" type="text" placeholder="Start Typing..."/>
@@ -317,8 +314,6 @@
 
   </div>
 </section>
-
-<script src="../assets/js/legal-aid-checker.js"></script>
 
 <script>
 (function() {
@@ -481,5 +476,6 @@
 </footer>
 
 <script src="../assets/js/script.js"></script>
+  <script src="../assets/js/legal-aid-checker.js"></script>
 </body>
 </html>
