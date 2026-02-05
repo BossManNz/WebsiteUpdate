@@ -1,19 +1,4 @@
-<!DOCTYPE
-
-<details class="he-details">
-  <summary>How to apply for legal aid</summary>
-  <div class="he-details__anim">
-    <div class="he-details__body">
-      <ul>
-        <li>You need to instruct a lawyer to apply for legal aid.</li>
-        <li>You need a lawyer to help you fill out a legal aid application, and the application requires your lawyer’s signature.</li>
-        <li>Your lawyer will submit your legal aid application for you and advise you of the result and any repayment amounts required.</li>
-      </ul>
-    </div>
-  </div>
-</details>
-
- html>
+<!DOCTYPE html>
 
 <html lang="en">
 <head>
@@ -93,11 +78,12 @@
     ← Back to Fees
   </a>
 
-  <div class="he-panel he-panel--tool">
-  <h1>Legal Aid Eligibility Tool</h1>
-  <p class="he-tool-subline">This tool compares your income with the legal aid thresholds below.</p>
+  <h1>Legal Aid Eligibility</h1>
 
-<div class="he-callout">
+</div>
+
+
+    <div class="he-callout">
       <div class="he-callout__icon" aria-hidden="true">
         <i class="fa-solid fa-circle-info"></i>
       </div>
@@ -133,7 +119,7 @@
 				<div class="he-details__body">
               <ul>
                 <li>Legal aid is considered a loan, this means you may need to pay some or all of the costs incurred under your grant back.</li>
-				<li>If you are above the below thresholds, there is no guarantee that your Legal Aid application will be granted.</li>
+				<li>If you are above the below thresholds, there is no guarantee that your Legal Aid applicationw will be granted.</li>
               </ul>
             </div>
 			  </div>
@@ -143,161 +129,19 @@
       </div>
     </div>
 
-<div class="he-disclosure-card" id="heCheckerDisclosure">
-  <div class="he-disclosure-row" id="heCheckerToggle" role="button" tabindex="0" aria-expanded="false" aria-controls="heCheckerPanel">
-    <div class="he-disclosure-left">
-      <div class="he-disclosure-title">Legal Aid Eligibility Checker Tool</div>
-      <div class="he-disclosure-sub">Tap to open</div>
-    </div>
-    <div class="he-disclosure-chevron" aria-hidden="true">›</div>
-  </div>
-
-  <div class="he-disclosure-panel" id="heCheckerPanel" hidden>
-    <div class="he-checker">
-      <div class="he-checker-row">
-        <div class="he-checker-label">
-          <div class="he-label">Application type</div>
-          <div class="he-help">If partnered, the combined income of you and your partner is assessed.</div>
-        </div>
-        <div class="he-control">
-          <div class="he-segment" role="group" aria-label="Application type">
-            <button type="button" class="he-seg-btn is-active" data-type="single">Single</button>
-            <button type="button" class="he-seg-btn" data-type="partnered">Partnered</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="he-checker-row">
-        <div class="he-checker-label">
-          <div class="he-label">Dependents</div>
-          <div class="he-help">Children or others who are financially dependent on you.</div>
-        </div>
-        <div class="he-control">
-          <input class="he-input he-input--small" id="heDependents" type="number" min="0" value="0"/>
-        </div>
-      </div>
-
-      <div class="he-checker-row">
-        <div class="he-checker-label">
-          <div class="he-label">Income (before tax)</div>
-          <div class="he-help">Enter your best estimate. You can include benefit income.</div>
-        </div>
-        <div class="he-control he-control--split">
-          <div class="he-money">
-            <span class="he-money-prefix">$</span>
-            <input class="he-input" id="heIncome" type="number" min="0" value=""/>
-          </div>
-          <select class="he-select" id="heIncomeFreq" aria-label="Income frequency">
-            <option value="year">Per year</option>
-            <option value="fortnight">Per fortnight</option>
-            <option value="week">Per week</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="he-checker-row">
-        <div class="he-checker-label">
-          <div class="he-label">Savings (excluding KiwiSaver)</div>
-          <div class="he-help">For example bank accounts, cash, term deposits.</div>
-        </div>
-        <div class="he-control">
-          <div class="he-money">
-            <span class="he-money-prefix">$</span>
-            <input class="he-input" id="heSavings" type="number" min="0" value="0"/>
-          </div>
-        </div>
-      </div>
-
-      <div class="he-checker-row">
-        <div class="he-checker-label">
-          <div class="he-label">Sellable assets (each worth $3,500+)</div>
-          <div class="he-help">Exclude your home. Total estimated resale value (vehicle, shares, valuables).</div>
-        </div>
-        <div class="he-control">
-          <div class="he-money">
-            <span class="he-money-prefix">$</span>
-            <input class="he-input" id="heAssets" type="number" min="0" value="0"/>
-          </div>
-        </div>
-      </div>
-
-      <div class="he-checker-row">
-        <div class="he-checker-label">
-          <div class="he-label">Own a home</div>
-          <div class="he-help">Your main home is usually excluded from asset calculations.</div>
-        </div>
-        <div class="he-control">
-          <label class="he-switch">
-            <input type="checkbox" id="heOwnHome"/>
-            <span class="he-switch-track" aria-hidden="true"></span>
-            <span class="he-switch-thumb" aria-hidden="true"></span>
-          </label>
-        </div>
-      </div>
-
-      <div class="he-result" id="heResult">
-        <div class="he-result-headline" id="heOutcome">Enter your details</div>
-        <div class="he-result-sub" id="heOutcomeSub">We will show how your income compares with the income thresholds.</div>
-
-        <div class="he-callout-inline" id="heSavingsNote" hidden>
-          <span class="he-callout-inline-icon" aria-hidden="true"><i class="fa-solid fa-circle-info"></i></span>
-          <span>Savings note: If you have savings available, Legal Aid may expect you to use some savings before it is granted.</span>
-        </div>
-
-        <div class="he-grouped" role="list">
-          <div class="he-grouped-row" role="listitem">
-            <div class="he-grouped-label" id="heThresholdLabel">Income threshold</div>
-            <div class="he-grouped-value" id="heThresholdValue">$0</div>
-          </div>
-          <div class="he-grouped-row" role="listitem">
-            <div class="he-grouped-label">Annualised income</div>
-            <div class="he-grouped-value" id="heAnnualised">$0</div>
-          </div>
-          <div class="he-grouped-row" role="listitem">
-            <div class="he-grouped-label">Difference</div>
-            <div class="he-grouped-value" id="heDifference">$0 under threshold</div>
-          </div>
-        </div>
-
-        <div class="he-result-actions">
-          <button type="button" class="he-link" id="heReset">Reset</button>
-          <div class="he-actions-right">
-            <a class="he-btn he-btn-secondary" href="../assets/docs/Eligbility-Resource2.pdf" target="_blank" rel="noopener">
-              <i class="fa-solid fa-file-pdf"></i> View official PDF
-            </a>
-            <a class="he-btn he-btn-primary" href="../contact/">Talk to us</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="he-modal" id="heDisclaimer" aria-hidden="true">
-  <div class="he-modal-backdrop" data-close="1"></div>
-  <div class="he-modal-card" role="dialog" aria-modal="true" aria-labelledby="heDisclaimerTitle">
-    <div class="he-modal-title" id="heDisclaimerTitle">Before you use this tool</div>
-    <div class="he-modal-body">
-      <p>I acknowledge that Hine Eagle do not determine legal aid eligibility. Legal aid eligibility is determined at the sole discretion of the Ministry of Justice, who Hine Eagle is not affiliated with in any way.</p>
-      <p>This tool is designed to give you an idea if you may be under or over the income thresholds, based on what you enter.</p>
-      <label class="he-modal-check">
-        <input type="checkbox" id="heDisclaimerAck"/>
-        <span>I understand and wish to continue.</span>
+    <div class="eligibility-controls">
+      <label class="filter">
+        <span class="filter__label">Filter</span>
+        <input id="eligibilityFilter" type="text" placeholder="Start Typing..."/>
       </label>
+
+      <a class="btn btn-primary" href="../assets/docs/Eligbility-Resource2.pdf" target="_blank" rel="noopener">
+        <i class="fa-solid fa-file-pdf"></i>
+        View official PDF
+      </a>
     </div>
-    <div class="he-modal-actions">
-      <button type="button" class="he-btn he-btn-secondary" id="heDisclaimerCancel">Cancel</button>
-      <button type="button" class="he-btn he-btn-primary" id="heDisclaimerContinue" disabled>Continue</button>
-    </div>
-  </div>
-</div>
 
-</div>
-
-<div class="he-panel he-panel--thresholds">
-  <h2>Legal aid thresholds</h2>
-
-<div class="eligibility-grid">
+    <div class="eligibility-grid">
       <div class="eligibility-card">
         <h3>Single applicant</h3>
 
@@ -344,12 +188,69 @@
     </div>
 
   </div>
-
-
-  <p class="he-threshold-note">For each additional dependent after 5, add $8,192 per additional dependent.</p>
-</div>
-
 </section>
+
+<script>
+(function() {
+  const input = document.getElementById('eligibilityFilter');
+  if (!input) return;
+
+  const normalize = (s) =>
+    (s || "")
+      .toLowerCase()
+      .replace(/[^\w\s+]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+
+  const parseDependents = (rowText) => {
+    const t = normalize(rowText);
+    const m = t.match(/(?:\+\s*)?(\d+)\s*dependents?\b/);
+    if (m) return Number(m[1]);
+    if (t.includes("no dependents")) return 0;
+    return null;
+  };
+
+  const matchesQuery = (haystack, q) => {
+    if (!q) return true;
+    if (haystack.includes(q)) return true;
+
+    const dm = q.match(/\b(\d+)\s*dependents?\b/);
+    if (dm) {
+      const qNum = Number(dm[1]);
+      return haystack.includes(` ${qNum} dependents`) || haystack.includes(`+ ${qNum} dependents`);
+    }
+    return false;
+  };
+
+  const tables = Array.from(document.querySelectorAll('.eligibility-table'));
+
+  function applyFilter() {
+    const q = normalize(input.value);
+
+    tables.forEach(tbl => {
+      const card = tbl.closest('.eligibility-card');
+      const cardTitle = normalize(card ? (card.querySelector('h3')?.innerText || '') : '');
+      const rows = Array.from(tbl.querySelectorAll('tbody tr'));
+
+      rows.forEach(tr => {
+        const rowText = normalize(tr.innerText);
+        const dep = parseDependents(rowText);
+
+        let searchable = `${cardTitle} ${rowText}`;
+        if (dep !== null) {
+          searchable += ` ${dep} dependents`;
+          searchable += ` dependent ${dep}`;
+        }
+
+        tr.style.display = matchesQuery(searchable, q) ? '' : 'none';
+      });
+    });
+  }
+
+  input.addEventListener('input', applyFilter);
+  applyFilter();
+})();
+</script>
 
 <!-- NEW: iOS-style smooth dropdown animation for <details> -->
 <script>
@@ -450,6 +351,5 @@
 </footer>
 
 <script src="../assets/js/script.js"></script>
-  <script src="../assets/js/legal-aid-tool.js"></script>
 </body>
 </html>
