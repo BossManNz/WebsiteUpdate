@@ -138,7 +138,7 @@
     if (assetsEl) assetsEl.value = 0;
     update();
   }
-  }
+
 
   function openPanel() {
     panel.classList.remove('he-tool__panel--collapsed');
@@ -174,7 +174,8 @@
       closePanel();
       return;
     }
-    showModal();}
+    showModal();
+  }
 
   toggle.addEventListener('click', tryOpenOrClose);
   toggle.addEventListener('keydown', (e) => {
