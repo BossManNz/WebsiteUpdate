@@ -49,11 +49,11 @@
     segBtns.forEach(b => b.classList.toggle('he-seg__btn--active', b.getAttribute('data-app') === val));
     // Update copy
     if (val === 'partnered') {
-      if (incomeLabelEl) incomeLabelEl.textContent = 'Combined income (before tax)';
+      if (incomeLabelEl) incomeLabelEl.textContent = 'Total Combined income (before tax)';
       if (incomeHelpEl) incomeHelpEl.textContent = 'Enter your best estimate. Include your partner’s income as well.';
     } else {
-      if (incomeLabelEl) incomeLabelEl.textContent = 'Income (before tax)';
-      if (incomeHelpEl) incomeHelpEl.textContent = 'Enter your best estimate. You can include benefit income.';
+      if (incomeLabelEl) incomeLabelEl.textContent = 'Total Income (before tax)';
+      if (incomeHelpEl) incomeHelpEl.textContent = 'Enter your best estimate.';
     }
     update();
   }
