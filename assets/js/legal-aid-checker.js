@@ -89,11 +89,11 @@
 
     if (el.threshold) {
       const suffix = dep > 5 ? ' (using 5+ threshold)' : '';
-      el.threshold.innerHTML = `Income threshold (${typeLabel}, ${depLabel}): <strong>${formatMoney(threshold)}</strong>${suffix}`;
+      el.threshold.innerHTML = `Guideline income threshold (${typeLabel}, ${depLabel}): <strong>${formatMoney(threshold)}</strong>${suffix}`;
     }
 
     if (el.annualised) {
-      el.annualised.innerHTML = `Annualised income: <strong>${formatMoney(annualisedIncome)}</strong>`;
+      el.annualised.innerHTML = `Your annualised income: <strong>${formatMoney(annualisedIncome)}</strong>`;
     }
 
     // Make it explicit what income to include.
@@ -111,19 +111,19 @@
     }
 
     if (el.netWorth) {
-      el.netWorth.innerHTML = `Savings + sellable assets − debt: <strong>${formatMoney(netWorth)}</strong>`;
+      el.netWorth.innerHTML = `Savings + sellable assets minus debt: <strong>${formatMoney(netWorth)}</strong>`;
     }
 
     const hasAnyInputs = [el.income, el.savings, el.assets, el.debt].some((x) => x && String(x.value || '').trim() !== '');
     if (!hasAnyInputs) {
-      if (el.incomeStatus) el.incomeStatus.innerHTML = `Result: <strong>N/A</strong>`;
+      if (el.incomeStatus) el.incomeStatus.innerHTML = `Income comparison: <strong class="he-ios-muted">N/A</strong>`;
       if (el.note) el.note.textContent = 'Enter your details to see how your income compares with the guideline thresholds.';
       return;
     }
 
     const incomeEntered = el.income && String(el.income.value || '').trim() !== '';
     if (!incomeEntered) {
-      if (el.incomeStatus) el.incomeStatus.innerHTML = `Result: <strong>Enter your income</strong>`;
+      if (el.incomeStatus) el.incomeStatus.innerHTML = `Income comparison: <strong>Enter income to compare</strong>`;
       if (el.note) el.note.textContent = 'Income is the quickest first check, add your before-tax amount (weekly, fortnightly, or annual) to compare with the guideline thresholds.';
       return;
     }
@@ -132,15 +132,15 @@
 
     if (el.incomeStatus) {
       el.incomeStatus.innerHTML = under
-        ? `Result: <strong class="checker-ok">Under the guideline threshold</strong>`
-        : `Result: <strong class="checker-warn">Over the guideline threshold</strong>`;
+        ? `Income comparison: <strong class="he-ios-status he-ios-status--under">Under guideline threshold</strong>`
+        : `Income comparison: <strong class="he-ios-status he-ios-status--over">Over guideline threshold (hardship may still apply)</strong>`;
     }
 
     if (el.note) {
       if (under) {
-        el.note.textContent = 'Your income appears under the guideline threshold for your household size. This is not a decision, legal aid also considers savings, assets, debt, and hardship factors.';
+        el.note.textContent = 'Your income is under the guideline threshold for your household size. This is not a decision, legal aid can also consider savings, assets, debt, and hardship factors.';
       } else {
-        el.note.textContent = 'Your income appears over the guideline threshold. You may still qualify on hardship grounds, and legal aid can consider savings, assets, and debt.';
+        el.note.textContent = 'Your income is over the guideline threshold. You may still qualify on hardship grounds, and legal aid can consider savings, assets, and debt.';
       }
     }
   }

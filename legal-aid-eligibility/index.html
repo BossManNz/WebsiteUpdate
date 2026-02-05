@@ -130,103 +130,132 @@
       </div>
     </div>
 
-	    <!-- ===== Eligibility checker ===== -->
-	    <div class="eligibility-checker" aria-label="Legal aid eligibility checker">
-	      <div class="eligibility-checker__header">
-	        <h2>Quick eligibility checker</h2>
-	        <p class="eligibility-checker__sub">
-	          This tool compares your income to the guideline thresholds below, it is not a legal aid decision.
-	          Eligibility can also depend on your full circumstances (including assets, debts, and hardship factors).
-	        </p>
-	      </div>
+	        <!-- ===== Eligibility checker ===== -->
+    <section class="he-ios-checker" aria-label="Legal aid guideline checker">
+      <header class="he-ios-checker__header">
+        <h2 class="he-ios-checker__title">Quick guideline checker</h2>
+        <p class="he-ios-checker__sub">
+          This tool compares your income to the guideline thresholds below, it is not a legal aid decision.
+          Legal aid can also consider your circumstances, including savings, assets, debt, and hardship factors.
+        </p>
+      </header>
 
-	      <form class="eligibility-checker__form" id="eligibilityChecker" novalidate>
-	        <div class="checker-grid">
-	          <div class="checker-field checker-field--full">
-	            <span class="checker-label">Application type</span>
-	            <div class="checker-seg" role="radiogroup" aria-label="Application type">
-	              <label class="checker-seg__opt">
-	                <input type="radio" name="appType" value="single" checked>
-	                <span>Single</span>
-	              </label>
-	              <label class="checker-seg__opt">
-	                <input type="radio" name="appType" value="partnered">
-	                <span>Partnered</span>
-	              </label>
-	            </div>
-	            <p class="checker-help" id="checkerAppTypeHelp">Partnered means your combined income is assessed (include your partner's income too).</p>
-	          </div>
+      <form class="he-ios-checker__form" id="eligibilityChecker" novalidate>
+        <div class="he-ios-group" role="group" aria-label="Your details">
 
-	          <div class="checker-field">
-	            <label class="checker-label" for="checkerDependents">Number of dependents</label>
-	            <input class="checker-input" id="checkerDependents" name="dependents" type="number" inputmode="numeric" min="0" max="20" value="0">
-	            <p class="checker-help">Children or others who are financially dependent on you.</p>
-	          </div>
+          <div class="he-ios-row he-ios-row--stack">
+            <div class="he-ios-row__left">
+              <div class="he-ios-label">Application type</div>
+              <div class="he-ios-help" id="checkerAppTypeHelp">
+                If partnered, the combined income of you and your partner is assessed.
+              </div>
+            </div>
+            <div class="he-ios-row__right">
+              <div class="he-ios-seg" role="radiogroup" aria-label="Application type">
+                <label class="he-ios-seg__opt">
+                  <input type="radio" name="appType" value="single" checked>
+                  <span>Single</span>
+                </label>
+                <label class="he-ios-seg__opt">
+                  <input type="radio" name="appType" value="partnered">
+                  <span>Partnered</span>
+                </label>
+              </div>
+            </div>
+          </div>
 
-	          <div class="checker-field">
-	            <label class="checker-label" id="checkerIncomeLabel" for="checkerIncome">Income (before tax)</label>
-	            <div class="checker-income-row">
-	              <div class="checker-money">
-	                <span class="checker-money__prefix">$</span>
-	                <input class="checker-input checker-input--money" id="checkerIncome" name="income" type="text" inputmode="decimal" placeholder="0">
-	              </div>
-	              <label class="sr-only" for="checkerIncomePeriod">Income frequency</label>
-	              <select class="checker-input checker-select" id="checkerIncomePeriod" name="incomePeriod">
-	                <option value="annual" selected>Per year</option>
-	                <option value="fortnight">Per fortnight</option>
-	                <option value="weekly">Per week</option>
-	              </select>
-	            </div>
-	            <p class="checker-help" id="checkerIncomeHelp">Enter your best estimate (you can include benefit income).</p>
-	          </div>
+          <div class="he-ios-row">
+            <div class="he-ios-row__left">
+              <label class="he-ios-label" for="checkerDependents">Dependents</label>
+              <div class="he-ios-help">Children or others who are financially dependent on you.</div>
+            </div>
+            <div class="he-ios-row__right">
+              <input class="he-ios-input he-ios-input--num" id="checkerDependents" name="dependents" type="number" inputmode="numeric" min="0" max="20" value="0">
+            </div>
+          </div>
 
-	          <div class="checker-field">
-	            <label class="checker-label" for="checkerSavings">Savings (excluding KiwiSaver)</label>
-	            <div class="checker-money">
-	              <span class="checker-money__prefix">$</span>
-	              <input class="checker-input checker-input--money" id="checkerSavings" name="savings" type="text" inputmode="decimal" placeholder="0">
-	            </div>
-	            <p class="checker-help">For example bank accounts, cash, term deposits.</p>
-	          </div>
+          <div class="he-ios-row he-ios-row--income">
+            <div class="he-ios-row__left">
+              <label class="he-ios-label" id="checkerIncomeLabel" for="checkerIncome">Income (before tax)</label>
+              <div class="he-ios-help" id="checkerIncomeHelp">Enter your best estimate. You can include benefit income.</div>
+            </div>
+            <div class="he-ios-row__right">
+              <div class="he-ios-income">
+                <div class="he-ios-money">
+                  <span class="he-ios-money__prefix">$</span>
+                  <input class="he-ios-input he-ios-input--money" id="checkerIncome" name="income" type="text" inputmode="decimal" placeholder="0">
+                </div>
+                <select class="he-ios-select" id="checkerIncomePeriod" name="incomePeriod" aria-label="Income frequency">
+                  <option value="annual" selected>Year</option>
+                  <option value="fortnight">Fortnight</option>
+                  <option value="weekly">Week</option>
+                </select>
+              </div>
+            </div>
+          </div>
 
-	          <div class="checker-field">
-	            <label class="checker-label" for="checkerAssets">Sellable assets (each worth $3,500 or more, excluding your home)</label>
-	            <div class="checker-money">
-	              <span class="checker-money__prefix">$</span>
-	              <input class="checker-input checker-input--money" id="checkerAssets" name="assets" type="text" inputmode="decimal" placeholder="0">
-	            </div>
-	            <p class="checker-help">Total estimated resale value (for example a vehicle, boat, shares, valuable items).</p>
-	          </div>
+          <div class="he-ios-row">
+            <div class="he-ios-row__left">
+              <label class="he-ios-label" for="checkerSavings">Savings (excluding KiwiSaver)</label>
+              <div class="he-ios-help">For example bank accounts, cash, term deposits.</div>
+            </div>
+            <div class="he-ios-row__right">
+              <div class="he-ios-money">
+                <span class="he-ios-money__prefix">$</span>
+                <input class="he-ios-input he-ios-input--money" id="checkerSavings" name="savings" type="text" inputmode="decimal" placeholder="0">
+              </div>
+            </div>
+          </div>
 
-	          <div class="checker-field">
-	            <label class="checker-label" for="checkerDebt">Total debt</label>
-	            <div class="checker-money">
-	              <span class="checker-money__prefix">$</span>
-	              <input class="checker-input checker-input--money" id="checkerDebt" name="debt" type="text" inputmode="decimal" placeholder="0">
-	            </div>
-	            <p class="checker-help">Total of credit cards, loans, and other debts.</p>
-	          </div>
-	        </div>
+          <div class="he-ios-row">
+            <div class="he-ios-row__left">
+              <label class="he-ios-label" for="checkerAssets">Sellable assets (each worth $3,500+)</label>
+              <div class="he-ios-help">Exclude your home. Total estimated resale value (vehicle, shares, valuables).</div>
+            </div>
+            <div class="he-ios-row__right">
+              <div class="he-ios-money">
+                <span class="he-ios-money__prefix">$</span>
+                <input class="he-ios-input he-ios-input--money" id="checkerAssets" name="assets" type="text" inputmode="decimal" placeholder="0">
+              </div>
+            </div>
+          </div>
 
-	        <div class="checker-results" aria-live="polite" aria-atomic="true">
-	          <div class="checker-results__row">
-	            <div class="checker-chip" id="checkerThreshold">Income threshold: <strong>N/A</strong></div>
-	            <div class="checker-chip" id="checkerAnnualised">Annualised income: <strong>N/A</strong></div>
-	            <div class="checker-chip" id="checkerIncomeStatus">Result: <strong>N/A</strong></div>
-	          </div>
+          <div class="he-ios-row">
+            <div class="he-ios-row__left">
+              <label class="he-ios-label" for="checkerDebt">Total debt</label>
+              <div class="he-ios-help">Credit cards, loans, and other debts.</div>
+            </div>
+            <div class="he-ios-row__right">
+              <div class="he-ios-money">
+                <span class="he-ios-money__prefix">$</span>
+                <input class="he-ios-input he-ios-input--money" id="checkerDebt" name="debt" type="text" inputmode="decimal" placeholder="0">
+              </div>
+            </div>
+          </div>
 
-	          <div class="checker-results__row">
-	            <div class="checker-chip" id="checkerNetWorth">Savings + sellable assets − debt: <strong>N/A</strong></div>
-	            <div class="checker-note" id="checkerNote">Enter your details to see an indicative result.</div>
-	          </div>
+        </div>
 
-	          <div class="checker-actions">
-	            <button class="checker-btn" type="button" id="checkerReset">Reset</button>
-	            <a class="checker-btn checker-btn--primary" href="../contact/">Talk to us</a>
-	          </div>
-	        </div>
-	      </form>
-	    </div>
+        <div class="he-ios-summary" aria-live="polite" aria-atomic="true">
+          <div class="he-ios-summary__grid">
+            <div class="he-ios-summary__item" id="checkerThreshold"></div>
+            <div class="he-ios-summary__item" id="checkerAnnualised"></div>
+            <div class="he-ios-summary__item" id="checkerIncomeStatus"></div>
+          </div>
+
+          <div class="he-ios-summary__meta">
+            <div class="he-ios-summary__item" id="checkerNetWorth"></div>
+          </div>
+
+          <p class="he-ios-summary__note" id="checkerNote">Enter your details to see how your income compares with the guideline thresholds.</p>
+
+          <div class="he-ios-actions">
+            <button class="he-ios-btn" type="button" id="checkerReset">Reset</button>
+            <a class="he-ios-btn he-ios-btn--primary" href="../contact/">Talk to us</a>
+          </div>
+        </div>
+      </form>
+    </section>
+
 
     <div class="eligibility-controls">
       <label class="filter">
