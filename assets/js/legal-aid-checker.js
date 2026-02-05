@@ -106,9 +106,9 @@
     const help = document.getElementById("heIncomeHelp");
     if (!help) return;
     if (appType === "partnered") {
-      help.textContent = "Enter your combined income. Include your partner’s income too (you can include benefit income).";
+      help.textContent = "Enter your combined total income. Include your partner’s income too.";
     } else {
-      help.textContent = "Enter your best estimate. You can include benefit income.";
+      help.textContent = "Enter your best estimate.";
     }
   };
 
