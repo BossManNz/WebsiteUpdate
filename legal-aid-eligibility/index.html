@@ -113,9 +113,15 @@
 <div class="he-tool__header">
 <h2 class="he-tool__title">Legal Aid Eligibility Tool</h2>
 <p class="he-tool__notice"><span class="he-tool__notice-red">This tool compares your income with the legal aid thresholds below.</span></p>
-<button class="he-tool__toggle" id="heToolToggle" type="button" aria-expanded="false">Legal Aid Eligibility Checker Tool</button>
-</div>
-<div aria-hidden="true" class="he-tool__panel he-tool__panel--collapsed" id="heToolPanel">
+  <div class="he-tool__disclosure-card">
+    <button class="he-tool__disclosure-row" id="heToolToggle" type="button" aria-expanded="false" aria-controls="heToolPanel">
+      <div class="he-tool__disclosure-left">
+        <div class="he-tool__disclosure-title">Legal Aid Eligibility Checker Tool</div>
+        <div class="he-tool__disclosure-sub">Tap to open</div>
+      </div>
+      <div class="he-tool__disclosure-chevron" aria-hidden="true">›</div>
+    </button>
+    <div aria-hidden="true" class="he-tool__panel he-tool__panel--collapsed" id="heToolPanel">
 <div class="he-tool__rows">
 <div class="he-tool__row">
 <div class="he-tool__left">

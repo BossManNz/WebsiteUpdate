@@ -415,6 +415,65 @@
   font-weight: 600;
 }
 
+.he-tool__disclosure-card {
+  background: #ffffff;
+  border: 1px solid #ececef;
+  border-radius: 20px;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.06);
+  overflow: hidden;
+}
+
+.he-tool__disclosure-row {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  text-align: left;
+}
+
+.he-tool__disclosure-row:hover {
+  background: #f7f7f9;
+}
+
+.he-tool__disclosure-row:focus-visible {
+  outline: 3px solid rgba(0,122,255,0.22);
+  outline-offset: -3px;
+}
+
+.he-tool__disclosure-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.he-tool__disclosure-title {
+  font-size: 0.98rem;
+  font-weight: 650;
+  color: #1d1d1f;
+  letter-spacing: -0.01em;
+}
+
+.he-tool__disclosure-sub {
+  font-size: 0.86rem;
+  color: #6e6e73;
+}
+
+.he-tool__disclosure-chevron {
+  font-size: 1.4rem;
+  line-height: 1;
+  color: #8e8e93;
+  transform: rotate(0deg);
+  transition: transform 160ms ease;
+}
+
+#heToolToggle[aria-expanded="true"] .he-tool__disclosure-chevron {
+  transform: rotate(90deg);
+}
+
 .he-tool__toggle {
   width: 100%;
   display: flex;
@@ -448,12 +507,9 @@
 }
 
 .he-tool__panel {
-  margin-top: 14px;
+  margin-top: 0;
+  border-top: 1px solid #ececef;
   background: #ffffff;
-  border: 1px solid #ececef;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 14px 32px rgba(0,0,0,0.07);
 }
 
 .he-tool__panel--collapsed {
