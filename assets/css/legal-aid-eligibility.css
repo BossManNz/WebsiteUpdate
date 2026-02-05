@@ -386,480 +386,291 @@
 }
 
 
-
 /* =========================
-   Page surface (iOS vibe)
+   iOS-style page polish
    ========================= */
-body {
-  background: #f5f5f7;
+
+#legal-aid-eligibility .container {
+  max-width: 1100px;
 }
 
-#legal-aid-eligibility .fees-title-wrap {
-  margin-bottom: 18px;
-}
-
-#legal-aid-eligibility .eligibility-back {
-  display: inline-flex;
-  gap: 8px;
-  align-items: center;
-  color: #6e6e73;
-  text-decoration: none;
-  font-size: 0.95rem;
-}
-
-#legal-aid-eligibility .eligibility-back:hover {
-  color: #1d1d1f;
-  text-decoration: underline;
-}
-
-/* =========================
-   Callout: quieter, Apple-y
-   ========================= */
-#legal-aid-eligibility .he-callout {
+.he-callout {
   background: #ffffff;
-  border: 1px solid #e6e6e8;
-  border-left: 0;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  border-left: 4px solid #b10f1e;
+  box-shadow: 0 8px 26px rgba(0,0,0,0.06);
 }
 
-#legal-aid-eligibility .he-callout__icon {
-  background: rgba(177,15,30,0.10);
-  border: 1px solid rgba(177,15,30,0.12);
+.he-details summary {
+  background: #f2f2f7;
+  border: 1px solid rgba(0,0,0,0.06);
 }
 
 /* =========================
-   Checker (iOS Settings)
+   Quick threshold checker (iOS Settings style)
    ========================= */
-#legal-aid-eligibility .he-checker {
-  margin: 22px 0 22px;
+
+.he-checker {
+  margin: 14px 0 26px;
 }
 
-#legal-aid-eligibility .he-checker h2 {
+.he-checker__header {
+  margin: 0 0 10px;
+}
+
+.he-checker__title {
+  font-size: 1.15rem;
+  font-weight: 700;
   margin: 0 0 6px;
-  font-size: 1.35rem;
-  font-weight: 650;
-  letter-spacing: -0.01em;
+  color: #1d1d1f;
 }
 
-#legal-aid-eligibility .he-checker__note {
-  margin: 0 0 14px;
+.he-checker__subtitle {
+  margin: 0;
   color: #6e6e73;
-  line-height: 1.5;
-  max-width: 80ch;
+  line-height: 1.55;
+  max-width: 90ch;
 }
 
-#legal-aid-eligibility .he-checker__card {
+.he-checker__card {
   background: #ffffff;
-  border: 1px solid #e6e6e8;
   border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
   overflow: hidden;
 }
 
-#legal-aid-eligibility .he-row {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 16px;
+.he-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
   padding: 16px 18px;
-  border-top: 1px solid #efeff1;
+  border-top: 1px solid rgba(0,0,0,0.06);
 }
 
-#legal-aid-eligibility .he-row:first-child {
-  border-top: none;
-}
+.he-row:first-of-type { border-top: none; }
 
-#legal-aid-eligibility .he-label {
+.he-row__left { min-width: 0; }
+.he-row__label {
   font-weight: 600;
   color: #1d1d1f;
+  margin: 0 0 2px;
 }
-
-#legal-aid-eligibility .he-help {
-  margin-top: 2px;
+.he-row__help {
   color: #6e6e73;
-  font-size: 0.92rem;
-  line-height: 1.35;
-  max-width: 60ch;
+  font-size: 0.93rem;
+  line-height: 1.45;
 }
 
-#legal-aid-eligibility .he-row__right {
+.he-row__right {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 10px;
+  min-width: 280px;
 }
 
-#legal-aid-eligibility .he-row__right--income {
-  gap: 10px;
-}
+.he-income { gap: 10px; }
 
-#legal-aid-eligibility .he-input,
-#legal-aid-eligibility .he-select {
-  appearance: none;
-  border: none;
+.he-field {
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.06);
+  background: #f2f2f7;
+  padding: 0 12px;
   outline: none;
-  background: #f5f5f7;
   color: #1d1d1f;
-  border-radius: 14px;
-  padding: 10px 12px;
-  min-width: 140px;
-  font-size: 0.98rem;
+  width: 220px;
 }
 
-#legal-aid-eligibility .he-input--small {
-  min-width: 86px;
-  text-align: right;
+.he-field--small { width: 120px; text-align: right; }
+.he-field--select { width: 160px; padding-right: 34px; }
+
+.he-field:focus {
+  border-color: rgba(177, 15, 30, 0.35);
+  box-shadow: 0 0 0 4px rgba(177, 15, 30, 0.12);
+  background: #ffffff;
 }
 
-#legal-aid-eligibility .he-select {
-  min-width: 140px;
-  padding-right: 34px;
-  background-image:
-    linear-gradient(45deg, transparent 50%, #8e8e93 50%),
-    linear-gradient(135deg, #8e8e93 50%, transparent 50%);
-  background-position:
-    calc(100% - 18px) calc(50% + 1px),
-    calc(100% - 12px) calc(50% + 1px);
-  background-size: 6px 6px, 6px 6px;
-  background-repeat: no-repeat;
-}
-
-#legal-aid-eligibility .he-money {
-  display: grid;
-  grid-template-columns: 34px 1fr;
+.he-money {
+  display: flex;
   align-items: center;
-  background: #f5f5f7;
-  border-radius: 14px;
-  overflow: hidden;
-  min-width: 220px;
+  gap: 8px;
+  padding: 0 10px;
+  height: 40px;
+  border-radius: 12px;
+  background: #f2f2f7;
+  border: 1px solid rgba(0,0,0,0.06);
 }
+.he-money__symbol { color: #6e6e73; font-weight: 600; }
+.he-money .he-field { border: none; background: transparent; box-shadow: none; padding: 0; height: 38px; width: 150px; }
 
-#legal-aid-eligibility .he-money__symbol {
-  display: grid;
-  place-items: center;
-  color: #6e6e73;
-  font-weight: 600;
-}
-
-#legal-aid-eligibility .he-money .he-input {
-  background: transparent;
-  border-radius: 0;
-  min-width: 0;
-}
-
-#legal-aid-eligibility .he-seg {
-  background: #f2f2f4;
-  border: 1px solid #e6e6e8;
+/* Segmented control */
+.he-seg {
+  display: inline-flex;
+  background: #f2f2f7;
+  border: 1px solid rgba(0,0,0,0.06);
   border-radius: 14px;
   padding: 4px;
-  display: inline-flex;
   gap: 4px;
 }
 
-#legal-aid-eligibility .he-seg__btn {
+.he-seg__btn {
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 12px;
   border: none;
   background: transparent;
-  padding: 8px 14px;
-  border-radius: 12px;
-  font-weight: 600;
   color: #6e6e73;
+  font-weight: 600;
   cursor: pointer;
 }
 
-#legal-aid-eligibility .he-seg__btn.is-active {
+.he-seg__btn.is-active {
   background: #ffffff;
   color: #1d1d1f;
-  box-shadow: 0 1px 5px rgba(0,0,0,0.10);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
 }
 
-#legal-aid-eligibility .he-switch {
-  position: relative;
-  width: 52px;
-  height: 30px;
-  display: inline-block;
-}
-
-#legal-aid-eligibility .he-switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-#legal-aid-eligibility .he-switch__track {
-  position: absolute;
-  inset: 0;
-  background: #e5e5ea;
+/* iOS switch */
+.he-switch { position: relative; width: 52px; height: 32px; }
+.he-switch input { opacity: 0; width: 0; height: 0; }
+.he-switch__track {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.12);
   border-radius: 999px;
-  transition: 150ms ease;
+  transition: background 180ms ease;
 }
-
-#legal-aid-eligibility .he-switch__track:before {
+.he-switch__track:before {
   content: "";
   position: absolute;
-  height: 26px;
-  width: 26px;
-  left: 2px;
-  top: 2px;
+  width: 26px; height: 26px;
+  left: 3px; top: 3px;
   background: #ffffff;
   border-radius: 50%;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.20);
-  transition: 150ms ease;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.18);
+  transition: transform 180ms ease;
 }
+.he-switch input:checked + .he-switch__track { background: #b10f1e; }
+.he-switch input:checked + .he-switch__track:before { transform: translateX(20px); }
 
-#legal-aid-eligibility .he-switch input:checked + .he-switch__track {
-  background: rgba(177,15,30,0.85);
-}
-
-#legal-aid-eligibility .he-switch input:checked + .he-switch__track:before {
-  transform: translateX(22px);
-}
-
-#legal-aid-eligibility .he-results {
-  margin: 16px;
-  padding: 20px;
-  border-radius: 18px;
+/* Result area */
+.he-result {
+  border-top: 1px solid rgba(0,0,0,0.06);
+  padding: 18px;
   background: #ffffff;
-  border: 1px solid #e6e6e8;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.04);
 }
 
-#legal-aid-eligibility .he-results__headline {
+.he-result__status {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1d1d1f;
+}
+
+.he-result__text {
+  margin-top: 6px;
+  color: #6e6e73;
+  line-height: 1.5;
+}
+
+.he-callout-inline {
+  margin-top: 12px;
   display: flex;
-  flex-direction: column;
   gap: 10px;
   align-items: flex-start;
-  margin-bottom: 14px;
-}
-
-#legal-aid-eligibility .he-results__title {
-  font-size: 1.35rem;
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  line-height: 1.15;
-  color: #1d1d1f;
-  padding: 14px 16px;
-  border-radius: 16px;
-  background: #f5f5f7;
-  border: 1px solid #e6e6e8;
-}
-
-#legal-aid-eligibility .he-results.is-under .he-results__title {
-  background: rgba(0, 0, 0, 0.03);
-  border-color: rgba(0, 0, 0, 0.10);
-}
-
-#legal-aid-eligibility .he-results.is-over .he-results__title {
-  background: rgba(177, 15, 30, 0.08);
-  border-color: rgba(177, 15, 30, 0.14);
-  color: rgba(177, 15, 30, 0.98);
-}
-
-
-#legal-aid-eligibility .he-results__kicker {
-  font-weight: 700;
-  font-size: 0.90rem;
-  color: #6e6e73;
-  letter-spacing: -0.01em;
-}
-
-#legal-aid-eligibility .he-results__pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 14px;
-  border-radius: 999px;
-  background: #f5f5f7;
-  border: 1px solid #e6e6e8;
-  color: #1d1d1f;
-  font-weight: 800;
-  letter-spacing: -0.015em;
-  font-size: 1.05rem;
-  line-height: 1.1;
-}
-
-#legal-aid-eligibility .he-results__status {
-  color: #1d1d1f;
-  line-height: 1.45;
-  font-size: 1.00rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-
-#legal-aid-eligibility .he-results__note {
-  background: #f5f5f7;
-  border: 1px solid #e6e6e8;
-  border-radius: 16px;
-  padding: 12px 14px;
-  color: #6e6e73;
-  font-size: 0.92rem;
-  line-height: 1.35;
-}
-
-#legal-aid-eligibility .he-results.is-over .he-results__pill {
-  background: rgba(177, 15, 30, 0.10);
-  border-color: rgba(177, 15, 30, 0.18);
-  color: rgba(177, 15, 30, 0.95);
-}
-
-#legal-aid-eligibility .he-results.is-over .he-results__status {
-  color: #1d1d1f;
-}
-
-#legal-aid-eligibility .he-results__grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 10px;
-}
-
-#legal-aid-eligibility .he-metric {
-  background: #f5f5f7;
-  border-radius: 16px;
   padding: 12px 12px;
-  min-width: 0;
-}
-
-#legal-aid-eligibility .he-metric__label {
-  color: #6e6e73;
-  font-size: 0.88rem;
-  margin-bottom: 4px;
-  line-height: 1.2;
-}
-
-#legal-aid-eligibility .he-metric__value {
-  font-weight: 700;
+  border-radius: 14px;
+  background: #f2f2f7;
   color: #1d1d1f;
-  letter-spacing: -0.01em;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+.he-callout-inline i { margin-top: 2px; color: #6e6e73; }
+
+.he-summary {
+  margin-top: 14px;
+  background: #f2f2f7;
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 16px;
+  overflow: hidden;
 }
 
-#legal-aid-eligibility .he-actions {
+.he-summary__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
+.he-summary__row:first-child { border-top: none; }
+
+.he-summary__label { color: #6e6e73; font-weight: 600; }
+.he-summary__value { color: #1d1d1f; font-weight: 700; white-space: nowrap; }
+
+.he-actions {
+  margin-top: 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-top: 16px;
+}
+
+.he-linkbtn {
+  border: none;
+  background: transparent;
+  color: #b10f1e;
+  font-weight: 700;
+  padding: 10px 6px;
+  cursor: pointer;
 }
 
 .he-actions__right {
   display: flex;
+  gap: 10px;
   align-items: center;
-  gap: 12px;
-  margin-left: auto;
 }
 
-
-#legal-aid-eligibility .he-actions .btn {
+.he-btn {
   height: 44px;
-  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   padding: 0 16px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  line-height: 1;
+  border-radius: 12px;
   font-weight: 700;
-  letter-spacing: -0.01em;
-}
-
-#legal-aid-eligibility .he-actions .btn-tertiary {
-  background: transparent;
-  border: 1px solid #e6e6e8;
-  color: #1d1d1f;
-}
-
-#legal-aid-eligibility .he-actions .btn-tertiary:hover {
-  background: #f5f5f7;
-}
-#legal-aid-eligibility .btn.btn-outline {
-  background: #ffffff;
-  border: 1px solid #e6e6e8;
-  color: #1d1d1f;
-}
-
-#legal-aid-eligibility .btn.btn-outline:hover {
-  background: #f5f5f7;
-}
-
-
-#legal-aid-eligibility .he-results:not(.is-under):not(.is-over) .he-results__pill{
-  color:#6e6e73;
-  font-weight: 700;
-}
-
-#legal-aid-eligibility .he-results.is-under{
-  background: #ffffff;
-}
-
-#legal-aid-eligibility .he-results.is-under .he-results__pill{
-  background: rgba(0, 0, 0, 0.04);
-  border-color: rgba(0,0,0,0.08);
-  color: #1d1d1f;
-}
-
-#legal-aid-eligibility .he-actions{
-  justify-content: flex-start;
-}
-
-#legal-aid-eligibility .he-actions .btn{
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
   text-decoration: none;
   white-space: nowrap;
 }
 
-/* Responsive */
-@media (max-width: 860px) {
-  #legal-aid-eligibility .he-row {
-    grid-template-columns: 1fr;
-  }
-  #legal-aid-eligibility .he-row__right {
-    justify-content: flex-start;
-  }
-  #legal-aid-eligibility .he-money {
-    min-width: 0;
-    width: 100%;
-  }
-  #legal-aid-eligibility .he-input,
-  #legal-aid-eligibility .he-select {
-    width: 100%;
-    min-width: 0;
-  }
-  #legal-aid-eligibility .he-results__headline {
-    grid-template-columns: 1fr;
-  }
-  #legal-aid-eligibility .he-results__grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* =========================
-   Threshold tables (clean cards)
-   ========================= */
-#legal-aid-eligibility .eligibility-card {
+.he-btn--secondary {
   background: #ffffff;
-  border: 1px solid #e6e6e8;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-}
-
-#legal-aid-eligibility .eligibility-card h3 {
-  margin: 0 0 10px;
-  font-size: 1.15rem;
-  font-weight: 650;
-  letter-spacing: -0.01em;
-}
-
-#legal-aid-eligibility .eligibility-table thead th {
-  background: #f5f5f7;
+  border: 1px solid rgba(0,0,0,0.14);
   color: #1d1d1f;
 }
 
-#legal-aid-eligibility .eligibility-table tbody tr:hover td {
-  background: #fafafa;
+.he-btn--primary {
+  background: #b10f1e;
+  border: 1px solid rgba(0,0,0,0.10);
+  color: #ffffff;
 }
 
-#legal-aid-eligibility .eligibility-footnote {
-  margin: 14px 0 0;
+.he-btn--primary:hover { filter: brightness(0.98); }
+.he-btn--secondary:hover { background: #fafafa; }
+
+/* Table footnote */
+.eligibility-footnote {
+  margin: 10px 0 0;
   color: #6e6e73;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .he-row { flex-direction: column; }
+  .he-row__right { min-width: 0; width: 100%; justify-content: flex-start; }
+  .he-field, .he-field--select { width: 100%; }
+  .he-money { width: 100%; }
+  .he-money .he-field { width: 100%; }
+  .he-actions { flex-direction: column; align-items: stretch; }
+  .he-actions__right { justify-content: stretch; }
+  .he-btn { width: 100%; justify-content: center; }
+  .he-linkbtn { text-align: left; }
 }
