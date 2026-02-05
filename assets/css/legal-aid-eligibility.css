@@ -386,263 +386,367 @@
 }
 
 
+
 /* =========================
-   Quick guideline checker (iOS-style)
+   Page surface (iOS vibe)
    ========================= */
-
-.eligibility-checker {
-  margin: 18px 0 22px;
-  padding: 22px;
-  background: #fff;
-  border: 1px solid rgba(0,0,0,0.08);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-}
-
-.checker-header { margin-bottom: 14px; }
-.checker-title {
-  margin: 0 0 6px;
-  font-size: 20px;
-  letter-spacing: -0.02em;
-}
-.checker-subtitle {
-  margin: 0;
-  color: rgba(0,0,0,0.65);
-  line-height: 1.4;
-  font-size: 13.5px;
-}
-
-.checker-rows {
-  margin-top: 14px;
-  border-radius: 16px;
-  border: 1px solid rgba(0,0,0,0.08);
-  overflow: hidden;
-  background: rgba(245,245,247,0.55);
-}
-
-.checker-row {
-  display: flex;
-  gap: 14px;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 16px;
-  background: rgba(255,255,255,0.75);
-  border-bottom: 1px solid rgba(0,0,0,0.06);
-}
-
-.checker-row:last-child { border-bottom: none; }
-
-.checker-left { flex: 1; min-width: 0; }
-.checker-right { display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
-
-.checker-right--income { flex-wrap: wrap; }
-
-.checker-label {
-  font-weight: 600;
-  font-size: 13.5px;
-  color: rgba(0,0,0,0.88);
-}
-.checker-help {
-  font-size: 12.5px;
-  color: rgba(0,0,0,0.55);
-  margin-top: 4px;
-}
-
-.money-field {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+body {
   background: #f5f5f7;
-  border: 1px solid rgba(0,0,0,0.08);
-  border-radius: 14px;
-  padding: 8px 10px;
-  min-width: 170px;
 }
 
-.money-prefix {
-  color: rgba(0,0,0,0.55);
-  font-weight: 600;
-  font-size: 13px;
+#legal-aid-eligibility .fees-title-wrap {
+  margin-bottom: 18px;
 }
 
-.checker-input {
-  border: none;
-  outline: none;
-  background: transparent;
-  width: 100%;
-  font-size: 14px;
-  color: rgba(0,0,0,0.90);
-}
-
-.checker-input--small {
-  width: 70px;
-  text-align: right;
-  background: #f5f5f7;
-  border: 1px solid rgba(0,0,0,0.08);
-  border-radius: 14px;
-  padding: 8px 10px;
-}
-
-.checker-select {
-  background: #f5f5f7;
-  border: 1px solid rgba(0,0,0,0.08);
-  border-radius: 14px;
-  padding: 8px 12px;
-  font-size: 13.5px;
-  color: rgba(0,0,0,0.82);
-}
-
-.segmented {
+#legal-aid-eligibility .eligibility-back {
   display: inline-flex;
-  background: #f2f2f4;
-  border: 1px solid rgba(0,0,0,0.08);
-  border-radius: 16px;
-  padding: 3px;
-  gap: 3px;
+  gap: 8px;
+  align-items: center;
+  color: #6e6e73;
+  text-decoration: none;
+  font-size: 0.95rem;
 }
 
-.segmented-btn {
-  appearance: none;
-  border: none;
-  background: transparent;
-  padding: 8px 14px;
-  border-radius: 13px;
-  font-size: 13px;
-  color: rgba(0,0,0,0.70);
-  cursor: pointer;
-  transition: background 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
+#legal-aid-eligibility .eligibility-back:hover {
+  color: #1d1d1f;
+  text-decoration: underline;
 }
 
-.segmented-btn.is-active {
-  background: #fff;
-  color: rgba(0,0,0,0.90);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+/* =========================
+   Callout: quieter, Apple-y
+   ========================= */
+#legal-aid-eligibility .he-callout {
+  background: #ffffff;
+  border: 1px solid #e6e6e8;
+  border-left: 0;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
 
-.ios-switch {
-  position: relative;
-  width: 52px;
-  height: 32px;
-  display: inline-block;
+#legal-aid-eligibility .he-callout__icon {
+  background: rgba(177,15,30,0.10);
+  border: 1px solid rgba(177,15,30,0.12);
 }
 
-.ios-switch input { opacity: 0; width: 0; height: 0; }
-
-.ios-switch-track {
-  position: absolute;
-  inset: 0;
-  border-radius: 999px;
-  background: rgba(0,0,0,0.18);
-  transition: background 0.18s ease;
+/* =========================
+   Checker (iOS Settings)
+   ========================= */
+#legal-aid-eligibility .he-checker {
+  margin: 22px 0 22px;
 }
 
-.ios-switch-track::after {
-  content: "";
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 26px;
-  height: 26px;
-  border-radius: 999px;
-  background: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.22);
-  transition: transform 0.18s ease;
-}
-
-.ios-switch input:checked + .ios-switch-track {
-  background: rgba(0,0,0,0.65);
-}
-
-.ios-switch input:checked + .ios-switch-track::after {
-  transform: translateX(20px);
-}
-
-/* Prominent results block */
-.checker-results {
-  margin-top: 14px;
-  border-radius: 18px;
-  border: 1px solid rgba(0,0,0,0.10);
-  background: #fff;
-  padding: 16px;
-  box-shadow: 0 10px 22px rgba(0,0,0,0.06);
-}
-
-.checker-results-top {
-  display: flex;
-  gap: 12px;
-  align-items: baseline;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  margin-bottom: 10px;
-}
-
-.checker-results-title {
-  font-weight: 700;
+#legal-aid-eligibility .he-checker h2 {
+  margin: 0 0 6px;
+  font-size: 1.35rem;
+  font-weight: 650;
   letter-spacing: -0.01em;
 }
 
-.checker-results-status {
-  font-weight: 600;
-  color: rgba(0,0,0,0.78);
+#legal-aid-eligibility .he-checker__note {
+  margin: 0 0 14px;
+  color: #6e6e73;
+  line-height: 1.5;
+  max-width: 80ch;
 }
 
-.checker-results-status.is-under { color: rgba(0,0,0,0.78); }
-.checker-results-status.is-over { color: rgba(0,0,0,0.78); }
+#legal-aid-eligibility .he-checker__card {
+  background: #ffffff;
+  border: 1px solid #e6e6e8;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  overflow: hidden;
+}
 
-.checker-results-meta {
+#legal-aid-eligibility .he-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  padding: 16px 18px;
+  border-top: 1px solid #efeff1;
+}
+
+#legal-aid-eligibility .he-row:first-child {
+  border-top: none;
+}
+
+#legal-aid-eligibility .he-label {
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+#legal-aid-eligibility .he-help {
+  margin-top: 2px;
+  color: #6e6e73;
+  font-size: 0.92rem;
+  line-height: 1.35;
+  max-width: 60ch;
+}
+
+#legal-aid-eligibility .he-row__right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#legal-aid-eligibility .he-row__right--income {
+  gap: 10px;
+}
+
+#legal-aid-eligibility .he-input,
+#legal-aid-eligibility .he-select {
+  appearance: none;
+  border: none;
+  outline: none;
+  background: #f5f5f7;
+  color: #1d1d1f;
+  border-radius: 14px;
+  padding: 10px 12px;
+  min-width: 140px;
+  font-size: 0.98rem;
+}
+
+#legal-aid-eligibility .he-input--small {
+  min-width: 86px;
+  text-align: right;
+}
+
+#legal-aid-eligibility .he-select {
+  min-width: 140px;
+  padding-right: 34px;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #8e8e93 50%),
+    linear-gradient(135deg, #8e8e93 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) calc(50% + 1px),
+    calc(100% - 12px) calc(50% + 1px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+#legal-aid-eligibility .he-money {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  align-items: center;
+  background: #f5f5f7;
+  border-radius: 14px;
+  overflow: hidden;
+  min-width: 220px;
+}
+
+#legal-aid-eligibility .he-money__symbol {
+  display: grid;
+  place-items: center;
+  color: #6e6e73;
+  font-weight: 600;
+}
+
+#legal-aid-eligibility .he-money .he-input {
+  background: transparent;
+  border-radius: 0;
+  min-width: 0;
+}
+
+#legal-aid-eligibility .he-seg {
+  background: #f2f2f4;
+  border: 1px solid #e6e6e8;
+  border-radius: 14px;
+  padding: 4px;
+  display: inline-flex;
+  gap: 4px;
+}
+
+#legal-aid-eligibility .he-seg__btn {
+  border: none;
+  background: transparent;
+  padding: 8px 14px;
+  border-radius: 12px;
+  font-weight: 600;
+  color: #6e6e73;
+  cursor: pointer;
+}
+
+#legal-aid-eligibility .he-seg__btn.is-active {
+  background: #ffffff;
+  color: #1d1d1f;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.10);
+}
+
+#legal-aid-eligibility .he-switch {
+  position: relative;
+  width: 52px;
+  height: 30px;
+  display: inline-block;
+}
+
+#legal-aid-eligibility .he-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+#legal-aid-eligibility .he-switch__track {
+  position: absolute;
+  inset: 0;
+  background: #e5e5ea;
+  border-radius: 999px;
+  transition: 150ms ease;
+}
+
+#legal-aid-eligibility .he-switch__track:before {
+  content: "";
+  position: absolute;
+  height: 26px;
+  width: 26px;
+  left: 2px;
+  top: 2px;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.20);
+  transition: 150ms ease;
+}
+
+#legal-aid-eligibility .he-switch input:checked + .he-switch__track {
+  background: rgba(177,15,30,0.85);
+}
+
+#legal-aid-eligibility .he-switch input:checked + .he-switch__track:before {
+  transform: translateX(22px);
+}
+
+#legal-aid-eligibility .he-results {
+  margin: 16px;
+  padding: 16px;
+  border-radius: 18px;
+  background: #ffffff;
+  border: 1px solid #e6e6e8;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+}
+
+#legal-aid-eligibility .he-results__headline {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 14px;
+  align-items: start;
+  margin-bottom: 12px;
+}
+
+#legal-aid-eligibility .he-results__title {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #1d1d1f;
+}
+
+#legal-aid-eligibility .he-results__status {
+  color: #1d1d1f;
+  line-height: 1.45;
+}
+
+#legal-aid-eligibility .he-results.is-under .he-results__status {
+  color: #1d1d1f;
+}
+
+#legal-aid-eligibility .he-results.is-over .he-results__status {
+  color: #1d1d1f;
+}
+
+#legal-aid-eligibility .he-results__grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
-  margin: 12px 0;
+  margin-top: 10px;
 }
 
-.meta-item {
+#legal-aid-eligibility .he-metric {
   background: #f5f5f7;
-  border: 1px solid rgba(0,0,0,0.08);
-  border-radius: 14px;
-  padding: 10px 12px;
+  border-radius: 16px;
+  padding: 12px 12px;
+  min-width: 0;
 }
 
-.meta-label {
-  font-size: 12px;
-  color: rgba(0,0,0,0.55);
+#legal-aid-eligibility .he-metric__label {
+  color: #6e6e73;
+  font-size: 0.88rem;
   margin-bottom: 4px;
+  line-height: 1.2;
 }
 
-.meta-value {
+#legal-aid-eligibility .he-metric__value {
   font-weight: 700;
-  color: rgba(0,0,0,0.86);
+  color: #1d1d1f;
+  letter-spacing: -0.01em;
 }
 
-.checker-results-note {
-  font-size: 12.5px;
-  color: rgba(0,0,0,0.62);
-  line-height: 1.35;
-  margin-top: 6px;
-}
-
-.checker-actions {
+#legal-aid-eligibility .he-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   align-items: center;
   margin-top: 14px;
 }
 
-@media (max-width: 820px) {
-  .checker-row { flex-direction: column; align-items: flex-start; }
-  .checker-right { width: 100%; justify-content: flex-start; }
-  .checker-results-meta { grid-template-columns: 1fr; }
-  .money-field { width: 100%; }
+#legal-aid-eligibility .btn.btn-outline {
+  background: #ffffff;
+  border: 1px solid #e6e6e8;
+  color: #1d1d1f;
 }
 
-/* Accessibility helper */
-.sr-only {
-  position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  padding: 0 !important;
-  margin: -1px !important;
-  overflow: hidden !important;
-  clip: rect(0, 0, 0, 0) !important;
-  white-space: nowrap !important;
-  border: 0 !important;
+#legal-aid-eligibility .btn.btn-outline:hover {
+  background: #f5f5f7;
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  #legal-aid-eligibility .he-row {
+    grid-template-columns: 1fr;
+  }
+  #legal-aid-eligibility .he-row__right {
+    justify-content: flex-start;
+  }
+  #legal-aid-eligibility .he-money {
+    min-width: 0;
+    width: 100%;
+  }
+  #legal-aid-eligibility .he-input,
+  #legal-aid-eligibility .he-select {
+    width: 100%;
+    min-width: 0;
+  }
+  #legal-aid-eligibility .he-results__headline {
+    grid-template-columns: 1fr;
+  }
+  #legal-aid-eligibility .he-results__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================
+   Threshold tables (clean cards)
+   ========================= */
+#legal-aid-eligibility .eligibility-card {
+  background: #ffffff;
+  border: 1px solid #e6e6e8;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+#legal-aid-eligibility .eligibility-card h3 {
+  margin: 0 0 10px;
+  font-size: 1.15rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+#legal-aid-eligibility .eligibility-table thead th {
+  background: #f5f5f7;
+  color: #1d1d1f;
+}
+
+#legal-aid-eligibility .eligibility-table tbody tr:hover td {
+  background: #fafafa;
+}
+
+#legal-aid-eligibility .eligibility-footnote {
+  margin: 14px 0 0;
+  color: #6e6e73;
+  font-size: 0.95rem;
 }
