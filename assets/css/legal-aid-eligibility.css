@@ -38,13 +38,21 @@
     gap: 10px;
   }
   .he-row__right--income { flex-wrap: wrap; }
-  .he-field {
+  /* IMPORTANT: when any control row becomes a column on smaller screens,
+     flex-basis would apply to HEIGHT (and create giant "grey slabs").
+     So we avoid flex sizing here and rely on width instead. */
+  .he-field,
+  .he-money {
     min-width: 0;
-    flex: 1 1 220px;
+    flex: 0 0 auto;
+    width: 100%;
   }
-  .he-field--compact { flex: 1 1 160px; text-align: left; }
-  .he-field--select { flex: 1 1 180px; }
-  .he-money { flex: 1 1 260px; }
+  .he-field--compact,
+  .he-field--select {
+    flex: 0 0 auto;
+    width: 100%;
+    text-align: left;
+  }
   .he-seg { width: 100%; justify-content: flex-end; }
   .he-switch { margin-left: auto; }
   /* Actions: avoid awkward spacing, keep right actions aligned */
