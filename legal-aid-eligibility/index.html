@@ -143,13 +143,30 @@
       </div>
     </div>
 
-    <section class="he-checker" aria-label="Income threshold checker">
+    <section class="he-checker" aria-label="Legal Aid Eligibility Tool">
       <div class="he-checker__card">
-        <h2 class="he-checker__title">Income threshold checker</h2>
-        <p class="he-checker__intro">
-          This tool compares your income to the income thresholds below. It is not a Legal Aid decision.
-          Legal Aid can also consider your circumstances, including hardship factors.
-        </p>
+        <h2 class="he-checker__title">Legal Aid Eligibility Tool</h2>
+        <p class="he-checker__intro he-checker__intro--alert">This tool compares your income with the legal aid thresholds below.</p>
+
+        <div class="he-modal" id="heDisclaimerModal" role="dialog" aria-modal="true" aria-labelledby="heDisclaimerTitle" hidden>
+          <div class="he-modal__backdrop" data-close="true"></div>
+          <div class="he-modal__panel" role="document">
+            <div class="he-modal__title" id="heDisclaimerTitle">Before you use this tool</div>
+            <div class="he-modal__body">
+              <p>I acknowledge that Hine Eagle does not determine legal aid eligibility. Legal aid eligibility is decided solely by the Ministry of Justice, and Hine Eagle is not affiliated with the Ministry of Justice.</p>
+              <p>This tool is designed to give you an indication of whether your income is under or over the legal aid income thresholds, based on what you enter.</p>
+            </div>
+            <label class="he-modal__ack">
+              <input type="checkbox" id="heDisclaimerAck" />
+              <span>I understand and acknowledge this disclaimer.</span>
+            </label>
+            <div class="he-modal__actions">
+              <button type="button" class="he-btn he-btn--secondary" id="heDisclaimerClose" disabled>Continue</button>
+            </div>
+          </div>
+        </div>
+
+
 
         <div class="he-settings">
 

@@ -563,7 +563,7 @@
 }
 
 .he-result__headline.is-over{ color:#b10f1e; }
-.he-result__headline.is-under{ color:#1d1d1f; }
+.he-result__headline.is-under{ color:#1c7c2a; }
 
 .he-result__sub{
   color:#6e6e73;
@@ -584,7 +584,9 @@
 }
 
 .he-note--savings{
+  border: none;
   border-left:4px solid #b10f1e;
+  background:#f7f7f7;
 }
 
 .he-note__icon{
@@ -674,3 +676,66 @@
   color:#6e6e73;
   font-size:0.95rem;
 }
+
+
+/* Emphasis line under the checker title */
+.he-checker__intro--alert{
+  color:#b10f1e;
+  font-weight:600;
+}
+
+
+/* Disclaimer modal */
+.he-modal[hidden]{ display:none; }
+.he-modal{
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+}
+.he-modal__backdrop{
+  position:absolute;
+  inset:0;
+  background: rgba(0,0,0,0.35);
+}
+.he-modal__panel{
+  position: relative;
+  width: min(560px, calc(100% - 32px));
+  margin: 10vh auto 0;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 24px 70px rgba(0,0,0,0.25);
+  padding: 20px 20px 18px;
+}
+.he-modal__title{
+  font-size: 18px;
+  font-weight: 700;
+  color:#1d1d1f;
+  margin-bottom: 10px;
+}
+.he-modal__body{
+  color:#1d1d1f;
+  line-height: 1.55;
+}
+.he-modal__body p{
+  margin: 0 0 10px;
+  color:#1d1d1f;
+}
+.he-modal__ack{
+  display:flex;
+  gap: 10px;
+  align-items:flex-start;
+  margin-top: 10px;
+  padding-top: 12px;
+  border-top: 1px solid #e5e5ea;
+  color:#1d1d1f;
+}
+.he-modal__ack input{
+  margin-top: 3px;
+}
+.he-modal__actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:12px;
+  margin-top: 14px;
+}
+body.he-modal-open{ overflow:hidden; }

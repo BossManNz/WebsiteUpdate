@@ -17,6 +17,52 @@
 
   const resetBtn = $("heReset");
 
+  // Disclaimer gate (require acknowledgement before enabling the tool)
+  const modal = $("heDisclaimerModal");
+  const ack = $("heDisclaimerAck");
+  const contBtn = $("heDisclaimerClose");
+
+  const setToolEnabled = (enabled) => {
+    // disable all inputs/selects/buttons inside the checker settings area
+    const scope = document.querySelector(".he-settings");
+    if (!scope) return;
+    scope.querySelectorAll("input, select, button").forEach((el) => {
+      if (el.id === "heDisclaimerAck" || el.id === "heDisclaimerClose") return;
+      el.disabled = !enabled;
+    });
+  };
+
+  const openModal = () => {
+    if (!modal) return;
+    modal.hidden = false;
+    document.body.classList.add("he-modal-open");
+    setToolEnabled(false);
+    if (contBtn) contBtn.disabled = true;
+    if (ack) ack.checked = false;
+  };
+
+  const closeModal = () => {
+    if (!modal) return;
+    modal.hidden = true;
+    document.body.classList.remove("he-modal-open");
+    setToolEnabled(true);
+    try { localStorage.setItem("he_la_tool_ack", String(Date.now())); } catch (e) {}
+    // run once to refresh outcome after enabling
+    update();
+  };
+
+  const acknowledgedRecently = () => {
+    try {
+      const v = localStorage.getItem("he_la_tool_ack");
+      if (!v) return false;
+      const ts = parseInt(v, 10);
+      if (!Number.isFinite(ts)) return false;
+      // 30 days
+      return (Date.now() - ts) < (30 * 24 * 60 * 60 * 1000);
+    } catch (e) { return false; }
+  };
+
+
   const segBtns = document.querySelectorAll(".he-segment__btn");
   let appType = "single";
 
@@ -95,14 +141,14 @@
       differenceEl.textContent = money(0);
       setOutcome(null, "Enter your details", "Enter your details to see how your income compares with the income thresholds.");
     } else if (diff <= 0) {
-      differenceEl.textContent = `${money(abs)} under`;
+      differenceEl.textContent = `${money(abs)} under threshold`;
       setOutcome(
         "is-under",
         "Under the income threshold",
         "Based on what you entered, your income is under the income threshold. Legal aid still depends on your full circumstances, including hardship factors."
       );
     } else {
-      differenceEl.textContent = `${money(abs)} over`;
+      differenceEl.textContent = `${money(abs)} over threshold`;
       setOutcome(
         "is-over",
         "Over the income threshold (hardship may still apply)",
@@ -157,6 +203,37 @@
       update();
     });
   }
+
+
+  // Modal listeners
+  if (ack && contBtn) {
+    ack.addEventListener("change", () => {
+      contBtn.disabled = !ack.checked;
+    });
+  }
+  if (contBtn) {
+    contBtn.addEventListener("click", () => {
+      if (ack && !ack.checked) return;
+      closeModal();
+    });
+  }
+  if (modal) {
+    modal.addEventListener("click", (e) => {
+      const t = e.target;
+      if (t && t.getAttribute && t.getAttribute("data-close") === "true") {
+        // Do not allow closing without acknowledgement
+        e.preventDefault();
+      }
+    });
+  }
+
+  // Gate the tool unless acknowledged recently
+  if (!acknowledgedRecently()) {
+    openModal();
+  } else {
+    setToolEnabled(true);
+  }
+
 
   updateIncomeHelp();
   update();
