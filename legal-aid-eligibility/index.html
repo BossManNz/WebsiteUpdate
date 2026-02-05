@@ -109,152 +109,157 @@
 </details>
 </div>
 </div>
-<section class="he-tool">
+<section aria-label="Legal Aid Eligibility Tool" class="he-tool he-section-card">
 <div class="he-tool__header">
 <h2 class="he-tool__title">Legal Aid Eligibility Tool</h2>
 <p class="he-tool__notice"><span class="he-tool__notice-red">This tool compares your income with the legal aid thresholds below.</span></p>
-  <div class="he-tool__disclosure-card">
-    <button class="he-tool__disclosure-row" id="heToolToggle" type="button" aria-expanded="false" aria-controls="heToolPanel">
-      <div class="he-tool__disclosure-left">
-        <div class="he-tool__disclosure-title">Legal Aid Eligibility Checker Tool</div>
-        <div class="he-tool__disclosure-sub">Tap to open</div>
-      </div>
-      <div class="he-tool__disclosure-chevron" aria-hidden="true">›</div>
-    </button>
-    <div aria-hidden="true" class="he-tool__panel he-tool__panel--collapsed" id="heToolPanel">
-<div class="he-tool__rows">
-<div class="he-tool__row">
-<div class="he-tool__left">
-<div class="he-tool__label">Application type</div>
-<div class="he-tool__help">If partnered, the combined income of you and your partner is assessed.</div>
+<div class="he-tool__disclosure-card">
+<div aria-controls="heToolPanel" aria-expanded="false" class="he-tool__disclosure-row" id="heToolToggle" role="button" tabindex="0">
+<div class="he-tool__disclosure-left">
+<div class="he-tool__disclosure-title">Legal Aid Eligibility Checker Tool</div>
+<div class="he-tool__disclosure-sub">Tap to open</div>
 </div>
-<div class="he-tool__right">
+<div aria-hidden="true" class="he-tool__disclosure-chevron">›</div>
+</div>
+<div aria-hidden="true" class="he-tool__panel he-tool__panel--collapsed" id="heToolPanel">
+<div class="he-card">
+<div class="he-card__rows">
+<div class="he-row">
+<div class="he-row__left">
+<div class="he-row__label">Application type</div>
+<div class="he-row__help">If partnered, the combined income of you and your partner is assessed.</div>
+</div>
+<div class="he-row__right">
 <div aria-label="Application type" class="he-seg" role="group">
 <button class="he-seg__btn he-seg__btn--active" data-app="single" type="button">Single</button>
 <button class="he-seg__btn" data-app="partnered" type="button">Partnered</button>
 </div>
 </div>
 </div>
-<div class="he-tool__row">
-<div class="he-tool__left">
-<div class="he-tool__label">Dependents</div>
-<div class="he-tool__help">Children or others who are financially dependent on you.</div>
+<div class="he-row">
+<div class="he-row__left">
+<div class="he-row__label">Dependents</div>
+<div class="he-row__help">Children or others who are financially dependent on you.</div>
 </div>
-<div class="he-tool__right">
-<input class="he-field he-field--small" id="heDeps" inputmode="numeric" min="0" step="1" type="number" value="0"/>
+<div class="he-row__right">
+<input class="he-field he-field--compact" id="heDeps" inputmode="numeric" min="0" step="1" type="number" value="0"/>
 </div>
 </div>
-<div class="he-tool__row">
-<div class="he-tool__left">
-<div class="he-tool__label">Income (before tax)</div>
-<div class="he-tool__help" id="heIncomeHelp">Enter your best estimate. You can include benefit income.</div>
+<div class="he-row">
+<div class="he-row__left">
+<div class="he-row__label" id="heIncomeLabel">Income (before tax)</div>
+<div class="he-row__help" id="heIncomeHelp">Enter your best estimate. You can include benefit income.</div>
 </div>
-<div class="he-tool__right he-tool__right--income">
+<div class="he-row__right he-row__right--income">
 <div class="he-money">
 <span class="he-money__prefix">$</span>
-<input class="he-field" id="heIncome" inputmode="decimal" min="0" placeholder="0" step="1" type="number" value=""/>
+<input class="he-field" id="heIncome" inputmode="numeric" min="0" step="1" type="number" value="0"/>
 </div>
-<select class="he-field he-field--select" id="heIncomeFreq">
+<select aria-label="Income frequency" class="he-field he-field--select" id="heIncomeFreq">
 <option selected="" value="year">Per year</option>
 <option value="fortnight">Per fortnight</option>
 <option value="week">Per week</option>
 </select>
 </div>
 </div>
-<div class="he-tool__row">
-<div class="he-tool__left">
-<div class="he-tool__label">Savings (excluding KiwiSaver)</div>
-<div class="he-tool__help">For example bank accounts, cash, term deposits.</div>
+<div class="he-row">
+<div class="he-row__left">
+<div class="he-row__label">Savings (excluding KiwiSaver)</div>
+<div class="he-row__help">For example bank accounts, cash, term deposits.</div>
 </div>
-<div class="he-tool__right">
+<div class="he-row__right">
 <div class="he-money">
 <span class="he-money__prefix">$</span>
-<input class="he-field" id="heSavings" inputmode="decimal" min="0" placeholder="0" step="1" type="number" value=""/>
+<input class="he-field" id="heSavings" inputmode="numeric" min="0" step="1" type="number" value="0"/>
 </div>
 </div>
 </div>
-<div class="he-tool__row">
-<div class="he-tool__left">
-<div class="he-tool__label">Sellable assets (each worth $3,500+)</div>
-<div class="he-tool__help">Exclude your home. Total estimated resale value (vehicle, shares, valuables).</div>
+<div class="he-row">
+<div class="he-row__left">
+<div class="he-row__label">Sellable assets (each worth $3,500+)</div>
+<div class="he-row__help">Exclude your home. Total estimated resale value (vehicle, shares, valuables).</div>
 </div>
-<div class="he-tool__right">
+<div class="he-row__right">
 <div class="he-money">
 <span class="he-money__prefix">$</span>
-<input class="he-field" id="heAssets" inputmode="decimal" min="0" placeholder="0" step="1" type="number" value=""/>
+<input class="he-field" id="heAssets" inputmode="numeric" min="0" step="1" type="number" value="0"/>
 </div>
 </div>
 </div>
-<div class="he-tool__row">
-<div class="he-tool__left">
-<div class="he-tool__label">Own a home</div>
-<div class="he-tool__help">Your main home is usually excluded from asset calculations.</div>
+<div class="he-row">
+<div class="he-row__left">
+<div class="he-row__label">Own a home</div>
+<div class="he-row__help">Your main home is usually excluded from asset calculations.</div>
 </div>
-<div class="he-tool__right">
+<div class="he-row__right">
 <label class="he-switch">
 <input id="heOwnHome" type="checkbox"/>
-<span class="he-switch__track"></span>
+<span aria-hidden="true" class="he-switch__track"></span>
+<span aria-hidden="true" class="he-switch__thumb"></span>
 </label>
 </div>
 </div>
 </div>
-<div class="he-result" id="heResult">
-<div class="he-result__headline" id="heOutcome">Enter your income to see how it compares to the threshold</div>
-<div class="he-result__sub" id="heOutcomeSub">This is not a Legal Aid decision. Eligibility is determined by the Ministry of Justice.</div>
-<div class="he-callout he-callout--note he-hidden" id="heSavingsNote">
-<div class="he-callout__icon"><i class="fa-solid fa-circle-info"></i></div>
-<div class="he-callout__content">
-<p class="he-callout__summary"><strong>Savings note:</strong> If you have savings available, Legal Aid may expect you to use some savings before it is granted.</p>
+<div aria-live="polite" class="he-result">
+<div class="he-outcome">
+<div class="he-outcome__title" id="heOutcome">Enter your details</div>
+<div class="he-outcome__sub" id="heOutcomeSub">Enter your details to see how your income compares with the thresholds.</div>
+</div>
+<div class="he-callout-inline he-callout-inline--hidden" id="heSavingsNote" role="note">
+<div aria-hidden="true" class="he-callout-inline__icon"><i class="fa-solid fa-circle-info"></i></div>
+<div class="he-callout-inline__text">Savings note: If you have savings available, Legal Aid may expect you to use some savings before it is granted.</div>
+</div>
+<div aria-label="Income threshold summary" class="he-summary" role="group">
+<div class="he-summary__row">
+<div class="he-summary__label" id="heThresholdLabel">Income threshold</div>
+<div class="he-summary__value" id="heThresholdValue">$0</div>
+</div>
+<div class="he-summary__row">
+<div class="he-summary__label">Annualised income</div>
+<div class="he-summary__value" id="heAnnualValue">$0</div>
+</div>
+<div class="he-summary__row">
+<div class="he-summary__label">Difference</div>
+<div class="he-summary__value" id="heDiffValue">$0</div>
 </div>
 </div>
-<div class="he-result__group" role="list">
-<div class="he-result__item" role="listitem">
-<div class="he-result__k" id="heThresholdLabel">Income threshold</div>
-<div class="he-result__v" id="heThresholdValue">$0</div>
-</div>
-<div class="he-result__item" role="listitem">
-<div class="he-result__k">Annualised income</div>
-<div class="he-result__v" id="heAnnualValue">$0</div>
-</div>
-<div class="he-result__item" role="listitem">
-<div class="he-result__k">Difference</div>
-<div class="he-result__v" id="heDiffValue">$0</div>
-</div>
-</div>
-<div class="he-result__actions">
-<button class="he-reset" id="heResetBtn" type="button">Reset</button>
-<div class="he-result__actionsRight">
+<div class="he-actions">
+<button class="he-action-text" id="heResetBtn" type="button">Reset</button>
+<div class="he-actions__right">
 <a class="he-btn he-btn--secondary" href="../assets/docs/Eligbility-Resource2.pdf" rel="noopener" target="_blank">
 <i class="fa-solid fa-file-pdf"></i>
-                View official PDF
-              </a>
+                  View official PDF
+                </a>
 <a class="he-btn he-btn--primary" href="../contact/">
-                Talk to us
-              </a>
+                  Talk to us
+                </a>
 </div>
 </div>
 </div>
 </div>
-<div aria-hidden="true" class="he-modal he-hidden" id="heDisclaimerModal">
+</div>
+</div>
+<div aria-hidden="true" aria-label="Before you use this tool" aria-modal="true" class="he-modal" id="heDisclaimerModal" role="dialog">
 <div class="he-modal__backdrop" data-close="1"></div>
-<div aria-labelledby="heModalTitle" aria-modal="true" class="he-modal__panel" role="dialog">
-<div class="he-modal__title" id="heModalTitle">Before you use this tool</div>
-<div class="he-modal__text">
+<div class="he-modal__card">
+<div class="he-modal__title">Before you use this tool</div>
+<div class="he-modal__body">
 <p>I acknowledge that Hine Eagle do not determine legal aid eligibility. Legal Aid eligibility is determined at the sole discretion of the Ministry of Justice, who Hine Eagle is not affiliated with in any way.</p>
-<p>This tool is designed to give you an idea if you may be under or over the income thresholds, based on what you enter.</p>
-</div>
-<label class="he-modal__check">
+<p>This tool is designed to give you an idea if you may be under or over the thresholds, based on what you enter.</p>
+<label class="he-modal__ack">
 <input id="heDisclaimerAck" type="checkbox"/>
 <span>I understand and wish to continue.</span>
 </label>
+</div>
 <div class="he-modal__actions">
 <button class="he-btn he-btn--secondary" id="heModalCancel" type="button">Cancel</button>
 <button class="he-btn he-btn--primary" disabled="" id="heModalContinue" type="button">Continue</button>
 </div>
 </div>
 </div>
-</section>
-<div class="eligibility-grid">
+</div>
+</section><section aria-label="Legal aid thresholds" class="he-section-card he-thresholds"><div class="he-thresholds__header"><h2 class="he-thresholds__title">Legal aid thresholds</h2></div><div class="eligibility-controls">
+</div><div class="eligibility-grid">
 <div class="eligibility-card">
 <h3>Single applicant</h3>
 <div class="table-scroll">
@@ -295,7 +300,9 @@
 </div>
 </div>
 </div>
-</div><p class="eligibility-footnote">For 6 or more dependents, add <strong>$8,192</strong> for each additional dependent after 5.</p>
+</div><p class="he-thresholds__note">For each additional dependent after 5, add $8,192 per additional dependent.</p></section>
+
+
 </div>
 </section>
 <script>
