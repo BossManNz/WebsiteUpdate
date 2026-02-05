@@ -366,11 +366,16 @@
    ========================= */
 
 .eligibility-checker {
-  border-radius: 18px;
-  border: 1px solid rgba(0,0,0,0.10);
-  background: #fff;
-  padding: 18px;
+  border-radius: 22px;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: rgba(247,247,247,0.92);
+  padding: 20px;
   margin: 10px 0 24px;
+
+  box-shadow:
+    0 18px 50px rgba(0,0,0,0.06),
+    0 2px 8px rgba(0,0,0,0.04);
+  backdrop-filter: saturate(140%) blur(10px);
 }
 
 .eligibility-checker__header h2 {
@@ -390,6 +395,18 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
   margin-top: 14px;
+}
+
+.checker-income-row {
+  display: grid;
+  grid-template-columns: 1fr 160px;
+  gap: 10px;
+  align-items: center;
+}
+
+.checker-select {
+  height: 46px;
+  padding: 10px 12px;
 }
 
 .checker-field--full {
@@ -412,10 +429,14 @@
 .checker-input {
   width: 100%;
   padding: 12px 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(0,0,0,0.12);
-  background: #fff;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.85);
   outline: none;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.75),
+    0 1px 2px rgba(0,0,0,0.04);
 }
 
 .checker-input:focus {
@@ -435,9 +456,9 @@
   place-items: center;
   width: 30px;
   height: 42px;
-  border-radius: 12px;
-  background: rgba(0,0,0,0.04);
-  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 14px;
+  background: rgba(0,0,0,0.03);
+  border: 1px solid rgba(0,0,0,0.07);
   font-weight: 700;
   opacity: 0.75;
 }
@@ -446,9 +467,10 @@
   display: inline-flex;
   gap: 8px;
   padding: 6px;
-  border-radius: 14px;
-  border: 1px solid rgba(0,0,0,0.10);
-  background: rgba(0,0,0,0.03);
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: rgba(255,255,255,0.6);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
 }
 
 .checker-seg__opt {
@@ -456,7 +478,7 @@
   align-items: center;
   gap: 10px;
   padding: 10px 12px;
-  border-radius: 12px;
+  border-radius: 999px;
   cursor: pointer;
   user-select: none;
   background: transparent;
@@ -468,9 +490,9 @@
 }
 
 .checker-seg__opt:has(input:checked) {
-  background: #fff;
-  border-color: rgba(0,0,0,0.12);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  background: rgba(255,255,255,0.95);
+  border-color: rgba(0,0,0,0.10);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.08);
 }
 
 .checker-results {
@@ -491,9 +513,10 @@
 .checker-chip {
   padding: 10px 12px;
   border-radius: 999px;
-  border: 1px solid rgba(0,0,0,0.10);
-  background: rgba(0,0,0,0.02);
+  border: 1px solid rgba(0,0,0,0.08);
+  background: rgba(255,255,255,0.65);
   font-size: 0.92rem;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
 }
 
 .checker-note {
@@ -511,14 +534,17 @@
 
 .checker-btn {
   appearance: none;
-  border: 1px solid rgba(0,0,0,0.12);
-  background: #fff;
-  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.9);
+  border-radius: 14px;
   padding: 10px 14px;
   font-weight: 700;
   cursor: pointer;
   text-decoration: none;
   color: inherit;
+
+  box-shadow: 0 10px 26px rgba(0,0,0,0.06);
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
 }
 
 .checker-btn--primary {
@@ -529,6 +555,18 @@
 
 .checker-btn:hover {
   transform: translateY(-1px);
+  box-shadow: 0 14px 34px rgba(0,0,0,0.08);
+}
+
+.checker-btn:active {
+  transform: translateY(0px) scale(0.99);
+  filter: brightness(0.98);
+}
+
+@media (max-width: 520px) {
+  .checker-income-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 .checker-ok { color: #0a7a2f; }

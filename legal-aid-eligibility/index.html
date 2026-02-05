@@ -135,7 +135,8 @@
 	      <div class="eligibility-checker__header">
 	        <h2>Quick eligibility checker</h2>
 	        <p class="eligibility-checker__sub">
-	          This gives an indicative result only. Legal aid depends on the type of matter and your full circumstances.
+	          This tool compares your income to the guideline thresholds below, it is not a legal aid decision.
+	          Eligibility can also depend on your full circumstances (including assets, debts, and hardship factors).
 	        </p>
 	      </div>
 
@@ -153,7 +154,7 @@
 	                <span>Partnered</span>
 	              </label>
 	            </div>
-	            <p class="checker-help">Partnered means your combined income is assessed.</p>
+	            <p class="checker-help" id="checkerAppTypeHelp">Partnered means your combined income is assessed (include your partner's income too).</p>
 	          </div>
 
 	          <div class="checker-field">
@@ -163,12 +164,20 @@
 	          </div>
 
 	          <div class="checker-field">
-	            <label class="checker-label" for="checkerIncome">Income (before tax, per year)</label>
-	            <div class="checker-money">
-	              <span class="checker-money__prefix">$</span>
-	              <input class="checker-input checker-input--money" id="checkerIncome" name="income" type="text" inputmode="decimal" placeholder="0">
+	            <label class="checker-label" id="checkerIncomeLabel" for="checkerIncome">Income (before tax)</label>
+	            <div class="checker-income-row">
+	              <div class="checker-money">
+	                <span class="checker-money__prefix">$</span>
+	                <input class="checker-input checker-input--money" id="checkerIncome" name="income" type="text" inputmode="decimal" placeholder="0">
+	              </div>
+	              <label class="sr-only" for="checkerIncomePeriod">Income frequency</label>
+	              <select class="checker-input checker-select" id="checkerIncomePeriod" name="incomePeriod">
+	                <option value="annual" selected>Per year</option>
+	                <option value="fortnight">Per fortnight</option>
+	                <option value="weekly">Per week</option>
+	              </select>
 	            </div>
-	            <p class="checker-help">Use your best estimate (you can include benefit income).</p>
+	            <p class="checker-help" id="checkerIncomeHelp">Enter your best estimate (you can include benefit income).</p>
 	          </div>
 
 	          <div class="checker-field">
@@ -202,7 +211,8 @@
 	        <div class="checker-results" aria-live="polite" aria-atomic="true">
 	          <div class="checker-results__row">
 	            <div class="checker-chip" id="checkerThreshold">Income threshold: <strong>N/A</strong></div>
-	            <div class="checker-chip" id="checkerIncomeStatus">Income result: <strong>N/A</strong></div>
+	            <div class="checker-chip" id="checkerAnnualised">Annualised income: <strong>N/A</strong></div>
+	            <div class="checker-chip" id="checkerIncomeStatus">Result: <strong>N/A</strong></div>
 	          </div>
 
 	          <div class="checker-results__row">
