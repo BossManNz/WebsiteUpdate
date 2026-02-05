@@ -3,7 +3,7 @@
   const THRESHOLDS = {"single": {"0": 28444, "1": 45044, "2": 64775, "3": 73608, "4": 82253, "5": 91949}, "partnered": {"0": 45044, "1": 64775, "2": 73608, "3": 82253, "4": 91949, "5": 99341}};
   const EXTRA_DEP = 8192;
 
-  const openBtn = document.getElementById('heToolOpenBtn');
+  const openBtn = document.getElementById('heToolToggle');
   const panel = document.getElementById('heToolPanel');
 
   const segBtns = Array.from(document.querySelectorAll('.he-seg__btn'));
