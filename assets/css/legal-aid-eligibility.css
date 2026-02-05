@@ -618,3 +618,61 @@
   .he-actions__right { justify-content: flex-end; }
   .he-btn { justify-content: center; }
 }
+
+
+
+/* =========================
+   iOS-style section containers (tool + thresholds)
+   ========================= */
+.he-section-card{
+  background:#fff;
+  border:1px solid #ececef;
+  border-radius:22px;
+  box-shadow:0 10px 28px rgba(0,0,0,0.06);
+  padding:22px;
+  margin:18px 0 22px;
+}
+@media (max-width: 700px){
+  .he-section-card{ padding:16px; border-radius:18px; }
+}
+
+/* Tool section should not double-space now it is a card */
+.he-tool{ margin:0; }
+.he-tool__header{ margin:0 0 14px; }
+
+/* Thresholds container */
+.he-thresholds__header{ margin:0 0 12px; }
+.he-thresholds .eligibility-grid{ margin:0; }
+.he-thresholds__note{
+  margin:12px 2px 0;
+  font-size:0.92rem;
+  color:#6e6e73;
+}
+
+/* =========================
+   Disclaimer modal content polish
+   ========================= */
+.he-modal__lead{
+  margin:0 0 10px;
+  font-weight:700;
+}
+.he-modal__list{
+  margin:0 0 10px;
+  padding-left:18px;
+  color:#1d1d1f;
+}
+.he-modal__list li{ margin:0 0 6px; }
+.he-modal__small{
+  margin:0 0 12px;
+  color:#6e6e73;
+}
+.he-modal__ackrow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  margin-top:6px;
+}
+.he-modal__acktext{
+  color:#1d1d1f;
+}
