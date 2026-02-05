@@ -35,6 +35,11 @@
   const modalContinue = document.getElementById('heModalContinue');
   const modalCancel = document.getElementById('heModalCancel');
 
+  const ACK_KEY = 'heLegalAidToolAck_v1';
+  // Show the disclaimer every time the checker is opened.
+  // We keep the localStorage code in place, but set the acknowledgement window to 0 days.
+  const ACK_DAYS = 0;
+
   function money(n) {
     const v = Math.round(Number(n) || 0);
     return '$' + v.toLocaleString('en-NZ');
@@ -138,6 +143,25 @@
     if (assetsEl) assetsEl.value = 0;
     update();
   }
+
+  function hasAck() {
+    try {
+      const raw = localStorage.getItem(ACK_KEY);
+      if (!raw) return false;
+      const data = JSON.parse(raw);
+      const ts = Number(data?.ts || 0);
+      if (!ts) return false;
+      const ageMs = Date.now() - ts;
+      return ageMs < (ACK_DAYS * 24 * 60 * 60 * 1000);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function setAck() {
+    try {
+      localStorage.setItem(ACK_KEY, JSON.stringify({ ts: Date.now() }));
+    } catch (e) {}
   }
 
   function openPanel() {
@@ -174,7 +198,9 @@
       closePanel();
       return;
     }
-    showModal();}
+    if (hasAck()) openPanel();
+    else showModal();
+  }
 
   toggle.addEventListener('click', tryOpenOrClose);
   toggle.addEventListener('keydown', (e) => {
@@ -206,7 +232,9 @@
   }
   if (modalContinue) {
     modalContinue.addEventListener('click', () => {
-      if (modalAck && !modalAck.checked) return;      hideModal();
+      if (modalAck && !modalAck.checked) return;
+      setAck();
+      hideModal();
       openPanel();
     });
   }
