@@ -20,7 +20,9 @@
     font-size: 2rem;
   }
 
+}
 
+/* Tablet portrait: make the checker feel like iOS Settings, not a squeezed desktop row */
 @media (max-width: 900px) {
   /* Tablet portrait: make the checker feel like iOS Settings, not a squeezed desktop row */
   .he-row {
@@ -50,7 +52,6 @@
   .he-actions__right { margin-left: auto; flex-wrap: wrap; justify-content: flex-end; }
 }
 
-}
 
 /* =========================
    Apple-style info card
