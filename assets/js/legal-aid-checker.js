@@ -1,136 +1,163 @@
 (function () {
-  function clampInt(v) {
-    var n = parseInt(v, 10);
-    if (isNaN(n) || n < 0) return 0;
-    return n;
-  }
+  const $ = (id) => document.getElementById(id);
 
-  function toNumber(v) {
-    var n = Number(v);
-    if (!isFinite(n) || n < 0) return 0;
-    return n;
-  }
+  const dependentsEl = $("heDependents");
+  const incomeEl = $("heIncome");
+  const incomeFreqEl = $("heIncomeFreq");
+  const savingsEl = $("heSavings");
+  const assetsEl = $("heAssets");
 
-  function fmtMoney(n) {
-    try {
-      return new Intl.NumberFormat('en-NZ', { style: 'currency', currency: 'NZD', maximumFractionDigits: 0 }).format(n);
-    } catch (e) {
-      return '$' + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  const outcomeEl = $("heOutcome");
+  const outcomeSubEl = $("heOutcomeSub");
+  const thresholdLabelEl = $("heThresholdLabel");
+  const thresholdValueEl = $("heThresholdValue");
+  const annualIncomeEl = $("heAnnualIncome");
+  const differenceEl = $("heDifference");
+  const savingsNoteEl = $("heSavingsNote");
+
+  const resetBtn = $("heReset");
+
+  const segBtns = document.querySelectorAll(".he-segment__btn");
+  let appType = "single";
+
+  const THRESHOLDS = {
+    single: [28444, 45044, 64775, 73608, 82253, 91949],
+    partnered: [45044, 64775, 73608, 82253, 91949, 99341],
+  };
+
+  const EXTRA_DEPENDENT = 8192;
+
+  const clampInt = (n, min, max) => {
+    const x = parseInt(n, 10);
+    if (Number.isNaN(x)) return min;
+    return Math.max(min, Math.min(max, x));
+  };
+
+  const toNumber = (val) => {
+    const n = parseFloat((val || "").toString().replace(/,/g, ""));
+    return Number.isFinite(n) ? n : 0;
+  };
+
+  const money = (n) => {
+    const x = Math.round(n);
+    return x.toLocaleString(undefined, { style: "currency", currency: "NZD", maximumFractionDigits: 0 });
+  };
+
+  const annualiseIncome = (raw, freq) => {
+    if (!raw) return 0;
+    if (freq === "week") return raw * 52;
+    if (freq === "fortnight") return raw * 26;
+    return raw;
+  };
+
+  const computeThreshold = (type, deps) => {
+    const arr = THRESHOLDS[type] || THRESHOLDS.single;
+    if (deps <= 5) return arr[deps];
+    return arr[5] + (deps - 5) * EXTRA_DEPENDENT;
+  };
+
+  const updateIncomeHelp = () => {
+    const help = document.getElementById("heIncomeHelp");
+    if (!help) return;
+    if (appType === "partnered") {
+      help.textContent = "Enter your combined income. Include your partner’s income too (you can include benefit income).";
+    } else {
+      help.textContent = "Enter your best estimate. You can include benefit income.";
     }
-  }
+  };
 
-  var THRESHOLDS = {"single": {"0": 28444, "1": 45044, "2": 64775, "3": 73608, "4": 82253, "5": 91949}, "partnered": {"0": 45044, "1": 64775, "2": 73608, "3": 82253, "4": 91949, "5": 99341}};
-  var ADD_PER_DEP = 8192;
+  const setOutcome = (state, headline, subline) => {
+    outcomeEl.classList.remove("is-over", "is-under");
+    if (state) outcomeEl.classList.add(state);
+    outcomeEl.textContent = headline;
+    outcomeSubEl.textContent = subline;
+  };
 
-  var appType = 'single';
+  const update = () => {
+    const deps = clampInt(dependentsEl?.value ?? 0, 0, 99);
+    if (dependentsEl) dependentsEl.value = deps;
 
-  var btnSingle = document.querySelector('.he-seg__btn[data-app="single"]');
-  var btnPartnered = document.querySelector('.he-seg__btn[data-app="partnered"]');
+    const incomeRaw = toNumber(incomeEl?.value);
+    const freq = incomeFreqEl?.value || "year";
+    const annualIncome = annualiseIncome(incomeRaw, freq);
 
-  var elDeps = document.getElementById('heDependents');
-  var elIncome = document.getElementById('heIncome');
-  var elFreq = document.getElementById('heIncomeFreq');
-  var elSavings = document.getElementById('heSavings');
-  var elAssets = document.getElementById('heAssets');
-  var elReset = document.getElementById('heReset');
+    const threshold = computeThreshold(appType, deps);
 
-  var elStatus = document.getElementById('heStatus');
-  var elStatusText = document.getElementById('heStatusText');
-  var elSavingsNote = document.getElementById('heSavingsNote');
-  var elThresholdLabel = document.getElementById('heThresholdLabel');
-  var elThresholdValue = document.getElementById('heThresholdValue');
-  var elAnnualIncome = document.getElementById('heAnnualIncome');
-  var elSavingsAssets = document.getElementById('heSavingsAssets');
+    thresholdLabelEl.textContent = `Income threshold (${appType === "partnered" ? "Partnered" : "Single"}, ${deps} dependents)`;
+    thresholdValueEl.textContent = money(threshold);
+    annualIncomeEl.textContent = money(annualIncome);
 
-  if (!btnSingle || !btnPartnered || !elDeps || !elIncome || !elFreq) return;
+    // Difference (how far over or under)
+    const diff = annualIncome - threshold;
+    const abs = Math.abs(diff);
 
-  function setAppType(next) {
-    appType = next;
-    btnSingle.classList.toggle('is-active', next === 'single');
-    btnPartnered.classList.toggle('is-active', next === 'partnered');
-    update();
-  }
-
-  btnSingle.addEventListener('click', function () { setAppType('single'); });
-  btnPartnered.addEventListener('click', function () { setAppType('partnered'); });
-
-  function getIncomeAnnualised() {
-    var income = toNumber(elIncome.value);
-    var freq = elFreq.value;
-    if (freq === 'week') return Math.round(income * 52);
-    if (freq === 'fortnight') return Math.round(income * 26);
-    return Math.round(income);
-  }
-
-  function thresholdFor(type, deps) {
-    var baseMap = THRESHOLDS[type];
-    var d = Math.min(deps, 5);
-    var base = baseMap[d] || 0;
-    if (deps > 5) {
-      base = base + (deps - 5) * ADD_PER_DEP;
+    if (!incomeRaw) {
+      differenceEl.textContent = money(0);
+      setOutcome(null, "Enter your details", "Enter your details to see how your income compares with the income thresholds.");
+    } else if (diff <= 0) {
+      differenceEl.textContent = `${money(abs)} under`;
+      setOutcome(
+        "is-under",
+        "Under the income threshold",
+        "Based on what you entered, your income is under the income threshold. Legal aid still depends on your full circumstances, including hardship factors."
+      );
+    } else {
+      differenceEl.textContent = `${money(abs)} over`;
+      setOutcome(
+        "is-over",
+        "Over the income threshold (hardship may still apply)",
+        "Based on what you entered, your income is over the income threshold. You may still qualify on hardship grounds, and Legal Aid can consider savings, assets, and other factors."
+      );
     }
-    return Math.round(base);
-  }
 
-  function update() {
-    var deps = clampInt(elDeps.value);
-    elDeps.value = deps;
-
-    var annualIncome = getIncomeAnnualised();
-    var savings = toNumber(elSavings ? elSavings.value : 0);
-    var assets = toNumber(elAssets ? elAssets.value : 0);
-    var savingsAssets = Math.round(savings + assets);
-
-    var threshold = thresholdFor(appType, deps);
-
-    // labels
-    var typeLabel = appType === 'partnered' ? 'Partnered' : 'Single';
-    elThresholdLabel.textContent = 'Income threshold (' + typeLabel + ', ' + deps + ' dependents)';
-    elThresholdValue.textContent = fmtMoney(threshold);
-    elAnnualIncome.textContent = fmtMoney(annualIncome);
-    elSavingsAssets.textContent = fmtMoney(savingsAssets);
-
+    // Savings note
+    const savings = toNumber(savingsEl?.value);
     if (savings > 0) {
-      elSavingsNote.hidden = false;
+      savingsNoteEl.hidden = false;
     } else {
-      elSavingsNote.hidden = true;
+      savingsNoteEl.hidden = true;
     }
+  };
 
-    // status
-    if (annualIncome <= 0) {
-      elStatus.textContent = 'Enter your details';
-      elStatusText.textContent = 'Enter your details to see how your income compares with the income thresholds.';
-      return;
-    }
+  const onAnyInput = () => update();
 
-    if (annualIncome <= threshold) {
-      elStatus.textContent = 'Under the income threshold';
-      elStatusText.textContent = 'Based on what you entered, your income is under the income threshold. Legal aid still depends on your full circumstances, including hardship factors.';
-    } else {
-      elStatus.textContent = 'Over the income threshold (hardship may still apply)';
-      elStatusText.textContent = 'Based on what you entered, your income is over the income threshold. You may still qualify on hardship grounds, and Legal Aid can consider savings, assets, and other factors.';
-    }
-  }
-
-  function resetAll() {
-    setAppType('single');
-    elDeps.value = 0;
-    elIncome.value = 0;
-    elFreq.value = 'year';
-    if (elSavings) elSavings.value = 0;
-    if (elAssets) elAssets.value = 0;
-    var ownHome = document.getElementById('heOwnHome');
-    if (ownHome) ownHome.checked = false;
-    update();
-  }
-
-  if (elReset) elReset.addEventListener('click', resetAll);
-
-  [elDeps, elIncome, elFreq, elSavings, elAssets].forEach(function (el) {
-    if (!el) return;
-    el.addEventListener('input', update);
-    el.addEventListener('change', update);
+  segBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      segBtns.forEach((b) => b.classList.remove("is-active"));
+      btn.classList.add("is-active");
+      appType = btn.getAttribute("data-apptype") || "single";
+      updateIncomeHelp();
+      update();
+    });
   });
 
+  [dependentsEl, incomeEl, incomeFreqEl, savingsEl, assetsEl].forEach((el) => {
+    if (!el) return;
+    el.addEventListener("input", onAnyInput);
+    el.addEventListener("change", onAnyInput);
+  });
+
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
+      if (dependentsEl) dependentsEl.value = 0;
+      if (incomeEl) incomeEl.value = "";
+      if (incomeFreqEl) incomeFreqEl.value = "year";
+      if (savingsEl) savingsEl.value = "";
+      if (assetsEl) assetsEl.value = "";
+      const ownHome = document.getElementById("heOwnHome");
+      if (ownHome) ownHome.checked = false;
+
+      // Reset to Single
+      appType = "single";
+      segBtns.forEach((b) => b.classList.remove("is-active"));
+      const first = document.querySelector('.he-segment__btn[data-apptype="single"]');
+      if (first) first.classList.add("is-active");
+
+      updateIncomeHelp();
+      update();
+    });
+  }
+
+  updateIncomeHelp();
   update();
 })();
