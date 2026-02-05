@@ -1,200 +1,209 @@
-(function(){
-  const $ = (sel, root=document) => root.querySelector(sel);
-  const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+/* Legal Aid Eligibility Tool (threshold checker + disclaimer + collapsible panel) */
+(function () {
+  const THRESHOLDS = {"single": {"0": 28444, "1": 45044, "2": 64775, "3": 73608, "4": 82253, "5": 91949}, "partnered": {"0": 45044, "1": 64775, "2": 73608, "3": 82253, "4": 91949, "5": 99341}};
+  const EXTRA_DEP = 8192;
 
-  const toggle = $("#heCheckerToggle");
-  const panel  = $("#heCheckerPanel");
-  const modal  = $("#heDisclaimer");
-  const backdrop = modal ? $(".he-modal-backdrop", modal) : null;
-  const ack = $("#heDisclaimerAck");
-  const btnCancel = $("#heDisclaimerCancel");
-  const btnContinue = $("#heDisclaimerContinue");
+  const openBtn = document.getElementById('heToolToggle');
+  const panel = document.getElementById('heToolPanel');
 
-  const segBtns = $$(".he-seg-btn");
-  let appType = "single";
+  const segBtns = Array.from(document.querySelectorAll('.he-seg__btn'));
+  const depsEl = document.getElementById('heDeps');
+  const incomeEl = document.getElementById('heIncome');
+  const freqEl = document.getElementById('heIncomeFreq');
+  const savingsEl = document.getElementById('heSavings');
+  const assetsEl = document.getElementById('heAssets');
+  const resetBtn = document.getElementById('heResetBtn');
 
-  const elDeps = $("#heDependents");
-  const elIncome = $("#heIncome");
-  const elFreq = $("#heIncomeFreq");
-  const elSavings = $("#heSavings");
-  const elAssets = $("#heAssets");
+  const outcomeEl = document.getElementById('heOutcome');
+  const outcomeSubEl = document.getElementById('heOutcomeSub');
+  const thresholdLabelEl = document.getElementById('heThresholdLabel');
+  const thresholdValueEl = document.getElementById('heThresholdValue');
+  const annualValueEl = document.getElementById('heAnnualValue');
+  const diffValueEl = document.getElementById('heDiffValue');
+  const savingsNoteEl = document.getElementById('heSavingsNote');
 
-  const out = $("#heOutcome");
-  const outSub = $("#heOutcomeSub");
-  const thLabel = $("#heThresholdLabel");
-  const thVal = $("#heThresholdValue");
-  const annVal = $("#heAnnualised");
-  const diffVal = $("#heDifference");
-  const savingsNote = $("#heSavingsNote");
-  const btnReset = $("#heReset");
+  const modal = document.getElementById('heDisclaimerModal');
+  const modalAck = document.getElementById('heDisclaimerAck');
+  const modalContinue = document.getElementById('heModalContinue');
+  const modalCancel = document.getElementById('heModalCancel');
 
-  const fmt = (n) => {
-    const v = Math.round(Number(n || 0));
-    return "$" + v.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  };
+  const ACK_KEY = 'heLegalAidToolAck_v1';
+  const ACK_DAYS = 30;
 
-  const thresholds = {
-    single:   [28444, 45044, 64775, 73608, 82253, 91949],
-    partnered:[45044, 64775, 73608, 82253, 91949, 99341]
-  };
-  const extraPerDep = 8192;
+  function money(n) {
+    const v = Math.round(Number(n) || 0);
+    return '$' + v.toLocaleString('en-NZ');
+  }
 
-  const getThreshold = (type, deps) => {
-    const d = Math.max(0, Math.floor(Number(deps||0)));
-    if (d <= 5) return thresholds[type][d];
-    return thresholds[type][5] + (d - 5) * extraPerDep;
-  };
+  function getAppType() {
+    const active = segBtns.find(b => b.classList.contains('he-seg__btn--active'));
+    return active ? active.getAttribute('data-app') : 'single';
+  }
 
-  const annualise = (income, freq) => {
-    const v = Number(income || 0);
-    if (!v) return 0;
-    if (freq === "week") return v * 52;
-    if (freq === "fortnight") return v * 26;
-    return v;
-  };
+  function setAppType(val) {
+    segBtns.forEach(b => {
+      b.classList.toggle('he-seg__btn--active', b.getAttribute('data-app') === val);
+    });
+    update();
+  }
 
-  const setModalOpen = (open) => {
-    if (!modal) return;
-    modal.setAttribute("aria-hidden", open ? "false" : "true");
-    modal.classList.toggle("is-open", open);
-    if (open) {
-      if (ack) ack.checked = false;
-      if (btnContinue) btnContinue.disabled = true;
-      document.body.classList.add("he-modal-open");
-    } else {
-      document.body.classList.remove("he-modal-open");
+  function annualise(income, freq) {
+    const x = Number(income) || 0;
+    if (!x) return 0;
+    if (freq === 'week') return x * 52;
+    if (freq === 'fortnight') return x * 26;
+    return x; // year
+  }
+
+  function thresholdFor(app, deps) {
+    const d = Math.max(0, Math.floor(Number(deps) || 0));
+    const base = THRESHOLDS[app] || THRESHOLDS.single;
+    if (d <= 5) return (base[d] ?? base[5] ?? 0);
+    return (base[5] ?? 0) + (d - 5) * EXTRA_DEP;
+  }
+
+  function hasAck() {
+    try {
+      const raw = localStorage.getItem(ACK_KEY);
+      if (!raw) return false;
+      const t = Number(raw);
+      if (!t) return false;
+      const ageMs = Date.now() - t;
+      return ageMs < (ACK_DAYS * 24 * 60 * 60 * 1000);
+    } catch (e) {
+      return false;
     }
-  };
+  }
 
-  const openChecker = () => {
-    if (!toggle || !panel) return;
-    toggle.setAttribute("aria-expanded", "true");
-    panel.hidden = false;
-    $("#heCheckerDisclosure")?.classList.add("is-open");
-    // focus first input for accessibility
-    setTimeout(()=>{ elIncome && elIncome.focus(); }, 50);
-  };
+  function storeAck() {
+    try {
+      localStorage.setItem(ACK_KEY, String(Date.now()));
+    } catch (e) {}
+  }
 
-  const closeChecker = () => {
-    if (!toggle || !panel) return;
-    toggle.setAttribute("aria-expanded", "false");
-    panel.hidden = true;
-    $("#heCheckerDisclosure")?.classList.remove("is-open");
-  };
+  function showModal() {
+    modal.classList.remove('he-hidden');
+    modal.setAttribute('aria-hidden', 'false');
+    modalAck.checked = false;
+    modalContinue.disabled = true;
+    document.body.classList.add('he-modal-open');
+  }
 
-  const requestOpen = () => {
-    // Always show disclaimer when opening
-    setModalOpen(true);
-  };
+  function hideModal() {
+    modal.classList.add('he-hidden');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('he-modal-open');
+  }
 
-  const compute = () => {
-    const deps = Math.max(0, Math.floor(Number(elDeps?.value || 0)));
-    const incomeAnnual = annualise(elIncome?.value || 0, elFreq?.value || "year");
-    const threshold = getThreshold(appType, deps);
+  function openPanel() {
+    panel.classList.remove('he-tool__panel--collapsed');
+    panel.setAttribute('aria-hidden', 'false');
+    openBtn.setAttribute('aria-expanded', 'true');
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    update();
+  }
 
-    // labels
-    if (thLabel) thLabel.textContent = `Income threshold (${appType === "partnered" ? "Partnered" : "Single"}, ${deps} dependent${deps===1?"":"s"})`;
-    if (thVal) thVal.textContent = fmt(threshold);
-    if (annVal) annVal.textContent = fmt(incomeAnnual);
+  function closePanel() {
+    panel.classList.add('he-tool__panel--collapsed');
+    panel.setAttribute('aria-hidden', 'true');
+    openBtn.setAttribute('aria-expanded', 'false');
+  }
 
-    // savings note visibility
-    const savings = Number(elSavings?.value || 0);
-    if (savingsNote) savingsNote.hidden = !(savings > 0);
+  function update() {
+    const app = getAppType();
+    const deps = Math.max(0, Math.floor(Number(depsEl.value) || 0));
+    const incomeRaw = Number(incomeEl.value) || 0;
+    const freq = freqEl.value;
+    const annual = annualise(incomeRaw, freq);
+    const thr = thresholdFor(app, deps);
 
-    if (!incomeAnnual) {
-      if (out) out.textContent = "Enter your details";
-      if (outSub) outSub.textContent = "We will show how your income compares with the income thresholds.";
-      if (diffVal) diffVal.textContent = "$0 under threshold";
-      if (out) {
-        out.classList.remove("is-under","is-over");
+    const labelApp = app === 'partnered' ? 'Partnered' : 'Single';
+    thresholdLabelEl.textContent = `Income threshold (${labelApp}, ${deps} dependents)`;
+    thresholdValueEl.textContent = money(thr);
+    annualValueEl.textContent = money(annual);
+
+    if (!incomeRaw) {
+      outcomeEl.textContent = 'Enter your income to see how it compares to the threshold';
+      outcomeEl.classList.remove('he-outcome--under', 'he-outcome--over');
+      outcomeSubEl.textContent = 'This is not a Legal Aid decision. Eligibility is determined by the Ministry of Justice.';
+      diffValueEl.textContent = money(0);
+    } else {
+      const diff = Math.abs(annual - thr);
+      const over = annual > thr;
+      const under = annual < thr;
+
+      if (under) {
+        outcomeEl.textContent = 'Under the income threshold';
+        outcomeEl.classList.add('he-outcome--under');
+        outcomeEl.classList.remove('he-outcome--over');
+        outcomeSubEl.textContent = 'Based on what you entered, your income is under the income threshold. Legal aid still depends on your full circumstances, including hardship factors.';
+        diffValueEl.textContent = `${money(diff)} under threshold`;
+      } else if (over) {
+        outcomeEl.textContent = 'Over the income threshold (hardship may still apply)';
+        outcomeEl.classList.add('he-outcome--over');
+        outcomeEl.classList.remove('he-outcome--under');
+        outcomeSubEl.textContent = 'Based on what you entered, your income is over the income threshold. You may still qualify on hardship grounds, and Legal Aid can consider other factors.';
+        diffValueEl.textContent = `${money(diff)} over threshold`;
+      } else {
+        outcomeEl.textContent = 'At the income threshold';
+        outcomeEl.classList.remove('he-outcome--under', 'he-outcome--over');
+        outcomeSubEl.textContent = 'Based on what you entered, your income matches the income threshold. Other factors can still affect the decision.';
+        diffValueEl.textContent = money(0);
       }
+    }
+
+    const savingsVal = Number(savingsEl.value) || 0;
+    savingsNoteEl.classList.toggle('he-hidden', !(savingsVal > 0));
+  }
+
+  function reset() {
+    setAppType('single');
+    depsEl.value = 0;
+    incomeEl.value = '';
+    freqEl.value = 'year';
+    savingsEl.value = '';
+    assetsEl.value = '';
+    update();
+  }
+
+  segBtns.forEach(btn => {
+    btn.addEventListener('click', () => setAppType(btn.getAttribute('data-app')));
+  });
+
+  [depsEl, incomeEl, freqEl, savingsEl, assetsEl].forEach(el => {
+    el.addEventListener('input', update);
+    el.addEventListener('change', update);
+  });
+
+  resetBtn.addEventListener('click', reset);
+
+  openBtn.addEventListener('click', () => {
+    if (!panel.classList.contains('he-tool__panel--collapsed')) {
+      closePanel();
       return;
     }
+    if (hasAck()) openPanel();
+    else showModal();
+  });
 
-    const diff = Math.abs(threshold - incomeAnnual);
-    const isUnder = incomeAnnual <= threshold;
+  modalAck.addEventListener('change', () => {
+    modalContinue.disabled = !modalAck.checked;
+  });
 
-    if (diffVal) diffVal.textContent = `${fmt(diff)} ${isUnder ? "under threshold" : "over threshold"}`;
+  modalContinue.addEventListener('click', () => {
+    if (!modalAck.checked) return;
+    storeAck();
+    hideModal();
+    openPanel();
+  });
 
-    if (out) {
-      out.textContent = isUnder ? "Under the income threshold" : "Over the income threshold (hardship may still apply)";
-      out.classList.toggle("is-under", isUnder);
-      out.classList.toggle("is-over", !isUnder);
-    }
+  modalCancel.addEventListener('click', hideModal);
 
-    if (outSub) {
-      outSub.textContent = isUnder
-        ? "Based on what you entered, your income is under the income threshold. Legal aid still depends on your full circumstances, including hardship factors."
-        : "Based on what you entered, your income is over the income threshold. You may still qualify on hardship grounds, and Legal Aid can consider savings, assets, and other factors.";
-    }
-  };
+  modal.addEventListener('click', (e) => {
+    const t = e.target;
+    if (t && t.getAttribute && t.getAttribute('data-close') === '1') hideModal();
+  });
 
-  const wire = () => {
-    if (segBtns.length) {
-      segBtns.forEach(btn=>{
-        btn.addEventListener("click", ()=>{
-          segBtns.forEach(b=>b.classList.remove("is-active"));
-          btn.classList.add("is-active");
-          appType = btn.dataset.type || "single";
-          compute();
-        });
-      });
-    }
-
-    [elDeps, elIncome, elFreq, elSavings, elAssets].forEach(el=>{
-      if (!el) return;
-      el.addEventListener("input", compute);
-      el.addEventListener("change", compute);
-    });
-
-    if (btnReset) {
-      btnReset.addEventListener("click", ()=>{
-        if (elDeps) elDeps.value = 0;
-        if (elIncome) elIncome.value = "";
-        if (elFreq) elFreq.value = "year";
-        if (elSavings) elSavings.value = 0;
-        if (elAssets) elAssets.value = 0;
-        compute();
-      });
-    }
-
-    const clickToggle = () => {
-      const expanded = toggle.getAttribute("aria-expanded") === "true";
-      if (expanded) {
-        closeChecker();
-      } else {
-        requestOpen();
-      }
-    };
-
-    if (toggle) {
-      toggle.addEventListener("click", clickToggle);
-      toggle.addEventListener("keydown", (e)=>{
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          clickToggle();
-        }
-      });
-    }
-
-    if (ack && btnContinue) {
-      ack.addEventListener("change", ()=>{
-        btnContinue.disabled = !ack.checked;
-      });
-    }
-
-    if (btnCancel) btnCancel.addEventListener("click", ()=> setModalOpen(false));
-    if (backdrop) backdrop.addEventListener("click", ()=> setModalOpen(false));
-
-    if (btnContinue) btnContinue.addEventListener("click", ()=>{
-      if (!ack || !ack.checked) return;
-      setModalOpen(false);
-      openChecker();
-    });
-
-    // initial compute
-    compute();
-  };
-
-  document.addEventListener("DOMContentLoaded", wire);
+  closePanel();
+  update();
 })();
