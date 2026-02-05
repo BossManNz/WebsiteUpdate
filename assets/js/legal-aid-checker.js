@@ -20,7 +20,7 @@
     annualIncomeVal: root.querySelector('#annualIncomeVal'),
     netAssetsVal: root.querySelector('#netAssetsVal'),
     incomeStatus: root.querySelector('#incomeStatus'),
-    statusPill: root.querySelector('#statusPill'),
+    statusTitle: root.querySelector('#statusTitle'),
     savingsNote: root.querySelector('#savingsNote'),
 
     reset: root.querySelector('#checkerReset'),
@@ -93,7 +93,7 @@
     const assets = toNumber(els.assets.value);
     const netAssets = savings + assets;
 
-    els.thresholdLabel.textContent = `Guideline income threshold (${appType === 'partnered' ? 'Partnered' : 'Single'}, ${deps} dependents)`;
+    els.thresholdLabel.textContent = `Income threshold (${appType === 'partnered' ? 'Partnered' : 'Single'}, ${deps} dependents)`;
     els.thresholdVal.textContent = fmtMoney(threshold);
     els.annualIncomeVal.textContent = fmtMoney(incomeAnnual);
     els.netAssetsVal.textContent = fmtMoney(netAssets);
@@ -107,20 +107,20 @@
     }
 
     if (!incomeAnnual) {
-      if (els.statusPill) els.statusPill.textContent = 'Enter your details';
-      els.incomeStatus.textContent = 'Enter your details to see how your income compares with the guideline thresholds.';
+      if (els.statusTitle) els.statusTitle.textContent = 'Enter your details';
+      els.incomeStatus.textContent = 'Enter your details to see how your income compares with the income thresholds.';
       resultsEl.classList.remove('is-under', 'is-over');
       return;
     }
 
     if (incomeAnnual <= threshold) {
-      if (els.statusPill) els.statusPill.textContent = 'Under guideline threshold';
-      els.incomeStatus.textContent = 'This suggests your income is under the guideline threshold. Legal aid still depends on your full circumstances, including hardship factors.';
+      if (els.statusTitle) els.statusTitle.textContent = 'Under income threshold';
+      els.incomeStatus.textContent = 'Based on what you entered, your income is under the income threshold. Legal aid still depends on your full circumstances, including hardship factors.';
       resultsEl.classList.add('is-under');
       resultsEl.classList.remove('is-over');
     } else {
-      if (els.statusPill) els.statusPill.textContent = 'Over guideline threshold (hardship may still apply)';
-      els.incomeStatus.textContent = 'This suggests your income is above the guideline threshold. You may still qualify on hardship grounds, and legal aid can consider savings, assets, and other factors.';
+      if (els.statusTitle) els.statusTitle.textContent = 'Over income threshold (hardship may still apply)';
+      els.incomeStatus.textContent = 'Based on what you entered, your income is over the income threshold. You may still qualify on hardship grounds, and legal aid can consider savings, assets, and other factors.';
       resultsEl.classList.add('is-over');
       resultsEl.classList.remove('is-under');
     }

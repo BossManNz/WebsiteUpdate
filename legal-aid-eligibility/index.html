@@ -147,9 +147,9 @@
 
     
     <section class="he-checker" aria-labelledby="checkerTitle">
-      <h2 id="checkerTitle">Quick guideline checker</h2>
+      <h2 id="checkerTitle">Quick income threshold checker</h2>
       <p class="he-checker__note">
-        This tool compares your income to the guideline thresholds below, it is not a legal aid decision.
+        This tool compares your income to the income thresholds below, it is not a legal aid decision.
         Legal aid can also consider your circumstances, including savings, assets, and hardship factors.
       </p>
 
@@ -236,15 +236,14 @@
 
         <div class="he-results" aria-live="polite">
           <div class="he-results__headline">
-            <div class="he-results__kicker">Income comparison</div>
-            <div class="he-results__pill" id="statusPill">Enter your details</div>
-            <div class="he-results__status" id="incomeStatus">Enter your details to see how your income compares with the guideline thresholds.</div>
+            <div class="he-results__title" id="statusTitle">Enter your details</div>
+            <div class="he-results__status" id="incomeStatus">Enter your details to see how your income compares with the income thresholds.</div>
             <div class="he-results__note" id="savingsNote" hidden>Savings note: If you have savings available, Legal Aid may expect you to use some savings before it is granted.</div>
           </div>
 
           <div class="he-results__grid">
             <div class="he-metric">
-              <div class="he-metric__label" id="thresholdLabel">Guideline income threshold</div>
+              <div class="he-metric__label" id="thresholdLabel">Income threshold</div>
               <div class="he-metric__value" id="thresholdVal">$0</div>
             </div>
             <div class="he-metric">
@@ -258,17 +257,19 @@
           </div>
 
           <div class="he-actions">
-            <button type="button" class="btn btn-secondary" id="checkerReset">Reset</button>
-            <a class="btn btn-primary" href="../contact/">Talk to us</a>
-            <a class="btn btn-outline" href="../assets/docs/Eligbility-Resource2.pdf" target="_blank" rel="noopener">
-              <i class="fa-solid fa-file-pdf"></i>
-              View official PDF
-            </a>
+            <button type="button" class="btn btn-tertiary" id="checkerReset">Reset</button>
+            <div class="he-actions__right">
+              <a class="btn btn-outline" href="../assets/docs/Eligbility-Resource2.pdf" target="_blank" rel="noopener">
+                <i class="fa-solid fa-file-pdf"></i>
+                View official PDF
+              </a>
+              <a class="btn btn-primary" href="../contact/">Talk to us</a>
+            </div>
           </div>
+
         </div>
 
-      </div>
-    </section>
+      </div></section>
 
 
 <div class="eligibility-grid">
