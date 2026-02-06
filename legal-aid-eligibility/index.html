@@ -12,7 +12,7 @@
 <link href="../assets/css/fees.css" rel="stylesheet"/>
 <link href="../assets/css/legal-aid-eligibility.css" rel="stylesheet"/>
 <script src="https://staticcdn.co.nz/embed/embed.js"></script>
-<meta content="Check legal aid eligibility in Tauranga. Hine Eagle Lawyers can help you apply for legal aid for family or criminal matters." name="description"/>
+<meta content="Estimate how your income compares with published legal aid thresholds. Hine Eagle Lawyers can help you apply, Legal Aid Services make the final decision." name="description"/>
 <meta content="index, follow" name="robots">
 <link href="../images/favicon-light.png" media="(prefers-color-scheme: light)" rel="icon" type="image/png"/>
 <link href="../images/favicon-dark.png" media="(prefers-color-scheme: dark)" rel="icon" type="image/png"/>
@@ -69,7 +69,8 @@
 <a class="eligibility-back" href="../fees/">
     ← Back to Fees
   </a>
-<h1>Potential Legal Aid Eligibility</h1>
+<h1>Legal Aid Eligibility Guide</h1>
+<p class="he-page-subtitle" style="margin:6px 0 0;color:#6e6e73;font-size:0.98rem;max-width:60ch;">An estimate only, Legal Aid Services make the final decision.</p>
 </div>
 <div class="he-callout">
 <div aria-hidden="true" class="he-callout__icon">
@@ -77,10 +78,10 @@
 </div>
 <div class="he-callout__content">
 <p class="he-callout__summary">
-<strong>Important:</strong> Eligibility depends on more than income, including your assets.
+<strong>Important:</strong> This page is a general guide only. We are not the Ministry of Justice and we do not determine Legal Aid eligibility.
         </p>
 <p class="he-callout__firm-note">
-          Even if you are over the threshold, you may still be to get legal aid on hardship grounds.
+          This tool only compares the income you enter with the published income thresholds. Legal Aid Services apply additional assessments we do not have access to.
         </p>
 <!-- iOS-style animated details -->
 <details class="he-details">
@@ -125,13 +126,13 @@
 </div>
 <section aria-label="Potential Legal Aid Eligibility Tool" class="he-tool he-section-card">
 <div class="he-tool__header">
-<h2 class="he-tool__title">Potential Legal Aid Eligibility Tool</h2>
-<p class="he-tool__notice"><span class="he-tool__notice-red">This tool compares your income with the legal aid thresholds.</span></p>
+<h2 class="he-tool__title">Legal Aid Eligibility Estimate</h2>
+<p class="he-tool__notice"><span class="he-tool__notice-red">Estimate only, not a Legal Aid decision.</span><span style="color:#6e6e73;"> This tool compares your income with published thresholds.</span></p>
 <div class="he-tool__disclosure-card">
 <div aria-controls="heToolPanel" aria-expanded="false" class="he-tool__disclosure-row" id="heToolToggle" role="button" tabindex="0">
 <div class="he-tool__disclosure-left">
-<div class="he-tool__disclosure-title">Potential Legal Aid Eligibility Checker Tool</div>
-<div class="he-tool__disclosure-sub">Tap to open</div>
+<div class="he-tool__disclosure-title">Open the eligibility estimate</div>
+<div class="he-tool__disclosure-sub">Not a decision</div>
 </div>
 <div aria-hidden="true" class="he-tool__disclosure-chevron">›</div>
 </div>
@@ -216,6 +217,7 @@
 </div>
 <div aria-live="polite" class="he-result">
 <div class="he-outcome">
+<div class="he-outcome__kicker" id="heOutcomeKicker" style="font-size:0.9rem;color:#6e6e73;margin-bottom:6px;">Estimated outcome based on your answers (not a decision)</div>
 <div class="he-outcome__title" id="heOutcome">Enter your details</div>
 <div class="he-outcome__sub" id="heOutcomeSub">Enter your details to see how your income compares with the thresholds.</div>
 </div>
@@ -258,7 +260,7 @@
 <div class="he-modal__backdrop" data-close="1"></div>
 <div class="he-modal__card">
 <div class="he-modal__title">Before you use this tool</div>
-<div class="he-modal__body"><p class="he-modal__lead">Hine Eagle does not determine legal aid eligibility.</p><ul class="he-modal__list"><li>Legal Aid is decided by the Ministry of Justice (we are not affiliated).</li><li>This tool only compares the income you enter to the published income thresholds. Legal Aid have additional tests that we are not aware of.</li></ul><p class="he-modal__small">Legal aid can still depend on your full circumstances, including hardship.</p><div class="he-modal__ackrow"><div class="he-modal__acktext">I understand and wish to continue.</div><label aria-label="Acknowledge disclaimer" class="he-switch"><input id="heDisclaimerAck" type="checkbox"/><span class="he-switch__track"></span><span class="he-switch__thumb"></span></label></div></div>
+<div class="he-modal__body"><p class="he-modal__lead">Hine Eagle Lawyers does not determine Legal Aid eligibility.</p><ul class="he-modal__list"><li>Legal Aid decisions are made by Legal Aid Services (Ministry of Justice). We are not affiliated.</li><li>This tool only compares the income you enter with the published income thresholds. Legal Aid Services apply additional assessments we do not have access to.</li></ul><p class="he-modal__small">Legal Aid can depend on your full circumstances, including hardship.</p><div class="he-modal__ackrow"><div class="he-modal__acktext">I understand and wish to continue.</div><label aria-label="Acknowledge disclaimer" class="he-switch"><input id="heDisclaimerAck" type="checkbox"/><span class="he-switch__track"></span><span class="he-switch__thumb"></span></label></div></div>
 <div class="he-modal__actions">
 <button class="he-btn he-btn--secondary" id="heModalCancel" type="button">Cancel</button>
 <button class="he-btn he-btn--primary" disabled="" id="heModalContinue" type="button">Continue</button>
@@ -464,6 +466,7 @@
 <i class="fa-brands fa-facebook-f"></i>
 </a>
 </img></div>
+<div class="he-footer__disclaimer" style="color:#6e6e73;font-size:0.9rem;line-height:1.4;margin:10px 0 0;">This page is a general guide only and does not provide legal advice. This tool does not determine Legal Aid eligibility, decisions are made by Legal Aid Services.</div>
 <div class="he-footer__legal">© 2017 to 2025 Hine Eagle Barristers &amp; Solicitors | Website design by The Hine Eagle Team</div>
 </div>
 </footer>
