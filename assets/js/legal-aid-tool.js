@@ -98,15 +98,15 @@ if (!hasIncome) {
     if (annual < threshold) {
       outcomeEl.textContent = 'You may be under the income threshold';
       outcomeEl.style.color = '#1a7f37'; // green
-      outcomeSubEl.textContent = 'Based on what you entered, your income appears under the published threshold. This is an estimate only, Legal Aid Services make the final decision and may assess other factors such as assets, savings, and hardship.';
+      outcomeSubEl.textContent = 'Based on what you entered, your income appears under the published threshold.';
     } else if (annual > threshold) {
       outcomeEl.textContent = 'You may be over the income threshold (hardship may still apply)';
       outcomeEl.style.color = '#b10f1e';
-      outcomeSubEl.textContent = 'Based on what you entered, your income appears over the published threshold. You may still be granted Legal Aid on hardship grounds, and Legal Aid Services may apply additional assessments we do not have access to.';
+      outcomeSubEl.textContent = 'Based on what you entered, your income appears over the published threshold. You may be able to get Legal Aid on hardship grounds, and Legal Aid Services may apply additional assessments we do not have access to.';
     } else {
       outcomeEl.textContent = 'You are around the income threshold';
       outcomeEl.style.color = '#1d1d1f';
-      outcomeSubEl.textContent = 'Based on what you entered, your income appears around the published threshold. This is an estimate only, Legal Aid Services make the final decision after considering your full circumstances.';
+      outcomeSubEl.textContent = 'Based on what you entered, your income appears around the published threshold.';
     }
   }
 
