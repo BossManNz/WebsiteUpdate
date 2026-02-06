@@ -21,7 +21,9 @@
 
   const outcomeEl = document.getElementById('heOutcome');
   const outcomeSubEl = document.getElementById('heOutcomeSub');
-  const thresholdLabelEl = document.getElementById('heThresholdLabel');
+  
+  const decisionWarningEl = document.getElementById('heDecisionWarning');
+const thresholdLabelEl = document.getElementById('heThresholdLabel');
   const thresholdValueEl = document.getElementById('heThresholdValue');
   const annualValueEl = document.getElementById('heAnnualValue');
   const diffValueEl = document.getElementById('heDiffValue');
@@ -84,7 +86,9 @@
 
   function updateOutcome(annual, threshold) {
     const hasIncome = annual > 0;
-    if (!hasIncome) {
+    
+    if (decisionWarningEl) decisionWarningEl.style.display = hasIncome ? 'flex' : 'none';
+if (!hasIncome) {
       outcomeEl.textContent = 'Enter your details';
       outcomeSubEl.textContent = 'Enter your details to compare your income with published thresholds (estimate only, not a decision).';
       outcomeEl.style.color = '#1d1d1f';
