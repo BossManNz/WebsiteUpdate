@@ -576,18 +576,6 @@ html.he-modal-lock body{
   box-shadow: 0 8px 30px rgba(0,0,0,0.04);
 }
 
-.he-callout:before{
-  content: "";
-  position: absolute;
-  left: 10px;
-  top: 16px;
-  bottom: 16px;
-  width: 3px;
-  border-radius: 999px;
-  background: #b00020;
-  opacity: 0.9;
-}
-
 /* Softer frosted-glass backdrop + card */
 .he-modal__backdrop{
   background: rgba(0,0,0,0.18);
