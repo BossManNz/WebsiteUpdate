@@ -497,3 +497,61 @@ html.he-modal-lock body{
     border-radius: 22px;
   }
 }
+
+
+/* =========================
+   Refinements requested
+   Align with Fees + Team sizing, larger desktop modal, brand red CTA,
+   and more breathing room in modal header/pill
+   ========================= */
+
+/* Title sizing alignment with Fees page */
+#legal-aid-income-checker h1{
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  margin-bottom: 10px;
+}
+
+/* Back link refinement (match smaller, calmer style) */
+.eligibility-back{
+  font-size: 15px;
+  font-weight: 600;
+  color: #b00020;
+  opacity: 0.85;
+}
+.eligibility-back:hover{
+  opacity: 1;
+}
+
+/* Larger modal on desktop, still responsive */
+.he-modal__card{
+  width: min(680px, 96vw);
+}
+
+/* Brand red primary button */
+.he-btn--primary{
+  background: #b00020;
+  color: #fff;
+  box-shadow: 0 12px 28px rgba(176,0,32,0.35);
+}
+.he-btn--primary:hover{
+  filter: brightness(0.95);
+}
+
+/* Step pill spacing and modal typography breathing room */
+.he-modal__body{
+  padding: 16px 28px 24px;
+}
+.he-modal__pill{
+  margin-bottom: 14px;
+  padding: 8px 14px;
+}
+.he-modal__headline{
+  margin-top: 6px;
+  margin-bottom: 8px;
+}
+.he-modal__text{
+  margin-top: 6px;
+  line-height: 1.6;
+}
