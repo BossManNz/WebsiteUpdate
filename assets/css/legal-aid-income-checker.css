@@ -568,9 +568,14 @@ html.he-modal-lock body{
    ========================= */
 /* Callout red accent line (left) */
 .he-callout{
-  position: relative;
-  padding-left: 22px; /* room for accent */
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 22px 24px;
+  border: 1px solid #e5e5e7;
+  border-left: 4px solid #b00020; /* Brand red accent */
+  box-shadow: 0 8px 30px rgba(0,0,0,0.04);
 }
+
 .he-callout:before{
   content: "";
   position: absolute;
