@@ -47,10 +47,10 @@
   const dots = Array.from(document.querySelectorAll('.he-dot'));
 
   // Swipe timing (slower, more iOS-like)
-  const SWIPE_OUT_MS = 240;
-  const SWIPE_IN_MS = 420;
-  const SWIPE_OUT_EASE = 'cubic-bezier(0.40, 0.00, 0.80, 0.20)'; // ease-in-ish
-  const SWIPE_IN_EASE = 'cubic-bezier(0.22, 0.61, 0.36, 1)';     // iOS-like decel
+  const SWIPE_OUT_MS = 320;
+  const SWIPE_IN_MS  = 520;
+  const SWIPE_OUT_EASE = 'cubic-bezier(0.4, 0.0, 1, 1)';
+  const SWIPE_IN_EASE  = 'cubic-bezier(0.22, 0.61, 0.36, 1)';
 
   const STEPS = [
     {
@@ -200,7 +200,6 @@
     const step = STEPS[stepIndex];
     if (!step) return;
 
-    // Ensure "Step 1 of 4" keeps proper spacing regardless of markup quirks
     if (pillEl) pillEl.textContent = `Step ${stepIndex + 1} of ${STEPS.length}`;
     if (stepNumEl) stepNumEl.textContent = String(stepIndex + 1);
     if (headlineEl) headlineEl.textContent = step.headline;
@@ -249,7 +248,7 @@
     disable(true);
 
     const outX = direction === 1 ? -28 : 28;
-    const inX = direction === 1 ? 28 : -28;
+    const inX  = direction === 1 ?  28 : -28;
 
     const outAnim = modalBodyEl.animate(
       [
@@ -315,6 +314,7 @@
     showModal();
   }
 
+  // Toggle open/close with click or keyboard
   toggle.addEventListener('click', tryOpenOrClose);
   toggle.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -323,10 +323,12 @@
     }
   });
 
+  // Segmented buttons
   segBtns.forEach(btn => {
     btn.addEventListener('click', () => setAppType(btn.getAttribute('data-app')));
   });
 
+  // Inputs
   [depsEl, incomeEl, freqEl].forEach(el => {
     if (!el) return;
     el.addEventListener('input', update);
@@ -335,6 +337,7 @@
 
   if (resetBtn) resetBtn.addEventListener('click', reset);
 
+  // Modal controls
   if (modalAck) modalAck.addEventListener('click', acceptStep);
   if (modalBack) modalBack.addEventListener('click', goBackStep);
   if (modalCancel) modalCancel.addEventListener('click', () => { hideModal(); closePanel(); });
@@ -364,6 +367,7 @@
     });
   }
 
+  // Default: collapsed every load
   closePanel();
   setAppType('single');
   update();

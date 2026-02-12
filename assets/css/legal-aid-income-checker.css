@@ -562,29 +562,37 @@ html.he-modal-lock body{
 
 
 /* =========================
-   Modal step swipe polish
-   (paired with slower JS timings)
+   Requested tweaks
+   - Softer blur
+   - Red accent line on callout
    ========================= */
-
-/* Keep the body as its own composited layer for smoother translate */
-.he-modal__body{
+/* Callout red accent line (left) */
+.he-callout{
   position: relative;
-  transform: translateZ(0);
-  backface-visibility: hidden;
+  padding-left: 22px; /* room for accent */
+}
+.he-callout:before{
+  content: "";
+  position: absolute;
+  left: 10px;
+  top: 16px;
+  bottom: 16px;
+  width: 3px;
+  border-radius: 999px;
+  background: #b00020;
+  opacity: 0.9;
 }
 
-/* Slightly increase spacing so longer animation feels intentional */
-.he-modal__cta{
-  margin-top: 18px;
+/* Softer frosted-glass backdrop + card */
+.he-modal__backdrop{
+  background: rgba(0,0,0,0.18);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
-/* Respect reduced-motion users */
-@media (prefers-reduced-motion: reduce){
-  .he-modal__card{
-    animation: none !important;
-  }
-  .he-modal__body{
-    will-change: auto;
-    transform: none !important;
-  }
+/* Slightly more translucent, frosted modal card */
+.he-modal__card{
+  background: rgba(255,255,255,0.82);
+  backdrop-filter: saturate(160%) blur(2px);
+  -webkit-backdrop-filter: saturate(160%) blur(2px);
 }
