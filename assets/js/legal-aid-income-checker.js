@@ -1,4 +1,4 @@
-/* Legal Aid Income Checker (income-only threshold checker + multi-step disclaimer + collapsible panel)
+/* Legal Aid Income Checker (income-only threshold checker + iOS-style multi-step disclaimer + collapsible panel)
    Notes:
    - No localStorage. Panel is collapsed on every page load.
    - Disclaimer is required once per page load.
@@ -32,18 +32,42 @@
   const incomeLabelEl = document.getElementById('heIncomeLabel');
   const incomeHelpEl = document.getElementById('heIncomeHelp');
 
-  // Modal
+  // Modal (multi-step)
   const modal = document.getElementById('heDisclaimerModal');
-  const modalContinue = document.getElementById('heModalContinue');
+  const modalBack = document.getElementById('heModalBack');
+  const modalClose = document.getElementById('heModalClose');
+  const modalAck = document.getElementById('heModalAcknowledge');
   const modalCancel = document.getElementById('heModalCancel');
-  const acks = [
-    document.getElementById('heAck1'),
-    document.getElementById('heAck2'),
-    document.getElementById('heAck3'),
-    document.getElementById('heAck4')
-  ].filter(Boolean);
+  const stepNumEl = document.getElementById('heModalStepNum');
+  const headlineEl = document.getElementById('heModalHeadline');
+  const textEl = document.getElementById('heModalText');
+  const dots = Array.from(document.querySelectorAll('.he-dot'));
+
+  const STEPS = [
+    {
+      headline: 'Hine Eagle is not Legal Aid Services',
+      text:
+        'I acknowledge Hine Eagle Barristers and Solicitors are not Legal Aid Services (Ministry of Justice), and we do not grant Legal Aid.'
+    },
+    {
+      headline: 'This tool is not a decision',
+      text:
+        'I acknowledge the information from this tool does not determine whether I will receive Legal Aid.'
+    },
+    {
+      headline: 'No legal advice, no relationship',
+      text:
+        'I acknowledge this tool does not provide legal advice and does not create a lawyer-client relationship.'
+    },
+    {
+      headline: 'You need formal advice',
+      text:
+        'I acknowledge I need formal legal advice to assess my Legal Aid prospects and next steps.'
+    }
+  ];
 
   let disclaimerAccepted = false;
+  let stepIndex = 0;
 
   function money(n) {
     const v = Math.round(Number(n) || 0);
@@ -104,7 +128,7 @@
 
     if (annual < threshold) {
       if (outcomeEl) outcomeEl.textContent = 'You may be under the income threshold';
-      if (outcomeEl) outcomeEl.style.color = '#1a7f37';
+      if (outcomeEl) outcomeEl.style.color = '#0a7a3b';
       if (outcomeSubEl) outcomeSubEl.textContent = 'Based on what you entered, your income appears under the published threshold. Legal Aid Services apply additional assessments we do not have access to.';
     } else if (annual > threshold) {
       if (outcomeEl) outcomeEl.textContent = 'You may be over the income threshold (hardship may still apply)';
@@ -155,24 +179,64 @@
     toggle.setAttribute('aria-expanded', 'false');
   }
 
-  function syncContinueBtn() {
-    if (!modalContinue) return;
-    const allChecked = acks.length ? acks.every(x => x && x.checked) : false;
-    modalContinue.disabled = !allChecked;
+  function lockBodyScroll(lock) {
+    if (!lock) {
+      document.documentElement.classList.remove('he-modal-lock');
+      return;
+    }
+    document.documentElement.classList.add('he-modal-lock');
+  }
+
+  function renderStep() {
+    const step = STEPS[stepIndex];
+    if (!step) return;
+
+    if (stepNumEl) stepNumEl.textContent = String(stepIndex + 1);
+    if (headlineEl) headlineEl.textContent = step.headline;
+    if (textEl) textEl.textContent = step.text;
+
+    dots.forEach((d, i) => d.classList.toggle('he-dot--active', i === stepIndex));
+
+    if (modalBack) modalBack.disabled = stepIndex === 0;
+    if (modalAck) {
+      modalAck.textContent = stepIndex === (STEPS.length - 1) ? 'I acknowledge and continue' : 'I acknowledge';
+    }
   }
 
   function showModal() {
     if (!modal) return;
+    stepIndex = 0;
+    renderStep();
     modal.classList.add('he-modal--open');
     modal.setAttribute('aria-hidden', 'false');
-    acks.forEach(x => { if (x) x.checked = false; });
-    syncContinueBtn();
+    lockBodyScroll(true);
+
+    // Focus the primary action for keyboard users
+    setTimeout(() => { try { modalAck && modalAck.focus(); } catch (_) {} }, 0);
   }
 
   function hideModal() {
     if (!modal) return;
     modal.classList.remove('he-modal--open');
     modal.setAttribute('aria-hidden', 'true');
+    lockBodyScroll(false);
+  }
+
+  function acceptStep() {
+    if (stepIndex < STEPS.length - 1) {
+      stepIndex += 1;
+      renderStep();
+      return;
+    }
+    disclaimerAccepted = true;
+    hideModal();
+    openPanel();
+  }
+
+  function goBackStep() {
+    if (stepIndex <= 0) return;
+    stepIndex -= 1;
+    renderStep();
   }
 
   function tryOpenOrClose() {
@@ -211,20 +275,11 @@
 
   if (resetBtn) resetBtn.addEventListener('click', reset);
 
-  // Modal: enable Continue only when all acks checked
-  acks.forEach(chk => chk && chk.addEventListener('change', syncContinueBtn));
-
-  if (modalContinue) {
-    modalContinue.addEventListener('click', () => {
-      syncContinueBtn();
-      if (modalContinue.disabled) return;
-      disclaimerAccepted = true;
-      hideModal();
-      openPanel();
-    });
-  }
-
+  // Modal controls
+  if (modalAck) modalAck.addEventListener('click', acceptStep);
+  if (modalBack) modalBack.addEventListener('click', goBackStep);
   if (modalCancel) modalCancel.addEventListener('click', () => { hideModal(); closePanel(); });
+  if (modalClose) modalClose.addEventListener('click', () => { hideModal(); closePanel(); });
 
   if (modal) {
     modal.addEventListener('click', (e) => {
@@ -234,10 +289,20 @@
         closePanel();
       }
     });
+
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modal.classList.contains('he-modal--open')) {
+      const isOpen = modal.classList.contains('he-modal--open');
+      if (!isOpen) return;
+
+      if (e.key === 'Escape') {
         hideModal();
         closePanel();
+      } else if (e.key === 'ArrowLeft') {
+        goBackStep();
+      } else if (e.key === 'ArrowRight' || e.key === 'Enter') {
+        // Enter is handy in the modal, treat as acknowledge
+        // (button click still runs when focused, but this helps if focus drifts)
+        acceptStep();
       }
     });
   }

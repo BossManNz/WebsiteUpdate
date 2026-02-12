@@ -1,50 +1,219 @@
 /* =========================
-   Multi-step disclaimer (income checker)
+   Legal Aid Income Checker
+   Apple / iOS style additions and overrides
+   (kept scoped to this page via class names)
    ========================= */
 
-.he-modal__steps{
-  margin: 0 0 12px;
-  padding: 0;
-  list-style: none;
+/* Lock scroll when modal is open */
+html.he-modal-lock,
+html.he-modal-lock body{
+  overflow: hidden;
+  height: 100%;
+}
+
+/* Give this page a clean iOS-like backdrop without fighting your global styles */
+#legal-aid-eligibility{
+  background: #f5f5f7;
+}
+#legal-aid-eligibility .container{
+  max-width: 980px;
+}
+
+/* Headings feel more Apple */
+#legal-aid-eligibility h1{
+  letter-spacing: -0.02em;
+}
+#legal-aid-eligibility .section-title h1{
+  margin-bottom: 8px;
+}
+
+/* Make the back link feel like iOS navigation */
+.eligibility-back{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 650;
+  text-decoration: none;
+  color: #b10f1e;
+}
+
+/* Ensure cards lift off the grey background */
+.he-section-card{
+  background: rgba(255,255,255,0.92);
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 18px 50px rgba(0,0,0,0.10);
+  backdrop-filter: blur(10px);
+}
+
+/* =========================
+   Modal: iOS-style sheet with steps
+   ========================= */
+
+.he-modal{
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 9999;
+  padding: 20px;
+}
+.he-modal--open{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.he-modal__backdrop{
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.40);
+  backdrop-filter: blur(10px);
+}
+
+.he-modal__card{
+  position: relative;
+  width: min(560px, 100%);
+  border-radius: 26px;
+  padding: 18px 18px 16px;
+  background: rgba(255,255,255,0.88);
+  border: 1px solid rgba(255,255,255,0.35);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.35);
+  backdrop-filter: blur(18px);
+}
+
+.he-modal__top{
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: center;
+  gap: 10px;
+  padding: 2px 2px 10px;
+}
+
+.he-modal__iconbtn{
+  height: 40px;
+  width: 40px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(242,242,247,0.90);
+  color: #1d1d1f;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.he-modal__iconbtn[disabled]{
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.he-modal__titlewrap{
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  text-align: center;
+}
+
+.he-modal__title{
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 750;
+  color: #1d1d1f;
+}
+
+.he-modal__dots{
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+}
+
+.he-dot{
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(60,60,67,0.18);
+}
+.he-dot--active{
+  background: rgba(60,60,67,0.55);
+}
+
+.he-modal__body{
+  padding: 8px 6px 0;
+}
+
+.he-modal__pill{
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(242,242,247,0.92);
+  border: 1px solid rgba(0,0,0,0.08);
+  color: #6e6e73;
+  font-weight: 650;
+  font-size: 0.85rem;
+}
+
+.he-modal__headline{
+  margin: 12px 0 6px;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #1d1d1f;
+}
+
+.he-modal__text{
+  margin: 0;
+  color: #1d1d1f;
+  font-size: 1.00rem;
+  line-height: 1.45;
+}
+
+.he-modal__cta{
+  margin-top: 14px;
   display: grid;
   gap: 10px;
 }
 
-.he-modal__step{
-  display: grid;
-  grid-template-columns: 1fr 52px;
-  gap: 12px;
-  align-items: center;
-  padding: 12px 12px;
-  border-radius: 16px;
-  background: #f2f2f7;
-  border: 1px solid #e5e5ea;
+.he-btn--wide{
+  width: 100%;
+  justify-content: center;
 }
 
-.he-modal__steptext{
+.he-btn--ghost{
+  background: rgba(242,242,247,0.70);
+  border: 1px solid rgba(0,0,0,0.10);
   color: #1d1d1f;
-  font-size: 0.95rem;
-  line-height: 1.35;
 }
 
-.he-modal__stepcheck{
-  display: grid;
-  place-items: center;
+.he-modal__fineprint{
+  margin-top: 12px;
+  color: #6e6e73;
+  font-size: 0.88rem;
+  text-align: center;
 }
 
-.he-modal__stepcheck input{
-  width: 22px;
-  height: 22px;
-  accent-color: #b10f1e;
-}
-
-@media (max-width: 560px){
-  .he-modal__step{
-    grid-template-columns: 1fr 44px;
-    padding: 10px 10px;
-    border-radius: 14px;
+/* Mobile: make it feel like a bottom sheet */
+@media (max-width: 640px){
+  .he-modal{
+    align-items: flex-end;
+    justify-content: center;
+    padding: 14px 12px;
   }
-  .he-modal__steptext{
-    font-size: 0.92rem;
+  .he-modal__card{
+    border-radius: 22px;
+    width: 100%;
   }
+}
+
+/* =========================
+   Small tweaks: disclosure row feels tappable
+   ========================= */
+.he-tool__disclosure-row{
+  border-radius: 18px;
+  transition: transform 120ms ease, background 120ms ease;
+}
+.he-tool__disclosure-row:hover{
+  background: rgba(242,242,247,0.7);
+}
+.he-tool__disclosure-row:active{
+  transform: scale(0.99);
 }
