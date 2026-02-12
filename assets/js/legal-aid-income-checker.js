@@ -41,6 +41,9 @@
   const stepNumEl = document.getElementById('heModalStepNum');
   const headlineEl = document.getElementById('heModalHeadline');
   const textEl = document.getElementById('heModalText');
+  const modalBodyEl = document.getElementById('heModalBody');
+  const pillEl = modalBodyEl ? modalBodyEl.querySelector('.he-modal__pill') : null;
+
   const dots = Array.from(document.querySelectorAll('.he-dot'));
 
   const STEPS = [
@@ -191,6 +194,8 @@
     const step = STEPS[stepIndex];
     if (!step) return;
 
+    // Ensure "Step 1 of 4" keeps proper spacing regardless of markup quirks
+    if (pillEl) pillEl.textContent = `Step ${stepIndex + 1} of ${STEPS.length}`;
     if (stepNumEl) stepNumEl.textContent = String(stepIndex + 1);
     if (headlineEl) headlineEl.textContent = step.headline;
     if (textEl) textEl.textContent = step.text;
@@ -222,10 +227,63 @@
     lockBodyScroll(false);
   }
 
+  function animateModalBody(direction, onSwap) {
+    // direction: 1 = forward (right-to-left), -1 = back (left-to-right)
+    if (!modalBodyEl || typeof modalBodyEl.animate !== 'function') {
+      onSwap();
+      return;
+    }
+
+    // Disable controls briefly to prevent double taps during animation
+    const disable = (v) => {
+      if (modalAck) modalAck.disabled = v;
+      if (modalBack) modalBack.disabled = v || stepIndex <= 0;
+      if (modalCancel) modalCancel.disabled = v;
+      if (modalClose) modalClose.disabled = v;
+    };
+
+    disable(true);
+
+    const outX = direction === 1 ? -26 : 26;
+    const inX = direction === 1 ? 26 : -26;
+
+    const outAnim = modalBodyEl.animate(
+      [
+        { transform: 'translateX(0)', opacity: 1 },
+        { transform: `translateX(${outX}px)`, opacity: 0 }
+      ],
+      { duration: 170, easing: 'ease-in', fill: 'forwards' }
+    );
+
+    outAnim.onfinish = () => {
+      onSwap();
+
+      // Reset to the incoming position (offscreen slightly) before animating in
+      modalBodyEl.style.transform = `translateX(${inX}px)`;
+      modalBodyEl.style.opacity = '0';
+
+      const inAnim = modalBodyEl.animate(
+        [
+          { transform: `translateX(${inX}px)`, opacity: 0 },
+          { transform: 'translateX(0)', opacity: 1 }
+        ],
+        { duration: 220, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'forwards' }
+      );
+
+      inAnim.onfinish = () => {
+        modalBodyEl.style.transform = '';
+        modalBodyEl.style.opacity = '';
+        disable(false);
+      };
+    };
+  }
+
   function acceptStep() {
     if (stepIndex < STEPS.length - 1) {
-      stepIndex += 1;
-      renderStep();
+      animateModalBody(1, () => {
+        stepIndex += 1;
+        renderStep();
+      });
       return;
     }
     disclaimerAccepted = true;
@@ -235,8 +293,10 @@
 
   function goBackStep() {
     if (stepIndex <= 0) return;
-    stepIndex -= 1;
-    renderStep();
+    animateModalBody(-1, () => {
+      stepIndex -= 1;
+      renderStep();
+    });
   }
 
   function tryOpenOrClose() {

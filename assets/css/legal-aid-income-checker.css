@@ -555,3 +555,7 @@ html.he-modal-lock body{
   margin-top: 6px;
   line-height: 1.6;
 }
+
+
+/* Smooth step swipe animation */
+.he-modal__body{ will-change: transform, opacity; }
