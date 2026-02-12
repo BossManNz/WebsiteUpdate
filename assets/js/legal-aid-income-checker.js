@@ -46,6 +46,12 @@
 
   const dots = Array.from(document.querySelectorAll('.he-dot'));
 
+  // Swipe timing (slower, more iOS-like)
+  const SWIPE_OUT_MS = 240;
+  const SWIPE_IN_MS = 420;
+  const SWIPE_OUT_EASE = 'cubic-bezier(0.40, 0.00, 0.80, 0.20)'; // ease-in-ish
+  const SWIPE_IN_EASE = 'cubic-bezier(0.22, 0.61, 0.36, 1)';     // iOS-like decel
+
   const STEPS = [
     {
       headline: 'Hine Eagle is not Legal Aid Services',
@@ -216,7 +222,6 @@
     modal.setAttribute('aria-hidden', 'false');
     lockBodyScroll(true);
 
-    // Focus the primary action for keyboard users
     setTimeout(() => { try { modalAck && modalAck.focus(); } catch (_) {} }, 0);
   }
 
@@ -234,7 +239,6 @@
       return;
     }
 
-    // Disable controls briefly to prevent double taps during animation
     const disable = (v) => {
       if (modalAck) modalAck.disabled = v;
       if (modalBack) modalBack.disabled = v || stepIndex <= 0;
@@ -244,21 +248,20 @@
 
     disable(true);
 
-    const outX = direction === 1 ? -26 : 26;
-    const inX = direction === 1 ? 26 : -26;
+    const outX = direction === 1 ? -28 : 28;
+    const inX = direction === 1 ? 28 : -28;
 
     const outAnim = modalBodyEl.animate(
       [
         { transform: 'translateX(0)', opacity: 1 },
         { transform: `translateX(${outX}px)`, opacity: 0 }
       ],
-      { duration: 170, easing: 'ease-in', fill: 'forwards' }
+      { duration: SWIPE_OUT_MS, easing: SWIPE_OUT_EASE, fill: 'forwards' }
     );
 
     outAnim.onfinish = () => {
       onSwap();
 
-      // Reset to the incoming position (offscreen slightly) before animating in
       modalBodyEl.style.transform = `translateX(${inX}px)`;
       modalBodyEl.style.opacity = '0';
 
@@ -267,7 +270,7 @@
           { transform: `translateX(${inX}px)`, opacity: 0 },
           { transform: 'translateX(0)', opacity: 1 }
         ],
-        { duration: 220, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'forwards' }
+        { duration: SWIPE_IN_MS, easing: SWIPE_IN_EASE, fill: 'forwards' }
       );
 
       inAnim.onfinish = () => {
@@ -312,7 +315,6 @@
     showModal();
   }
 
-  // Toggle open/close with click or keyboard
   toggle.addEventListener('click', tryOpenOrClose);
   toggle.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -321,12 +323,10 @@
     }
   });
 
-  // Segmented buttons
   segBtns.forEach(btn => {
     btn.addEventListener('click', () => setAppType(btn.getAttribute('data-app')));
   });
 
-  // Inputs
   [depsEl, incomeEl, freqEl].forEach(el => {
     if (!el) return;
     el.addEventListener('input', update);
@@ -335,7 +335,6 @@
 
   if (resetBtn) resetBtn.addEventListener('click', reset);
 
-  // Modal controls
   if (modalAck) modalAck.addEventListener('click', acceptStep);
   if (modalBack) modalBack.addEventListener('click', goBackStep);
   if (modalCancel) modalCancel.addEventListener('click', () => { hideModal(); closePanel(); });
@@ -360,14 +359,11 @@
       } else if (e.key === 'ArrowLeft') {
         goBackStep();
       } else if (e.key === 'ArrowRight' || e.key === 'Enter') {
-        // Enter is handy in the modal, treat as acknowledge
-        // (button click still runs when focused, but this helps if focus drifts)
         acceptStep();
       }
     });
   }
 
-  // Default: collapsed every load
   closePanel();
   setAppType('single');
   update();

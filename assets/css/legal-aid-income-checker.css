@@ -559,3 +559,32 @@ html.he-modal-lock body{
 
 /* Smooth step swipe animation */
 .he-modal__body{ will-change: transform, opacity; }
+
+
+/* =========================
+   Modal step swipe polish
+   (paired with slower JS timings)
+   ========================= */
+
+/* Keep the body as its own composited layer for smoother translate */
+.he-modal__body{
+  position: relative;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Slightly increase spacing so longer animation feels intentional */
+.he-modal__cta{
+  margin-top: 18px;
+}
+
+/* Respect reduced-motion users */
+@media (prefers-reduced-motion: reduce){
+  .he-modal__card{
+    animation: none !important;
+  }
+  .he-modal__body{
+    will-change: auto;
+    transform: none !important;
+  }
+}
