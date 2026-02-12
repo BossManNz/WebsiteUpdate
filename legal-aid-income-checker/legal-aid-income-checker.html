@@ -5,11 +5,12 @@
 <link href="https://hineeagle.co.nz/legal-aid-income-checker/" rel="canonical"/>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Legal Aid Eligibility | Hine Eagle Lawyers, Tauranga</title>
+<title>Legal Aid Income Checker | Hine Eagle Lawyers, Tauranga</title>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&amp;display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
 <link href="../assets/css/style.css" rel="stylesheet"/>
 <link href="../assets/css/fees.css" rel="stylesheet"/>
+<link href="../assets/css/legal-aid-income-checker.css" rel="stylesheet"/>
 <link href="../assets/css/legal-aid-income-checker.css" rel="stylesheet"/>
 <script src="https://staticcdn.co.nz/embed/embed.js"></script>
 <meta content="Estimate how your income compares with published legal aid thresholds. Hine Eagle Lawyers can help you apply, the Ministry of Justice make the final decision." name="description"/>
@@ -123,14 +124,14 @@
 </details>
 </div>
 </div>
-<section aria-label="Potential Legal Aid Eligibility Tool" class="he-tool he-section-card">
+<section aria-label="Legal Aid Income Checker tool" class="he-tool he-section-card">
 <div class="he-tool__header">
-<h2 class="he-tool__title">Legal Aid Eligibility Estimate</h2>
+<h2 class="he-tool__title">Legal Aid Income Checker</h2>
 <p class="he-tool__notice"><span class="he-tool__notice-red">Estimate only, not a Legal Aid decision. This tool compares your income with published thresholds.</span></p>
 <div class="he-tool__disclosure-card">
 <div aria-controls="heToolPanel" aria-expanded="false" class="he-tool__disclosure-row" id="heToolToggle" role="button" tabindex="0">
 <div class="he-tool__disclosure-left">
-<div class="he-tool__disclosure-title">Open the eligibility estimate</div>
+<div class="he-tool__disclosure-title">Open the income checker</div>
 </div>
 <div aria-hidden="true" class="he-tool__disclosure-chevron">›</div>
 </div>
@@ -175,103 +176,54 @@
 </select>
 </div>
 </div>
-<div class="he-row">
-<div class="he-row__left">
-<div class="he-row__label">Total Savings (excluding KiwiSaver)</div>
-<div class="he-row__help">For example bank accounts, cash, term deposits.</div>
-</div>
-<div class="he-row__right">
-<div class="he-money">
-<span class="he-money__prefix">$</span>
-<input class="he-field" id="heSavings" inputmode="numeric" min="0" step="1" type="number" value="0"/>
-</div>
-</div>
-</div>
-<div class="he-row">
-<div class="he-row__left">
-<div class="he-row__label">Sellable assets (each worth $3,500+)</div>
-<div class="he-row__help">Excluding your home. Total estimated resale value (vehicle, shares, valuables).</div>
-</div>
-<div class="he-row__right">
-<div class="he-money">
-<span class="he-money__prefix">$</span>
-<input class="he-field" id="heAssets" inputmode="numeric" min="0" step="1" type="number" value="0"/>
-</div>
-</div>
-</div>
-<div class="he-row">
-<div class="he-row__left">
-<div class="he-row__label">Home Owner</div>
-<div class="he-row__help">Do you own a home?</div>
-</div>
-<div class="he-row__right">
-<label class="he-switch">
-<input id="heOwnHome" type="checkbox"/>
-<span aria-hidden="true" class="he-switch__track"></span>
-<span aria-hidden="true" class="he-switch__thumb"></span>
-</label>
-</div>
-</div>
-</div>
-<div aria-live="polite" class="he-result">
-<div class="he-outcome">
-<div class="he-outcome__title" id="heOutcome">Enter your details</div>
-<div class="he-outcome__sub" id="heOutcomeSub">Enter your details to see how your income compares with the thresholds.</div>
-<div class="he-callout-inline he-callout-inline--warning" id="heDecisionWarning" role="note" style="display:none;">
-  <div aria-hidden="true" class="he-callout-inline__icon"><i class="fa-solid fa-circle-exclamation"></i></div>
-  <div class="he-callout-inline__text">
-    This is not a Legal Aid decision. Eligibility is determined by the Ministry of Justice. Contact a lawyer to confirm eligibility and next steps.
-  </div>
-</div>
-</div>
-<div class="he-callout-inline he-callout-inline--hidden" id="heSavingsNote" role="note">
-<div aria-hidden="true" class="he-callout-inline__icon"><i class="fa-solid fa-circle-info"></i></div>
-<div class="he-callout-inline__text">Savings note: If you have savings available, Legal Aid may expect you to use your savings before applying for legal aid.</div>
-</div>
-<div aria-label="Income threshold summary" class="he-summary" role="group">
-<div class="he-summary__row">
-<div class="he-summary__label" id="heThresholdLabel">Income threshold</div>
-<div class="he-summary__value" id="heThresholdValue">$0</div>
-</div>
-<div class="he-summary__row">
-<div class="he-summary__label">Annualised income</div>
-<div class="he-summary__value" id="heAnnualValue">$0</div>
-</div>
-<div class="he-summary__row">
-<div class="he-summary__label">Difference</div>
-<div class="he-summary__value" id="heDiffValue">$0</div>
-</div>
-</div>
-<div class="he-actions">
-<div class="he-actions__right">
-<button class="he-action-text" id="heResetBtn" type="button">Reset</button>
 
-<a class="he-btn he-btn--secondary" href="../assets/docs/Eligbility-Resource2.pdf" rel="noopener" target="_blank">
-<i class="fa-solid fa-file-pdf"></i>
-                  View official PDF
-                </a>
-<a class="he-btn he-btn--primary" href="../contact/">
-                  Talk to us
-                </a>
-</div>
-</div>
-</div>
-</div>
-</div>
 </div>
 <div aria-hidden="true" aria-label="Before you use this tool" aria-modal="true" class="he-modal" id="heDisclaimerModal" role="dialog">
-<div class="he-modal__backdrop" data-close="1"></div>
-<div class="he-modal__card">
-<div class="he-modal__title">Before you use this tool</div>
-<div class="he-modal__body"><p class="he-modal__lead">Hine Eagle Barristers and Solicitors do not determine Legal Aid eligibility.</p><ul class="he-modal__list"><li>Legal Aid decisions are made by Legal Aid Services (Ministry of Justice). We are not affiliated.</li><li>This tool only compares the income you enter with the published income thresholds. Legal Aid Services apply additional assessments we do not have access to.</li></ul><div class="he-modal__ackrow"><div class="he-modal__acktext">I understand and wish to continue.</div><label aria-label="Acknowledge disclaimer" class="he-switch"><input id="heDisclaimerAck" type="checkbox"/><span class="he-switch__track"></span><span class="he-switch__thumb"></span></label></div></div>
-<div class="he-modal__actions">
-<button class="he-btn he-btn--secondary" id="heModalCancel" type="button">Cancel</button>
-<button class="he-btn he-btn--primary" disabled="" id="heModalContinue" type="button">Continue</button>
-</div>
-</div>
-</div>
-</div>
-</section><section aria-label="Legal aid thresholds" class="he-thresholds he-section-card"><div class="he-thresholds__header"><h2 class="he-tool__title">Legal aid thresholds</h2></div><div class="eligibility-grid">
+  <div class="he-modal__backdrop" data-close="1"></div>
+  <div class="he-modal__card">
+    <div class="he-modal__title">Before you use this tool</div>
+    <div class="he-modal__body">
+      <p class="he-modal__lead">This income checker is an estimate only.</p>
+      <ol class="he-modal__steps" aria-label="Required acknowledgements">
+        <li class="he-modal__step">
+          <div class="he-modal__steptext">I understand Hine Eagle Barristers and Solicitors are not Legal Aid Services (Ministry of Justice) and we do not grant Legal Aid.</div>
+          <label class="he-modal__stepcheck">
+            <input type="checkbox" id="heAck1" />
+            <span aria-hidden="true"></span>
+          </label>
+        </li>
+        <li class="he-modal__step">
+          <div class="he-modal__steptext">I understand the information from this tool does not determine whether I will receive Legal Aid.</div>
+          <label class="he-modal__stepcheck">
+            <input type="checkbox" id="heAck2" />
+            <span aria-hidden="true"></span>
+          </label>
+        </li>
+        <li class="he-modal__step">
+          <div class="he-modal__steptext">I understand this tool does not provide legal advice and does not create a lawyer-client relationship.</div>
+          <label class="he-modal__stepcheck">
+            <input type="checkbox" id="heAck3" />
+            <span aria-hidden="true"></span>
+          </label>
+        </li>
+        <li class="he-modal__step">
+          <div class="he-modal__steptext">I understand I need formal legal advice to assess my Legal Aid prospects and next steps.</div>
+          <label class="he-modal__stepcheck">
+            <input type="checkbox" id="heAck4" />
+            <span aria-hidden="true"></span>
+          </label>
+        </li>
+      </ol>
+
+      <p class="he-modal__small">To continue, you must acknowledge each statement above.</p>
+    </div>
+
+    <div class="he-modal__actions">
+      <button class="he-btn he-btn--secondary" id="heModalCancel" type="button">Cancel</button>
+      <button class="he-btn he-btn--primary" disabled="" id="heModalContinue" type="button">Continue</button>
+    </div>
+  </div>
+</div></section><section aria-label="Legal aid thresholds" class="he-thresholds he-section-card"><div class="he-thresholds__header"><h2 class="he-tool__title">Legal aid thresholds</h2></div><div class="eligibility-grid">
 <div class="eligibility-card">
 <h3>Single applicant</h3>
 <div class="table-scroll">
@@ -472,7 +424,7 @@
 <div class="he-footer__legal">© 2017 to 2025 Hine Eagle Barristers &amp; Solicitors | Website design by The Hine Eagle Team</div>
 </div>
 </footer>
-<script src="../assets/js/legal-aid-tool.js"></script>
+<script src="../assets/js/legal-aid-income-checker.js"></script>
 <script src="../assets/js/script.js"></script>
 </body>
 </html>
