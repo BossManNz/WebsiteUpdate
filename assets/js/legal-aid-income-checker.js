@@ -142,7 +142,7 @@
     } else if (annual > threshold) {
       if (outcomeEl) outcomeEl.textContent = 'You may be over the income threshold (hardship may still apply)';
       if (outcomeEl) outcomeEl.style.color = '#b10f1e';
-      if (outcomeSubEl) outcomeSubEl.textContent = 'Based on what you entered, your income appears over the published threshold. You may still qualify on hardship grounds, and Legal Aid Services apply additional assessments we do not have access to.';
+      if (outcomeSubEl) outcomeSubEl.textContent = 'Based on what you entered, your income appears over the published threshold. You may still qualify on hardship grounds. Seek legal advice as Legal Aid apply additional assessments.';
     } else {
       if (outcomeEl) outcomeEl.textContent = 'You are around the income threshold';
       if (outcomeEl) outcomeEl.style.color = '#1d1d1f';
