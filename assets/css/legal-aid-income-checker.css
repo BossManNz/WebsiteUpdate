@@ -669,3 +669,72 @@ html.he-modal-lock body{
     width: 100%;
   }
 }
+
+
+/* =========================
+   Mobile input polish (money + number fields)
+   Fix: orphan $ prefix, weird number alignment/spinners on mobile
+   ========================= */
+
+/* Make the $ + income input a single iOS-style pill */
+.he-money{
+  border: 1px solid rgba(0,0,0,0.14);
+  background: rgba(255,255,255,0.95);
+  border-radius: 14px;
+  padding: 10px 12px;
+  gap: 10px;
+}
+
+.he-money .he-money__prefix{
+  opacity: 0.70;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.he-money .he-field{
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  box-shadow: none !important;
+}
+
+.he-money:focus-within{
+  border-color: rgba(0,113,227,0.7);
+  box-shadow: 0 0 0 4px rgba(0,113,227,0.18);
+}
+
+/* Dependents: left align value and soften native spinner weirdness */
+.he-field--compact{
+  text-align: left;
+  padding-left: 12px;
+  padding-right: 10px;
+}
+
+/* Reduce spinner visual noise where supported */
+input[type="number"].he-field{
+  -moz-appearance: textfield;
+}
+input[type="number"].he-field::-webkit-outer-spin-button,
+input[type="number"].he-field::-webkit-inner-spin-button{
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Small screens: stack income pill + frequency neatly without breaking desktop */
+@media (max-width: 520px){
+  .he-row__right--income{
+    flex-wrap: wrap;
+    align-items: stretch;
+  }
+  .he-row__right--income .he-money{
+    flex: 1 1 100%;
+    width: 100%;
+  }
+  .he-row__right--income .he-field--select{
+    flex: 1 1 100%;
+    width: 100%;
+    min-width: 0;
+  }
+}
