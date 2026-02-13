@@ -54,12 +54,12 @@
 
   const STEPS = [
     {
-      headline: 'Hine Eagle is not Legal Aid Services',
+      headline: 'Hine Eagle is not the Ministry of Justice (Legal Aid Services)',
       text:
         'I acknowledge Hine Eagle Barristers and Solicitors are not Legal Aid Services (Ministry of Justice), and we do not grant Legal Aid.'
     },
     {
-      headline: 'This tool is not a decision',
+      headline: 'This tool does not tell you if you will get Legal Aid',
       text:
         'I acknowledge the information from this tool does not determine whether I will receive Legal Aid.'
     },
