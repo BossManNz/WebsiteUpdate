@@ -118,9 +118,18 @@
   padding: 0 14px 14px 14px;
 }
 .he-details__body ul{
-  margin: 10px 0 0 18px;
+  margin: 14px 0 0 22px;
+  padding-left: 0;
 }
 
+.he-details__body li{
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+.he-details__body li:last-child{
+  margin-bottom: 0;
+}
 /* ---- Tool header ---- */
 .he-tool__header{
   margin-bottom: 12px;
@@ -301,15 +310,17 @@
   box-shadow: 0 10px 24px rgba(0,0,0,0.06);
   padding: 14px;
 }
-.eligibility-card h3{
+.eligibility-card h3{  font-weight: 700;
+
   margin: 2px 0 10px 0;
+  margin-bottom: 14px;
 }
 .table-scroll{ overflow-x: auto; }
 .table-wrap{ min-width: 0; }
 .eligibility-table{
   width: 100%;
   border-collapse: collapse;
-  table-layout: fixed;
+  table-layout: auto;
 }
 .eligibility-table th,
 .eligibility-table td{
@@ -328,7 +339,7 @@
 }
 .eligibility-table .amount{
   text-align: right;
-  width: 46%;
+  white-space: nowrap;
 }
 .he-thresholds__note{
   margin: 10px 0 0 0;
