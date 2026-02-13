@@ -140,7 +140,7 @@
         <div class="he-tool__header">
           <h2 class="he-tool__title">Legal Aid Income Checker</h2>
           <p class="he-tool__notice">
-          </p>
+          <span class="he-tool__notice-red">Estimate only, not a Legal Aid decision. This tool compares your income with published thresholds.</span></p>
         </div>
 
         <div class="he-tool__disclosure-card">
@@ -195,8 +195,42 @@
                   </div>
                 </div>
 
+              
+            </div>
+            <!-- Results -->
+            <div class="he-results" aria-live="polite">
+              <div class="he-results__top">
+                <div class="he-results__headline" id="heOutcome">Enter your details</div>
+                <div class="he-results__sub" id="heOutcomeSub">Enter your income to compare it with the published income thresholds (estimate only, not a decision).</div>
+              </div>
+
+              <div class="he-results__grid" role="group" aria-label="Income comparison summary">
+                <div class="he-metric">
+                  <div class="he-metric__label" id="heThresholdLabel">Income threshold (Single, 0 dependents)</div>
+                  <div class="he-metric__value" id="heThresholdValue">$0</div>
+                </div>
+                <div class="he-metric">
+                  <div class="he-metric__label">Your annualised income</div>
+                  <div class="he-metric__value" id="heAnnualValue">$0</div>
+                </div>
+                <div class="he-metric">
+                  <div class="he-metric__label">Difference</div>
+                  <div class="he-metric__value" id="heDiffValue">$0</div>
+                </div>
+              </div>
+
+              <div class="he-warning" id="heDecisionWarning" style="display:none;">
+                <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+                <div class="he-warning__text">
+                  This is an income check only. Legal Aid Services apply additional tests we do not have access to.
+                </div>
+              </div>
+
+              <div class="he-results__actions">
+                <button class="he-btn he-btn--ghost" type="button" id="heResetBtn">Reset</button>
               </div>
             </div>
+
           </div>
         </div>
       </section>
