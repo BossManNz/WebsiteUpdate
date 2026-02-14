@@ -1123,3 +1123,78 @@ input[type="number"].he-field::-webkit-inner-spin-button{
     grid-template-columns: 1fr;
   }
 }
+
+
+/* =========================
+   Apple refinement patch (keep H1 + underline)
+   ========================= */
+
+/* 1) Hero: remove decorative gradient, calm surface */
+.he-hero{
+  background: rgba(255,255,255,0.90) !important;
+  border: 1px solid rgba(0,0,0,0.06) !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05) !important;
+}
+
+/* 2) Note row: calmer, less contrast */
+.he-hero__note{
+  background: rgba(242,242,247,0.92) !important;
+  box-shadow: none !important;
+}
+
+/* 3) Tabs: flatten pills (less UI-kit, more iOS) */
+.he-tabs__item{
+  background: rgba(242,242,247,0.95) !important;
+  box-shadow: none !important;
+  border: 1px solid rgba(0,0,0,0.06) !important;
+}
+.he-tabs__item:hover{
+  filter: none !important;
+  background: rgba(235,235,240,0.95) !important;
+}
+.he-tabs__item:active{
+  transform: scale(0.99);
+}
+
+/* 4) Cards: soften shadows globally */
+.he-section-card{
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05) !important;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+/* 5) FAQ card: remove thick red stripe, keep subtle brand accent via icon only */
+.he-callout{
+  border-left: 1px solid rgba(0,0,0,0.06) !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05) !important;
+}
+
+/* 6) Details containers: calm list look */
+.he-details{
+  background: rgba(242,242,247,0.70) !important;
+  border: 1px solid rgba(0,0,0,0.06) !important;
+}
+.he-details summary{
+  background: rgba(255,255,255,0.55);
+}
+
+/* 7) Buttons: slightly calmer shadows */
+.he-btn--primary{
+  box-shadow: 0 10px 24px rgba(176,0,32,0.22) !important;
+}
+
+/* 8) More breathing room between major blocks */
+#legal-aid-income-checker .he-hero{
+  margin-bottom: 18px;
+}
+#legal-aid-income-checker .he-callout{
+  margin-top: 18px;
+}
+#legal-aid-income-checker .he-tool{
+  margin-top: 18px;
+}
+#legal-aid-income-checker .he-thresholds{
+  margin-top: 18px;
+}
+#legal-aid-income-checker .he-help{
+  margin-top: 18px;
+}
