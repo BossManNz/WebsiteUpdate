@@ -942,3 +942,184 @@ input[type="number"].he-field::-webkit-inner-spin-button{
     align-items: center !important;
   }
 }
+
+
+/* =========================
+   Apple-style page system (non-breaking)
+   ========================= */
+
+#legal-aid-income-checker .section-title{
+  margin-bottom: 10px;
+}
+
+/* Typography: calmer, iOS-like */
+#legal-aid-income-checker h1{
+  font-size: clamp(30px, 3.2vw, 38px);
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  margin: 6px 0 10px 0;
+}
+#legal-aid-income-checker p{
+  color: rgba(29,29,31,0.78);
+}
+
+/* Hero */
+.he-hero{
+  margin-top: 8px;
+  border-radius: 26px;
+  background: radial-gradient(1200px 500px at 20% -20%, rgba(176,0,32,0.10), rgba(255,255,255,0.86) 55%);
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.06);
+  padding: 18px 18px 14px;
+}
+.he-hero__eyebrow{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(29,29,31,0.58);
+}
+.he-hero__lead{
+  margin: 10px 0 0 0;
+  font-size: 15px;
+  line-height: 1.65;
+  color: rgba(29,29,31,0.84);
+  max-width: 78ch;
+}
+.he-hero__note{
+  margin-top: 12px;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 18px;
+  background: rgba(242,242,247,0.85);
+  border: 1px solid rgba(0,0,0,0.06);
+  color: rgba(29,29,31,0.80);
+  line-height: 1.5;
+}
+.he-hero__note i{
+  margin-top: 2px;
+  color: #b00020;
+}
+
+/* Tabs (Apple pill nav) */
+.he-tabs{
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.he-tabs__item{
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.05);
+  text-decoration: none;
+  color: rgba(29,29,31,0.90);
+  font-weight: 750;
+  font-size: 13px;
+}
+.he-tabs__item:hover{
+  filter: brightness(0.98);
+}
+.he-tabs__item:active{
+  transform: scale(0.99);
+}
+
+/* Section cards: more iOS, less heavy */
+.he-section-card{
+  border-radius: 26px;
+  padding: 20px;
+  box-shadow: 0 16px 50px rgba(0,0,0,0.06);
+}
+
+/* Callout: Apple info card */
+.he-callout{
+  margin-top: 16px;
+  border-radius: 26px;
+  padding: 18px 18px 18px 16px;
+  background: rgba(255,255,255,0.90);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-left: 4px solid #b00020;
+  box-shadow: 0 16px 50px rgba(0,0,0,0.06);
+}
+.he-callout__summary{
+  font-size: 15px;
+  line-height: 1.6;
+}
+.he-callout__summary strong{
+  font-weight: 800;
+}
+
+/* Details: more iOS list feel */
+.he-details summary{
+  padding: 14px 14px;
+}
+.he-details summary:after{
+  opacity: 0.45;
+}
+
+/* Help CTA card */
+.he-help__grid{
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 16px;
+  align-items: center;
+}
+.he-help__title{
+  margin: 0 0 6px 0;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: #1d1d1f;
+}
+.he-help__text{
+  margin: 0 0 10px 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(29,29,31,0.82);
+}
+.he-help__fine{
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(29,29,31,0.62);
+}
+.he-help__actions{
+  display: grid;
+  gap: 10px;
+}
+
+/* Buttons: iOS pill, brand red primary */
+.he-btn{
+  border-radius: 999px;
+}
+.he-btn--primary{
+  background: #b00020;
+  box-shadow: 0 12px 28px rgba(176,0,32,0.28);
+}
+.he-btn--ghost{
+  background: rgba(242,242,247,0.95);
+}
+
+/* Mobile: stack and breathe */
+@media (max-width: 720px){
+  .he-hero{
+    padding: 16px 14px 12px;
+    border-radius: 22px;
+  }
+  .he-section-card{
+    padding: 16px;
+    border-radius: 22px;
+  }
+  .he-help__grid{
+    grid-template-columns: 1fr;
+  }
+}
