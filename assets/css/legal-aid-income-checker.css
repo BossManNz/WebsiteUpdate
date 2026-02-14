@@ -320,18 +320,9 @@
 .eligibility-table{
   width: 100%;
   border-collapse: collapse;
-  table-layout: auto;
+  table-layout: fixed;
 }
 
-/* Keep Status column readable and aligned across both tables */
-.eligibility-table th:first-child,
-.eligibility-table td:first-child{
-  width: 44%;
-}
-.eligibility-table th.amount,
-.eligibility-table td.amount{
-  width: 56%;
-}
 .eligibility-table th,
 .eligibility-table td{
   padding: 10px 10px;
@@ -758,4 +749,33 @@ input[type="number"].he-field::-webkit-inner-spin-button{
     width: 100%;
     min-width: 0;
   }
+}
+
+/* Keep columns consistent across both tables */
+.eligibility-table th:first-child,
+.eligibility-table td:first-child{
+  width: 40%;
+}
+.eligibility-table th.amount,
+.eligibility-table td.amount{
+  width: 60%;
+}
+
+/* Status labels should not break awkwardly on desktop */
+@media (min-width: 721px){
+  .eligibility-table td:first-child{ white-space: nowrap; }
+}
+
+/* Allow long header text to wrap nicely without squeezing the Status column */
+.eligibility-table thead th{
+  white-space: normal;
+  line-height: 1.25;
+}
+.eligibility-table thead th.amount{
+  white-space: normal;
+}
+
+/* Keep dollar values on one line */
+.eligibility-table tbody td.amount{
+  white-space: nowrap;
 }
