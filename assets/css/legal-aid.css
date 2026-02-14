@@ -1344,3 +1344,30 @@ html{
   text-transform: none !important;
   color: #b00020 !important;
 }
+
+
+/* =========================
+   Unified Section Headings
+   ========================= */
+
+.he-section-heading,
+.he-tool h2,
+.he-thresholds h2,
+.he-help h2,
+.he-callout h2{
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #b00020;
+  margin-bottom: 12px;
+}
+
+/* Remove old eyebrow look */
+.he-hero__eyebrow{
+  display: none;
+}
+
+/* Remove any lingering icon spacing */
+.he-callout i{
+  display: none;
+}
