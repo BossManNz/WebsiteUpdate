@@ -500,10 +500,7 @@ html.he-modal-lock body{
 }
 
 /* Mobile: bottom sheet feel */
-@media (max-width: 640px){
-  .he-modal.he-modal--open{
-    align-items: flex-end;
-  }
+
   .he-modal__card{
     width: 100%;
     border-radius: 22px;
@@ -940,5 +937,13 @@ input[type="number"].he-field::-webkit-inner-spin-button{
   }
   .he-modal__body{
     padding: 16px 18px 18px;
+  }
+}
+
+
+/* Center modal on mobile instead of bottom sheet */
+@media (max-width: 640px){
+  .he-modal.he-modal--open{
+    align-items: center !important;
   }
 }
