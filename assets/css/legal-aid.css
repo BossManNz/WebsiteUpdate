@@ -1411,3 +1411,10 @@ html{
 #legal-aid-income-checker .he-section-card + .he-section-card{
   margin-top: 2rem;
 }
+
+/* Reduce top padding inside cards for tighter Apple spacing */
+#legal-aid-income-checker .he-hero,
+#legal-aid-income-checker .he-section-card,
+#legal-aid-income-checker .he-callout{
+  padding-top: 20px;
+}
