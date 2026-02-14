@@ -1390,3 +1390,24 @@ html{
   grid-template-columns: none !important;
   gap: 0 !important;
 }
+
+
+/* -------------------------------
+   Normalize heading spacing and vertical rhythm (scoped)
+---------------------------------- */
+#legal-aid-income-checker .he-section-card h2,
+#legal-aid-income-checker .he-section-card h3,
+#legal-aid-income-checker .he-hero h2,
+#legal-aid-income-checker .he-callout h2{
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+/* Consistent spacing between modules */
+#legal-aid-income-checker .he-hero + .he-callout,
+#legal-aid-income-checker .he-callout + .he-tool,
+#legal-aid-income-checker .he-tool + .he-thresholds,
+#legal-aid-income-checker .he-thresholds + .he-help,
+#legal-aid-income-checker .he-section-card + .he-section-card{
+  margin-top: 2rem;
+}
