@@ -1286,3 +1286,18 @@ html{
     scroll-margin-top: 84px;
   }
 }
+
+/* Constrain hero text */
+.he-hero__lead{
+  max-width: 60ch;
+}
+
+/* Constrain help text */
+.he-help__text{
+  max-width: 60ch;
+}
+
+/* Optional: constrain eyebrow block too for symmetry */
+.he-hero__top{
+  max-width: 640px;
+}
