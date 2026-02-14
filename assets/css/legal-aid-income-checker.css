@@ -501,9 +501,10 @@ html.he-modal-lock body{
 
 /* Mobile: bottom sheet feel */
 
-.he-modal__card{
-  width: 100%;
-  border-radius: 22px;
+  .he-modal__card{
+    width: 100%;
+    border-radius: 22px;
+  }
 }
 
 
@@ -515,12 +516,11 @@ html.he-modal-lock body{
 
 /* Title sizing alignment with Fees page */
 #legal-aid-income-checker h1{
-  font-size: clamp(28px, 3.2vw, 34px);
-  font-weight: 750;
-  letter-spacing: -0.02em;
-  margin: 6px 0 10px 0;
+  font-size: clamp(30px, 4vw, 38px);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  margin-bottom: 10px;
 }
-
 
 /* Back link refinement (match smaller, calmer style) */
 .eligibility-back{
@@ -957,21 +957,17 @@ input[type="number"].he-field::-webkit-inner-spin-button{
   margin-bottom: 6px;
 }
 .he-intro__lead{
-  margin: 8px 0 10px 0;
-  color: rgba(29,29,31,0.82);
-  line-height: 1.65;
-  max-width: 64ch;
-  font-size: 15px;
+  margin: 10px 0 8px 0;
+  color: rgba(29,29,31,0.84);
+  line-height: 1.6;
+  max-width: 78ch;
 }
-
 .he-intro__note{
   margin: 0 0 12px 0;
-  color: rgba(29,29,31,0.74);
-  line-height: 1.6;
-  max-width: 64ch;
-  font-size: 14px;
+  color: rgba(29,29,31,0.78);
+  line-height: 1.55;
+  max-width: 78ch;
 }
-
 .he-jumplinks{
   display: flex;
   flex-wrap: wrap;
@@ -981,17 +977,15 @@ input[type="number"].he-field::-webkit-inner-spin-button{
 .he-jumplink{
   display: inline-flex;
   align-items: center;
-  padding: 7px 11px;
+  padding: 8px 12px;
   border-radius: 999px;
   background: rgba(242,242,247,0.95);
   border: 1px solid rgba(0,0,0,0.06);
-  box-shadow: 0 6px 14px rgba(0,0,0,0.06);
   color: rgba(29,29,31,0.88);
   text-decoration: none;
-  font-weight: 750;
-  font-size: 12.5px;
+  font-weight: 700;
+  font-size: 13px;
 }
-
 .he-jumplink:hover{
   filter: brightness(0.98);
   text-decoration: none;
@@ -1039,41 +1033,5 @@ input[type="number"].he-field::-webkit-inner-spin-button{
   }
   .he-next__cta{
     grid-template-columns: 1fr;
-  }
-}
-
-
-
-/* iOSfy: underline belongs to heading only */
-#legal-aid-income-checker .section-title{
-  margin-bottom: 10px;
-}
-#legal-aid-income-checker .section-title::after{
-  display: none;
-}
-#legal-aid-income-checker .section-title h1{
-  display: inline-block;
-  position: relative;
-  padding-bottom: 10px;
-}
-#legal-aid-income-checker .section-title h1::after{
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 72px;
-  height: 3px;
-  border-radius: 999px;
-  background: rgba(0,0,0,0.85);
-}
-
-/* iOSfy: card density and spacing */
-.he-section-card{
-  padding: 18px;
-}
-@media (max-width: 720px){
-  .he-section-card{
-    padding: 16px;
-    border-radius: 20px;
   }
 }
