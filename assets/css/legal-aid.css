@@ -1371,3 +1371,12 @@ html{
 .he-callout i{
   display: none;
 }
+
+
+/* Remove any leftover FAQ icon placeholder box */
+.he-callout__icon,
+.he-callout__icon-wrap,
+.he-callout .he-icon,
+.he-callout .callout-icon{
+  display: none !important;
+}
