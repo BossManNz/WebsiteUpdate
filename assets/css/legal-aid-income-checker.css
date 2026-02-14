@@ -19,10 +19,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-#legal-aid-income-checker h1{
-  letter-spacing: -0.02em;
-  font-weight: 700;
-}
 #legal-aid-income-checker h2,
 #legal-aid-income-checker h3{
   letter-spacing: -0.01em;
@@ -505,7 +501,6 @@ html.he-modal-lock body{
     width: 100%;
     border-radius: 22px;
   }
-}
 
 
 /* =========================
@@ -516,7 +511,7 @@ html.he-modal-lock body{
 
 /* Title sizing alignment with Fees page */
 #legal-aid-income-checker h1{
-  font-size: clamp(30px, 4vw, 38px);
+  font-size: 42px;
   font-weight: 700;
   letter-spacing: -0.015em;
   margin-bottom: 10px;
@@ -945,93 +940,5 @@ input[type="number"].he-field::-webkit-inner-spin-button{
 @media (max-width: 640px){
   .he-modal.he-modal--open{
     align-items: center !important;
-  }
-}
-
-
-/* =========================
-   SEO content blocks polish
-   ========================= */
-.he-intro{
-  margin-top: 10px;
-  margin-bottom: 6px;
-}
-.he-intro__lead{
-  margin: 10px 0 8px 0;
-  color: rgba(29,29,31,0.84);
-  line-height: 1.6;
-  max-width: 78ch;
-}
-.he-intro__note{
-  margin: 0 0 12px 0;
-  color: rgba(29,29,31,0.78);
-  line-height: 1.55;
-  max-width: 78ch;
-}
-.he-jumplinks{
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 10px;
-}
-.he-jumplink{
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: rgba(242,242,247,0.95);
-  border: 1px solid rgba(0,0,0,0.06);
-  color: rgba(29,29,31,0.88);
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 13px;
-}
-.he-jumplink:hover{
-  filter: brightness(0.98);
-  text-decoration: none;
-}
-
-/* Next steps */
-.he-next__grid{
-  margin-top: 12px;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-}
-.he-next__card{
-  background: rgba(242,242,247,0.75);
-  border: 1px solid rgba(0,0,0,0.06);
-  border-radius: 18px;
-  padding: 14px 14px;
-}
-.he-next__h{
-  margin: 0 0 6px 0;
-  font-size: 15px;
-  font-weight: 900;
-  letter-spacing: -0.01em;
-}
-.he-next__p{
-  margin: 0;
-  color: rgba(29,29,31,0.78);
-  line-height: 1.55;
-  font-size: 14px;
-}
-.he-next__cta{
-  margin-top: 14px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-.he-next__meta{
-  margin-top: 10px;
-  color: rgba(29,29,31,0.55);
-  font-size: 12px;
-}
-@media (max-width: 920px){
-  .he-next__grid{
-    grid-template-columns: 1fr;
-  }
-  .he-next__cta{
-    grid-template-columns: 1fr;
   }
 }
