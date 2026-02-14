@@ -1297,3 +1297,50 @@ html{
 .he-hero__lead{
   max-width: none !important;
 }
+
+
+/* =========================
+   Heading polish (brand red)
+   ========================= */
+#legal-aid-income-checker h1,
+#legal-aid-income-checker h2,
+#legal-aid-income-checker h3{
+  color: #b00020;
+}
+
+
+/* Hero "Legal Aid" heading should match section titles */
+#legal-aid-income-checker .he-hero__eyebrow{
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: #b00020;
+}
+
+
+/* FAQ heading + subtext split */
+#legal-aid-income-checker .he-callout__title{
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #b00020;
+}
+#legal-aid-income-checker .he-callout__sub{
+  margin: 6px 0 10px 0;
+  color: rgba(29,29,31,0.78);
+  line-height: 1.55;
+  font-size: 14px;
+}
+
+
+/* Force override for hero eyebrow inherited small-caps styling */
+#legal-aid-income-checker .he-hero__eyebrow{
+  font-size: 22px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em !important;
+  text-transform: none !important;
+  color: #b00020 !important;
+}
