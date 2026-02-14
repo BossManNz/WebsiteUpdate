@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Route-to-nav mapping for sections that should highlight a different nav item
   var routeMap = {
-    'legal-aid-income-checker': 'fees',
+    'legal-aid': 'fees',
     'profiles': 'team'
   };
   var effectiveSeg = routeMap[currentSeg] || currentSeg;
@@ -224,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var currentSeg = (segs[0] || '').toLowerCase(); // '' for home
 
   var routeMap = {
-    'legal-aid-income-checker': 'fees',
+    'legal-aid': 'fees',
     'profiles': 'team'
   };
   var effectiveSeg = routeMap[currentSeg] || currentSeg;
