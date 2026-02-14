@@ -1287,7 +1287,13 @@ html{
   }
 }
 
-/* Constrain hero content properly */
+
+/* =========================
+   Hero text width fix (allow full-width inside hero)
+   ========================= */
 .he-hero__top{
-  max-width: 720px;
+  max-width: none !important;
+}
+.he-hero__lead{
+  max-width: none !important;
 }
