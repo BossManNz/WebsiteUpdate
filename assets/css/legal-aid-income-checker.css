@@ -1287,17 +1287,11 @@ html{
   }
 }
 
-/* Constrain hero text */
+/* Hero intro refinement */
 .he-hero__lead{
   max-width: 60ch;
-}
-
-/* Constrain help text */
-.he-help__text{
-  max-width: 60ch;
-}
-
-/* Optional: constrain eyebrow block too for symmetry */
-.he-hero__top{
-  max-width: 640px;
+  font-size: 16px;
+  line-height: 1.65;
+  letter-spacing: -0.01em;
+  color: rgba(29,29,31,0.85);
 }
