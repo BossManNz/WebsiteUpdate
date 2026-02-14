@@ -779,3 +779,166 @@ input[type="number"].he-field::-webkit-inner-spin-button{
 .eligibility-table tbody td.amount{
   white-space: nowrap;
 }
+
+
+/* =========================
+   iOSfy: Disclaimer modal sheet polish
+   ========================= */
+
+/* Backdrop: softer, more iOS blur */
+.he-modal__backdrop{
+  background: rgba(0,0,0,0.16);
+  backdrop-filter: blur(10px) saturate(160%);
+  -webkit-backdrop-filter: blur(10px) saturate(160%);
+}
+
+/* Sheet: lighter border, iOS-like shadow and corners */
+.he-modal__card{
+  border-radius: 28px;
+  background: rgba(255,255,255,0.88);
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 24px 70px rgba(0,0,0,0.18);
+  overflow: hidden;
+}
+
+/* Subtle top grabber (desktop + mobile) */
+.he-modal__card::before{
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44px;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.12);
+}
+
+/* Top bar: feels like iOS nav bar */
+.he-modal__top{
+  padding: 18px 18px 12px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  background: rgba(255,255,255,0.65);
+  backdrop-filter: blur(10px) saturate(160%);
+  -webkit-backdrop-filter: blur(10px) saturate(160%);
+}
+
+/* Title: slightly smaller, tighter like iOS */
+.he-modal__title{
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  font-size: 15px;
+  color: rgba(29,29,31,0.92);
+}
+
+/* Dots: smaller + calmer */
+.he-modal__dots{
+  margin-top: 6px;
+  gap: 5px;
+}
+.he-dot{
+  width: 5px;
+  height: 5px;
+  background: rgba(0,0,0,0.18);
+}
+.he-dot--active{
+  background: rgba(0,0,0,0.45);
+}
+
+/* Icon buttons: iOS circular controls */
+.he-modal__iconbtn{
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.06);
+  background: rgba(242,242,247,0.85);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+.he-modal__iconbtn:hover{
+  filter: brightness(0.98);
+}
+.he-modal__iconbtn:active{
+  transform: scale(0.98);
+}
+
+/* Body: more iOS spacing and typography */
+.he-modal__body{
+  padding: 18px 26px 22px;
+}
+
+.he-modal__pill{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(242,242,247,0.9);
+  border: 1px solid rgba(0,0,0,0.06);
+  font-size: 12px;
+  font-weight: 800;
+  color: rgba(29,29,31,0.72);
+}
+
+.he-modal__headline{
+  margin-top: 14px;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: #1d1d1f;
+}
+
+.he-modal__text{
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: rgba(29,29,31,0.74);
+}
+
+/* Buttons: iOS-style pill buttons, full width */
+.he-modal__cta{
+  margin-top: 18px;
+  display: grid;
+  gap: 10px;
+}
+
+.he-btn{
+  border-radius: 999px;
+  padding: 12px 14px;
+  font-weight: 800;
+}
+
+.he-btn--primary{
+  background: #b00020;
+  box-shadow: 0 10px 24px rgba(176,0,32,0.26);
+}
+.he-btn--primary:active{
+  transform: scale(0.99);
+}
+
+.he-btn--ghost{
+  background: rgba(242,242,247,0.95);
+  border: 1px solid rgba(0,0,0,0.08);
+}
+.he-btn--ghost:active{
+  transform: scale(0.99);
+}
+
+/* Fineprint: calmer */
+.he-modal__fineprint{
+  margin-top: 12px;
+  font-size: 12px;
+  color: rgba(29,29,31,0.50);
+}
+
+/* Mobile bottom sheet vibe: stronger rounding + edge padding */
+@media (max-width: 640px){
+  .he-modal{
+    padding: 12px;
+  }
+  .he-modal__card{
+    border-radius: 24px;
+  }
+  .he-modal__body{
+    padding: 16px 18px 18px;
+  }
+}
