@@ -1262,3 +1262,27 @@ input[type="number"].he-field::-webkit-inner-spin-button{
 .he-help{
   padding: 22px;
 }
+
+
+/* =========================
+   Anchor scrolling polish
+   ========================= */
+html{
+  scroll-behavior: smooth;
+}
+
+/* Ensure jump links land cleanly with breathing room */
+#faq,
+#checker,
+#thresholds,
+#help{
+  scroll-margin-top: 96px;
+}
+@media (max-width: 720px){
+  #faq,
+  #checker,
+  #thresholds,
+  #help{
+    scroll-margin-top: 84px;
+  }
+}
