@@ -19,10 +19,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-#legal-aid-income-checker h1{
-  letter-spacing: -0.02em;
-  font-weight: 700;
-}
 #legal-aid-income-checker h2,
 #legal-aid-income-checker h3{
   letter-spacing: -0.01em;
@@ -505,7 +501,6 @@ html.he-modal-lock body{
     width: 100%;
     border-radius: 22px;
   }
-}
 
 
 /* =========================
