@@ -1380,3 +1380,13 @@ html{
 .he-callout .callout-icon{
   display: none !important;
 }
+
+
+/* =========================
+   FAQ layout fix (icon removed, stop grid column squeeze)
+   ========================= */
+.he-callout{
+  display: block !important;
+  grid-template-columns: none !important;
+  gap: 0 !important;
+}
