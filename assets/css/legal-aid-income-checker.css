@@ -1198,3 +1198,67 @@ input[type="number"].he-field::-webkit-inner-spin-button{
 #legal-aid-income-checker .he-help{
   margin-top: 18px;
 }
+
+
+/* =========================
+   iOS-style CTA refinement
+   ========================= */
+
+/* Remove heavy structure */
+.he-help__stack{
+  max-width: 520px;
+}
+
+/* Title calmer */
+.he-help__title{
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+/* Body spacing */
+.he-help__text{
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  color: rgba(29,29,31,0.78);
+}
+
+/* Actions stacked cleanly */
+.he-help__actions{
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* True iOS pill buttons */
+.he-btn{
+  padding: 12px 20px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Primary */
+.he-btn--primary{
+  background: #b00020;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(176,0,32,0.25);
+}
+
+/* Secondary subtle */
+.he-btn--secondary{
+  background: rgba(242,242,247,1);
+  border: 1px solid rgba(0,0,0,0.08);
+  color: #1d1d1f;
+}
+
+/* Remove excess spacing */
+.he-help{
+  padding: 22px;
+}
